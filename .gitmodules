@@ -1,0 +1,6 @@
+[submodule "nvim"]
+	path = nvim
+	url = git@github.com:tuandzung/vim-config.git
+[submodule "awesome"]
+	path = awesome
+	url = git@github.com:tuandzung/awesome-config.git
