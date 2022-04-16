@@ -1,0 +1,27 @@
+[user]
+	email = zun1903@gmail.com
+	name = Ngo Tuan Dzung
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    syntax-theme = "Coldark-Dark"
+    features = side-by-side line-numbers decorations
+    whitespace-error-style = red reverse
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = green ul
+    hunk-header-decoration-style = yellow box
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default

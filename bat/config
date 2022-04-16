@@ -1,4 +1,3 @@
-
 --style="numbers,changes"
---theme="OneHalfDark"
+--theme="Coldark-Dark"
 --pager="less -FR"
