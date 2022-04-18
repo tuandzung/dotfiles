@@ -120,27 +120,36 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
 export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
---height=50%
---color=fg:#e5e9f0,bg:#2e3440,hl:#81a1c1
---color=fg+:#e5e9f0,bg+:#2e3440,hl+:#81a1c1
---color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
---color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+# export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+# --height=50%
+# --color=fg:#e5e9f0,bg:#2e3440,hl:#81a1c1
+# --color=fg+:#e5e9f0,bg+:#2e3440,hl+:#81a1c1
+# --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
+# --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 
 
 #####################
 # PLUGINS           #
 #####################
 
+export K9S_THEME="nord"
+
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
-export ENHANCD_FILTER=fzf:fzy:peco
+export ENHANCD_FILTER=fzf-tmux
+export ENHANCD_DISABLE_DOT=1
+export ENHANCD_DISABLE_HYPHEN=1
+export ENHANCD_DISABLE_HOME=1
+
+export NNN_FIFO="/tmp/nnn.fifo"
+export NNN_PLUG='j:autojump;p:preview-tui;l:launch;r:renamer;w:wallpaper;o:organize;x:xdgdefault'
 
 # ssh-agent
 zinit light bobsoppe/zsh-ssh-agent
 
 # zdharma/history-search-multi-word
 zinit ice wait"1" lucid
-zinit load zdharma/history-search-multi-word
+zinit load zdharma-continuum/history-search-multi-word
 
 # autosuggestions, trigger precmd hook upon load
 zinit ice wait"0c" lucid atload'_zsh_autosuggest_start'
@@ -152,14 +161,14 @@ zinit light zsh-users/zsh-completions
 
 # Syntax highlighting
 zinit ice wait"1" lucid atinit'zpcompinit; zpcdreplay'
-zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 # zsh-autopair
 zinit ice wait lucid
 zinit load hlissner/zsh-autopair
 
 # enhancd
-zinit ice wait"0b" lucid
+zinit ice pick"init.sh"
 zinit light b4b4r07/enhancd
 
 # forgit
@@ -169,21 +178,60 @@ zinit load 'wfxr/forgit'
 zinit ice pick'init.zsh' blockf
 zinit light laggardkernel/git-ignore
 
+zinit ice from"gh-r" as"program" bpick"*x86_64-unknown-linux-gnu*" pick"lsd-*/lsd"
+zinit light Peltoche/lsd
+
 # A cat clone with syntax highlighting and Git integration.
-zinit ice from"gh-r" as"program" mv"bat-*/bat -> bat"; zinit light sharkdp/bat
+zinit ice from"gh-r" as"program" mv"bat-*/bat -> bat"
+zinit light sharkdp/bat
+
 # A viewer for git and diff output
-zinit ice from"gh-r" as"program" mv"delta-*/delta -> delta"; zinit light dandavison/delta
+zinit ice from"gh-r" as"program" mv"delta-*/delta -> delta"
+zinit light dandavison/delta
+
 # A more intuitive version of du written in rust.
-zinit ice from"gh-r" as"program" mv"dust-*/dust -> dust"; zinit light bootandy/dust
+zinit ice from"gh-r" as"program" mv"dust-*/dust -> dust"
+zinit light bootandy/dust
+
 # A simple, fast and user-friendly alternative to find
-zinit ice from"gh-r" as"program" mv"fd-*/fd -> fd"; zinit light sharkdp/fd
+zinit ice from"gh-r" as"program" mv"fd-*/fd -> fd"
+zinit light sharkdp/fd
+
 # An extremely fast alternative to grep that respects your gitignore
-zinit ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"; zinit light BurntSushi/ripgrep
+zinit ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"
+zinit light BurntSushi/ripgrep
 
-zinit ice from"gh-r" as"program" ; zinit light junegunn/fzf
+# sad
+zinit ice lucid wait'0' as'program' from'gh-r' id-as'sad' mv'sad* -> sad'
+zinit light 'ms-jpq/sad'
 
-zinit ice wait lucid
-zinit light Aloxaf/fzf-tab
+# mmv renamer
+zinit ice lucid wait'0' as'program' id-as'mmv' from'gh-r' \
+  mv'mmv* -> mmv' pick'mmv/mmv'
+
+# nnn
+zinit wait lucid id-as'nnn' from'github' as'program' for \
+  sbin'nnn' make='O_NERD=1' src'misc/quitcd/quitcd.bash_zsh' \
+  jarun/nnn
+
+zinit ice as"program" pick="bin/(fzf|fzf-tmux)" \
+  atclone="\cp -f shell/completion.zsh _fzf_completion" \
+  atpull"%atclone" make="install"
+zinit light junegunn/fzf
+
+zinit light 'Aloxaf/fzf-tab'
+
+zinit ice wait"2" as"program" from"gh-r" pick"lazygit" lucid
+zinit light jesseduffield/lazygit
+
+zinit ice wait"2" as"program" from"gh-r" pick"lazydocker" lucid
+zinit light jesseduffield/lazydocker
+
+zinit ice from"gh-r" as"program" bpick"*Linux_x86_64*"
+zinit light derailed/k9s
+
+zinit ice id-as"k9s-theme" cloneonly depth"1" atclone'mkdir -p $HOME/.config/k9s; ln -sf $ZINIT[PLUGINS_DIR]/k9s-theme/skins/$K9S_THEME.yml $HOME/.config/k9s/skin.yml' atpull"%atclone"
+zinit load derailed/k9s
 
 # p10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
@@ -194,8 +242,8 @@ fpath+=~/.zfunc
 # P10K              #
 #####################
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 source $HOME/.zsh_export
+ibus-daemon -drx
 . /opt/asdf-vm/asdf.sh
+
