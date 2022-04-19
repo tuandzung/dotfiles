@@ -141,8 +141,27 @@ export ENHANCD_DISABLE_DOT=1
 export ENHANCD_DISABLE_HYPHEN=1
 export ENHANCD_DISABLE_HOME=1
 
+export LC_COLLATE="C"
 export NNN_FIFO="/tmp/nnn.fifo"
 export NNN_PLUG='j:autojump;p:preview-tui;l:launch;r:renamer;w:wallpaper;o:organize;x:xdgdefault'
+export NNN_OPTS="deH"
+export NNN_COLORS='2641'
+# export NNN_FCOLORS="AAAAE631BBBBCCCCDDDD9999"
+export SPLIT='v'
+
+n() # to cd on quit
+{
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    nnn "$@"
+    if [ -f "$NNN_TMPFILE" ]; then
+            . "$NNN_TMPFILE"
+            rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+}
 
 # ssh-agent
 zinit light bobsoppe/zsh-ssh-agent
