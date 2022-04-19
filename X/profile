@@ -1,3 +1,5 @@
+xrandr --output VGA-0 --off --output DVI-D-0 --mode 1920x1080 --pos 1920x0 --rotate right --output HDMI-0 --primary --mode 1920x1080 --pos 0x319 --rotate normal
+
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
