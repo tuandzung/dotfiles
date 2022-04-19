@@ -244,6 +244,5 @@ fpath+=~/.zfunc
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source $HOME/.zsh_export
-ibus-daemon -drx
 . /opt/asdf-vm/asdf.sh
 
