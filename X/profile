@@ -13,6 +13,7 @@ export CLUTTER_IM_MODULE=ibus
 export GLFW_IM_MODULE=ibus
 
 redshift-gtk &
+gnome-screensaver &
 ibus-daemon -drxR
-picom --experimental-backend &
+picom &
 mopidy &> $XDG_DATA_HOME/mopidy/mopidy.log &
