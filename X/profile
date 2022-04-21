@@ -13,7 +13,3 @@ export QT4_IM_MODULE=ibus
 export CLUTTER_IM_MODULE=ibus
 export GLFW_IM_MODULE=ibus
 
-redshift-gtk &
-ibus-daemon -drxR
-picom --experimental-backend &
-mopidy &> $XDG_DATA_HOME/mopidy/mopidy.log &
