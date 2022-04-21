@@ -143,7 +143,7 @@ export ENHANCD_DISABLE_HOME=1
 
 export LC_COLLATE="C"
 export NNN_FIFO="/tmp/nnn.fifo"
-export NNN_PLUG='j:autojump;p:preview-tui;l:launch;r:renamer;w:wallpaper;o:organize;x:xdgdefault'
+export NNN_PLUG='p:preview-tui;l:launch;r:renamer;w:wallpaper;o:organize;f:fzcd'
 export NNN_OPTS="deH"
 export NNN_COLORS='2641'
 # export NNN_FCOLORS="AAAAE631BBBBCCCCDDDD9999"
@@ -221,12 +221,13 @@ zinit ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"
 zinit light BurntSushi/ripgrep
 
 # sad
-zinit ice lucid wait'0' as'program' from'gh-r' id-as'sad' mv'sad* -> sad'
-zinit light 'ms-jpq/sad'
+zinit ice as'program' \
+  from'gh-r' bpick"*x86_64-unknown-linux-gnu.zip" pick"sad" id-as'sad'
+zinit light ms-jpq/sad
 
-# mmv renamer
-zinit ice lucid wait'0' as'program' id-as'mmv' from'gh-r' \
-  mv'mmv* -> mmv' pick'mmv/mmv'
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"mmv*/mmv" \
+  light-mode for @itchyny/mmv
 
 # nnn
 zinit wait lucid id-as'nnn' from'github' as'program' for \
