@@ -147,7 +147,7 @@ export NNN_PLUG='p:preview-tui;l:launch;r:renamer;w:wallpaper;o:organize;f:fzcd'
 export NNN_OPTS="deH"
 export NNN_COLORS='2641'
 # export NNN_FCOLORS="AAAAE631BBBBCCCCDDDD9999"
-export SPLIT='v'
+export SPLIT='h'
 
 n() # to cd on quit
 {
