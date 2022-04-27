@@ -3,7 +3,7 @@ configuration{
     lines: 5;
     font: "Iosevka Nerd Font 14";
     show-icons: true;
-    icon-theme: "Tela-dark";
+    icon-theme: "Papirus-Dark";
     terminal: "kitty";
     drun-display-format: "{icon} {name}";
     location: 0;
