@@ -90,6 +90,8 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 zstyle ':completion:*' rehash true
+zstyle ':fzf-tab:complete:_zlua:*' query-string input
+zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
 
 # History
 [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zhistory"
@@ -116,18 +118,59 @@ source $HOME/.zsh_aliases
 #####################
 # FZF SETTINGS      #
 #####################
+export FZF_DEFAULT_OPTS="
+--ansi
+--layout=default
+--info=inline
+--height=50%
+--multi
+--preview-window=right:50%
+--preview-window=sharp
+--preview-window=cycle
+--preview '([[ -f {} ]] && (bat --style=numbers --color=always --theme=Coldark-Dark --line-range :500 {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
+--prompt='λ -> '
+--pointer='|>'
+--marker='✓'
+--bind 'ctrl-e:execute(nvim {} < /dev/tty > /dev/tty 2>&1)' > selected
+--bind 'ctrl-v:execute(code {+})'"
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
-export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
-export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
-# export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-# --height=50%
-# --color=fg:#e5e9f0,bg:#2e3440,hl:#81a1c1
-# --color=fg+:#e5e9f0,bg+:#2e3440,hl+:#81a1c1
-# --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-# --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 
+#####################
+# FZF-GC-PROJECT    #
+#####################
+# Thanks to sei40kr/zsh-fzf-gcloud
+
+function fzf-gcloud-config-set-project() {
+    local project="$(gcloud projects list |
+        fzf --header-lines=1 --reverse |
+        awk '{ print $1 }')"
+
+    if [[ -n "$project" ]]; then
+        gcloud config set project "$project"
+    fi
+}
+zle -N fzf-gcloud-config-set-project
+bindkey '^G' fzf-gcloud-config-set-project
+
+#####################
+# FANCY-CTRL-Z      #
+#####################
+function fg-fzf() {
+	job="$(jobs | fzf -0 -1 | sed -E 's/\[(.+)\].*/\1/')" && echo '' && fg %$job
+}
+
+function fancy-ctrl-z () {
+	if [[ $#BUFFER -eq 0 ]]; then
+		BUFFER=" fg-fzf"
+		zle accept-line -w
+	else
+		zle push-input -w
+		zle clear-screen -w
+	fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
 
 #####################
 # PLUGINS           #
@@ -201,19 +244,24 @@ zinit ice from"gh-r" as"program" bpick"*x86_64-unknown-linux-gnu*" pick"lsd-*/ls
 zinit light Peltoche/lsd
 
 # A cat clone with syntax highlighting and Git integration.
-zinit ice from"gh-r" as"program" mv"bat-*/bat -> bat"
+zinit ice from"gh-r" as"program" bpick"*x86_64-unknown-linux-gnu*" mv"bat-*/bat -> bat"
 zinit light sharkdp/bat
 
+# bat extras
+zinit ice wait"1" as"program" pick"src/batgrep.sh" lucid
+zinit ice wait"1" as"program" pick"src/batdiff.sh" lucid
+zinit light eth-p/bat-extras
+
 # A viewer for git and diff output
-zinit ice from"gh-r" as"program" mv"delta-*/delta -> delta"
+zinit ice from"gh-r" as"program" bpick"*x86_64-unknown-linux-gnu*" mv"delta-*/delta -> delta"
 zinit light dandavison/delta
 
 # A more intuitive version of du written in rust.
-zinit ice from"gh-r" as"program" mv"dust-*/dust -> dust"
+zinit ice from"gh-r" as"program" bpick"*x86_64-unknown-linux-gnu*" mv"dust-*/dust -> dust"
 zinit light bootandy/dust
 
 # A simple, fast and user-friendly alternative to find
-zinit ice from"gh-r" as"program" mv"fd-*/fd -> fd"
+zinit ice from"gh-r" as"program" bpick"*x86_64-unknown-linux-gnu*" mv"fd-*/fd -> fd"
 zinit light sharkdp/fd
 
 # An extremely fast alternative to grep that respects your gitignore
@@ -256,6 +304,9 @@ zinit load derailed/k9s
 # p10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
+# GOOGLE-CLOUD-SDK COMPLETION
+# zinit ice as"completion"; zinit snippet $HOME/.local/share/google-cloud-sdk/completion.zsh.inc
+
 fpath+=~/.zfunc
 
 #####################
@@ -266,3 +317,11 @@ fpath+=~/.zfunc
 source $HOME/.zsh_export
 . /opt/asdf-vm/asdf.sh
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f $HOME/.local/share/google-cloud-sdk/path.zsh.inc ]; then . $HOME/.local/share/google-cloud-sdk/path.zsh.inc; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f $HOME/.local/share/google-cloud-sdk/completion.zsh.inc ]; then . $HOME/.local/share/google-cloud-sdk/completion.zsh.inc; fi
+
+neofetch
