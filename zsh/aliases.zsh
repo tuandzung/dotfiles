@@ -16,4 +16,5 @@ alias ssh="TERM=xterm-256color ssh"
 alias gi="git-ignore"
 alias lzg="lazygit"
 alias lzd="lazydocker"
+alias myip="curl ifconfig.me"
 
