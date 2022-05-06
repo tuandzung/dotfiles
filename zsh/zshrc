@@ -70,6 +70,10 @@ setopt no_complete_aliases
 setopt menu_complete            # Do Not Autoselect The First Completion Entry.
 unsetopt flow_control           # Disable Start/Stop Characters In Shell Editor.
 
+setopt PROMPT_CR
+setopt PROMPT_SP
+export PROMPT_EOL_MARK=""
+
 # zstyle
 zstyle ':completion:*:*:*:*:*' menu select
 zstyle ':completion:*:matches' group 'yes'
@@ -131,8 +135,7 @@ export FZF_DEFAULT_OPTS="
 --prompt='λ -> '
 --pointer='|>'
 --marker='✓'
---bind 'ctrl-e:execute(nvim {} < /dev/tty > /dev/tty 2>&1)' > selected
---bind 'ctrl-v:execute(code {+})'"
+--bind 'ctrl-e:execute(nvim {} < /dev/tty > /dev/tty 2>&1)' > selected"
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
