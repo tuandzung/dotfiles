@@ -9,8 +9,8 @@ window {
     background-color: @background;
     border:           2;
     padding:          10px 6px;
-    font:             "Iosevka Nerd Font Medium 14";
-    width:            450px;
+    font:             "Iosevka Nerd Font Medium 18";
+    width:            600px;
     border-radius:    12px;
 }
 
