@@ -4,3 +4,6 @@
 [submodule "awesome"]
 	path = awesome
 	url = git@github.com:tuandzung/awesome-config.git
+[submodule "spicetify/Themes"]
+	path = spicetify/Themes
+	url = https://github.com/spicetify/spicetify-themes.git
