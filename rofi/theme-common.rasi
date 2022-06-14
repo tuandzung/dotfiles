@@ -2,6 +2,7 @@ configuration {
     display-drun: "   Launch ";
     display-run: "   Run ";
     display-clipboard: "   Clipboard ";
+    display-calc: "   Calculator ";
     show-icons:      true;
 }
 
