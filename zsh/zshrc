@@ -305,6 +305,9 @@ zinit light derailed/k9s
 zinit ice id-as"k9s-theme" cloneonly depth"1" atclone'mkdir -p $HOME/.config/k9s; ln -sf $ZINIT[PLUGINS_DIR]/k9s-theme/skins/$K9S_THEME.yml $HOME/.config/k9s/skin.yml' atpull"%atclone"
 zinit load derailed/k9s
 
+zinit ice from"gh-r" as"program" mv"krew-linux_amd64 -> kubectl-krew" bpick"krew-linux_amd64.tar.gz"
+zinit light kubernetes-sigs/krew
+
 # p10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
