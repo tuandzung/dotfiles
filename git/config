@@ -1,8 +1,13 @@
 [user]
 	email = zun1903@gmail.com
 	name = Ngo Tuan Dzung
+    signingkey = "751EE71124EA7CD4"
+
+[commit]
+    gpgsign = true
 
 [core]
+    editor = nvim
     pager = delta
 
 [interactive]
@@ -21,7 +26,30 @@
     hunk-header-decoration-style = yellow box
 
 [merge]
+    tool = nvimdiff
     conflictstyle = diff3
 
 [diff]
+    tool = nvimdiff
     colorMoved = default
+    noprefix = true
+    algorithm = histogram
+
+[difftool "nvimdiff"]
+    # Nvim diff 2 files
+    cmd = "nvim -d $LOCAL $REMOTE"
+
+[mergetool "nvimdiff"]
+    # Nvim diff 4 files
+    cmd = "nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'"
+
+[push]
+    # Only push current branch to same name branch
+    default = current
+
+[gc]
+    # Don't auto git gc, with large project can slow when working
+    auto = 0
+
+[init]
+    defaultBranch = main
