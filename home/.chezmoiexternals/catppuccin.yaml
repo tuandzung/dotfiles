@@ -1,0 +1,17 @@
+.config/bat/themes/catppuccin.tmTheme:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Macchiato.tmTheme
+  refreshPeriod: 168h
+
+.config/k9s/skin.yml:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/k9s/main/dist/catppuccin-macchiato.yaml
+  refreshPeriod: 168h
+
+.local/share/fcitx5/themes/catppuccin:
+  type: archive
+  url: https://github.com/catppuccin/fcitx5/archive/refs/heads/main.zip
+  refreshPeriod: 168h
+  stripComponents: 3
+  include:
+    - fcitx5-main/src/catppuccin-macchiato-sapphire/*

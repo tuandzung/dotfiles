@@ -1,0 +1,4 @@
+.config/fastfetch/linuxpuccin.png:
+  type: file
+  url: https://raw.githubusercontent.com/neuromask/catppuccin-linux-theme/refs/heads/main/assets/linuxpuccinn.png
+  refreshPeriod: 168h
