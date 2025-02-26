@@ -1,0 +1,16 @@
+encryption: age
+format: yaml
+mode: symlink
+{{- if stdinIsATTY }}
+progress: true
+{{- end }}
+
+add:
+  templateSymlinks: true
+
+age:
+  identity: {{ .chezmoi.homeDir }}/.config/chezmoi/key
+  recipient: age1kyput0lfany6tgx3sj04frxwuqld4j3f2q8ulsxwchr5lmvyg4usltkqvt
+
+diff:
+  pager: delta --pager="ov -F --section-delimiter '^(added:|removed:|renamed:|Δ)' --section-header --pattern '•'"
