@@ -1,0 +1,60 @@
+# vim:expandtab:shiftwidth=8:tabstop=8:softtabstop=8:ft=gitconfig
+[user]
+    email = zun1903@gmail.com
+    name = Ngo Tuan Dzung
+    signingkey = ~/.ssh/keys/personal_ed25519.pub
+
+[gpg]
+    format = ssh
+
+[commit]
+    gpgsign = true
+
+[core]
+    editor = nvim
+    pager = delta --pager='ov -F'
+    autocrlf = false
+    whitespace = trailing-space,space-before-tab,tab-in-indent,cr-at-eol
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    syntax-theme = "Catppuccin Macchiato"
+    features = side-by-side line-numbers decorations
+    whitespace-error-style = red reverse
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = green ul
+    hunk-header-decoration-style = yellow box
+
+[merge]
+    conflictstyle = zdiff3
+
+[diff]
+    tool = nvimdiff
+    colorMoved = default
+    noprefix = true
+    algorithm = histogram
+
+[difftool "nvimdiff"]
+    # Nvim diff 2 files
+    cmd = "nvim -d $LOCAL $REMOTE"
+
+[mergetool "nvimdiff"]
+    # Nvim diff 4 files
+    cmd = "nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'"
+
+[push]
+    # Only push current branch to same name branch
+    default = current
+
+[gc]
+    # Don't auto git gc, with large project can slow when working
+    auto = 0
+
+[init]
+    defaultBranch = main
