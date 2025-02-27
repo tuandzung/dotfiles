@@ -1,0 +1,25 @@
+{{- $chezmoiData := deepCopy . -}}
+{{- $chezmoiData = unset $chezmoiData "chezmoi" -}}
+
+{{- $sourceDir := joinPath .chezmoi.workingTree "root" -}}
+sourceDir: {{ $sourceDir }}
+
+destDir: /
+
+encryption: age
+format: yaml
+mode: symlink
+
+add:
+  templateSymlinks: true
+
+age:
+  identity: {{ .chezmoi.homeDir }}/.config/chezmoi/key
+  recipient: age1kyput0lfany6tgx3sj04frxwuqld4j3f2q8ulsxwchr5lmvyg4usltkqvt
+
+diff:
+  pager: delta --pager="ov -F --section-delimiter '^(added:|removed:|renamed:|Δ)' --section-header --pattern '•'"
+
+data:
+  non_root_user: {{ .chezmoi.username }}
+  {{- $chezmoiData | toYaml | nindent 2 }}

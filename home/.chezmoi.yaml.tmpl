@@ -14,3 +14,7 @@ age:
 
 diff:
   pager: delta --pager="ov -F --section-delimiter '^(added:|removed:|renamed:|Δ)' --section-header --pattern '•'"
+
+data:
+  {{ $hostname := promptStringOnce . "hostname" "Name of the machine ?" "tuandzung" | quote }}
+  hostname: {{ $hostname }}

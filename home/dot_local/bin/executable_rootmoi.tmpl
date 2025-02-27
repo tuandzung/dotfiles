@@ -1,0 +1,25 @@
+#!{{ lookPath "bash" }}
+set -Eeuo pipefail
+
+# {{ $configDir := joinPath .chezmoi.homeDir ".config/rootmoi" }}
+# {{ $configFile := joinPath $configDir "chezmoi.yaml" }}
+# {{ $persistentStateFile := joinPath $configDir "chezmoistate.boltdb" }}
+# {{ $cacheDir := joinPath .chezmoi.homeDir ".cache/rootmoi" }}
+
+executable='{{ .chezmoi.executable }}'
+
+# Ensure the folders are created, because otherwise they will be created as
+# root, including the ~/.cache and ~/.config, which can cause other programs
+# to stop working.
+# shellcheck disable=SC2016
+mkdir -p '{{ $configDir }}' '{{ $cacheDir }}'
+
+# We should not use sudo's --preserve-env option because the sudo function will
+# automatically bypass sudo if the user is root already.
+env_args=(env "PATH=${PATH}")
+
+sudo "${env_args[@]}" \
+  "${executable}" "$@" \
+  --config='{{ $configFile }}' \
+  --persistent-state='{{ $persistentStateFile }}' \
+  --cache='{{ $cacheDir }}'
