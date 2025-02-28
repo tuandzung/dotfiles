@@ -1,0 +1,11 @@
+#!{{ lookPath "bash" }}
+set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+trap "_error \"Can't update submodules\"" ERR
+
+_notice "Update submodules"
+# modules hash: {{ joinPath .chezmoi.workingTree ".gitmodules" | include | sha256sum }}
+cd {{ .chezmoi.workingTree }}
+git submodule update --init --remote --recursive \
+  home/dot_config/nvim
+_success "Updated submodules"

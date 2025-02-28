@@ -1,0 +1,3 @@
+[submodule "nvim"]
+	path = home/dot_config/nvim
+	url = git@github.com:tuandzung/vim-config.git
