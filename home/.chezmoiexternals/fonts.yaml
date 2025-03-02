@@ -1,0 +1,15 @@
+.local/share/fonts/NotoSansCJK:
+  type: archive
+  url: https://github.com/notofonts/noto-cjk/releases/download/Sans2.004/02_NotoSansCJK-TTF-VF.zip
+  refreshPeriod: 168h
+
+.local/share/fonts/NotoSerifCJK:
+  type: archive
+  url: https://github.com/notofonts/noto-cjk/releases/download/Serif2.003/03_NotoSerifCJK-TTF-VF.zip
+  refreshPeriod: 168h
+
+.local/share/fonts/Tepiosevka:
+  type: archive
+  url: https://github.com/tuandzung/iosevka-build/releases/latest/download/TepiosevkaNerd.zip
+  refreshPeriod: 168h
+  stripComponents: 1
