@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ ! -f "${HOME}/.config/chezmoi/key" ]; then
-    echo "Decrypting private key into .config/chezmoi/key"
-    mkdir -p "${HOME}/.config/chezmoi"
-    chezmoi age decrypt --output "${HOME}/.config/chezmoi/key" --passphrase "{{ .chezmoi.workingTree }}/secrets/key.age"
-    chmod 600 "${HOME}/.config/chezmoi/key"
-fi

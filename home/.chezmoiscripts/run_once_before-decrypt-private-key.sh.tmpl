@@ -1,0 +1,17 @@
+#!{{ lookPath "bash" }}
+set -eou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+
+_notice "Decrypting private key into .config/chezmoi/key"
+if [ ! -f "${HOME}/.config/chezmoi/key" ]; then
+    mkdir -p "${HOME}/.config/chezmoi"
+    chezmoi age decrypt --output "${HOME}/.config/chezmoi/key" --passphrase "{{ .chezmoi.workingTree }}/secrets/key.age"
+    if [ $? -eq 0 ]; then
+        chmod 400 "${HOME}/.config/chezmoi/key"
+        _success "Successfully decrypted key.age file"
+    else
+        _error "Failed to decrypt key.age file"
+    fi
+else
+  _info "Private key already decrypted, skipping..."
+fi
