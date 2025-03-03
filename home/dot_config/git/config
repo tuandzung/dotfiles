@@ -1,60 +1,100 @@
 # vim:expandtab:shiftwidth=8:tabstop=8:softtabstop=8:ft=gitconfig
 [user]
-    email = zun1903@gmail.com
-    name = Ngo Tuan Dzung
-    signingkey = ~/.ssh/keys/personal_ed25519.pub
+        email = zun1903@gmail.com
+        name = Ngo Tuan Dzung
+        signingkey = ~/.ssh/keys/personal_ed25519.pub
 
 [gpg]
-    format = ssh
+        format = ssh
 
 [commit]
-    gpgsign = true
+        gpgsign = true
 
 [core]
-    editor = nvim
-    pager = delta --pager='ov -F'
-    autocrlf = false
-    whitespace = trailing-space,space-before-tab,tab-in-indent,cr-at-eol
+        editor = nvim
+        pager = delta --pager='ov -F'
+        autocrlf = false
+        whitespace = trailing-space,space-before-tab,tab-in-indent,cr-at-eol
+
+[pager]
+        show = delta --features ov-diff
+        diff = delta --features ov-diff
+        log = delta --features ov-log
 
 [interactive]
-    diffFilter = delta --color-only
+        diffFilter = delta --color-only
 
 [delta]
-    navigate = true  # use n and N to move between diff sections
-    syntax-theme = "Catppuccin Macchiato"
-    features = side-by-side line-numbers decorations
-    whitespace-error-style = red reverse
+        navigate = true  # use n and N to move between diff sections
+        syntax-theme = "Catppuccin Macchiato"
+        features = decorations
+        # Show line number & Two side
+        side-by-side = true
+        line-numbers = true
+        # Style of whitespace error
+        whitespace-error-style = red reverse
 
 [delta "decorations"]
-    commit-decoration-style = bold yellow box ul
-    file-style = bold yellow ul
-    file-decoration-style = green ul
-    hunk-header-decoration-style = yellow box
+        commit-decoration-style = bold blue box ul
+        file-style = bold blue ul
+        file-decoration-style = green ul
+        minus-style = syntax "#563f51"
+        minus-emph-style = syntax "#895768"
+        minus-empty-line-marker-style = syntax magenta
+        plus-style = syntax "#455450"
+        plus-emph-style = syntax "#658168"
+        plus-empty-line-marker-style = syntax cyan
+        hunk-header-decoration-style = box ul
+        hunk-header-file-style = bold
+        hunk-header-line-number-style = bold "#a5adcb"
+        hunk-header-style = file line-number syntax
+        line-numbers-left-style = "#6e738d"
+        line-numbers-minus-style = bold "#ed8796"
+        line-numbers-plus-style = bold "#a6da95"
+        line-numbers-right-style = "#6e738d"
+        line-numbers-zero-style = "#6e738d"
+
+[delta "ov-diff"]
+        pager = ov -F --section-delimiter '^(commit|added:|removed:|renamed:|Δ)' --section-header --pattern '•'
+[delta "ov-log"]
+        pager = ov -F --section-delimiter '^(commit|\\* commit|\\* \\w{7})' --section-header-num 1
 
 [merge]
-    conflictstyle = zdiff3
+        conflictstyle = zdiff3
 
 [diff]
-    tool = nvimdiff
-    colorMoved = default
-    noprefix = true
-    algorithm = histogram
+        tool = nvimdiff
+        colorMoved = default
+        noprefix = true
+        algorithm = histogram
 
 [difftool "nvimdiff"]
-    # Nvim diff 2 files
-    cmd = "nvim -d $LOCAL $REMOTE"
+        # Nvim diff 2 files
+        cmd = "nvim -d $LOCAL $REMOTE"
 
 [mergetool "nvimdiff"]
-    # Nvim diff 4 files
-    cmd = "nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'"
+        # Nvim diff 4 files
+        cmd = "nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'"
 
 [push]
-    # Only push current branch to same name branch
-    default = current
+        # Only push current branch to same name branch
+        default = current
+        followTags = true
 
 [gc]
-    # Don't auto git gc, with large project can slow when working
-    auto = 0
+        # Don't auto git gc, with large project can slow when working
+        auto = 0
 
 [init]
-    defaultBranch = main
+        defaultBranch = main
+
+[includeIf "gitdir/i:~/Working/**"]
+        # Include config file from enterprise project
+        path = ~/Working/.gitconfig
+
+# Enforce SSH
+[url "git@github.com:"]
+        insteadOf = https://github.com/
+
+[url "git@gitlab.com:"]
+        insteadOf = https://gitlab.com/
