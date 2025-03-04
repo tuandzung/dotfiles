@@ -10,3 +10,8 @@
   stripComponents: 3
   include:
     - fcitx5-main/src/catppuccin-macchiato-sapphire/*
+
+.config/zellij/themes/catppuccin.kdl:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/zellij/refs/heads/main/catppuccin.kdl
+  refreshPeriod: 168h
