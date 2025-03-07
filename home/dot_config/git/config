@@ -68,6 +68,13 @@
         noprefix = true
         algorithm = histogram
 
+[diff "sopsdiffer"]
+        # A differ for secret encoded
+        textconv = sops -d
+[diff "json"]
+        # A differ for json file
+        textconv = "jq ."
+
 [difftool "nvimdiff"]
         # Nvim diff 2 files
         cmd = "nvim -d $LOCAL $REMOTE"
@@ -87,6 +94,42 @@
 
 [init]
         defaultBranch = main
+
+[alias]
+        # Get main branch
+        main = "!_() { git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'; }; _"
+        # Graph log view
+        graph = log --graph --abbrev-commit
+        # Meaning stash
+        snapshot = !git stash save "Snapshot: $(date)"
+        # Rename stash
+        stash-rename = "!_() { rev=$(git rev-parse $1) && git stash drop $1 || exit 1 ; git diff-index --quiet HEAD; s=$?; [ $s != 0 ] && git stash save \"tmp stash from stash-rename\"; git stash apply $rev && shift && git stash save \"$@\" && [ $s != 0 ] && git stash pop stash@{1}; }; _"
+        # Find commits with source code
+        find-source = "!_() { git log --pretty=format:'%C(yellow)%h %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; _"
+        # Find commits with message
+        find-message = "!_() { git log --pretty=format:'%C(yellow)%h %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; _"
+        # Find branches containing commit
+        find-branch = "!_() { git branch -a --contains $1; }; _"
+        # Stop tracking a file that already in staged but keep in worktree
+        stop-track = "!_() { git update-index --assume-unchanged $1; }; _"
+        # Redo above
+        track = "!_() { git update-index --no-assume-unchanged $1; }; _"
+        # Keep independent version file forever
+        keep-forever = "!_() { git update-index --skip-worktree $1; }; _"
+        # Redo above
+        stop-keep-forever = "!_() { git update-index --no-skip-worktree $1; }; _"
+        # Show root level directory
+        root = "!_() { git rev-parse --show-toplevel; }; _"
+        # Show file with conflicts
+        conflicts = "!_() { git ls-files -u | awk '{print $4}' | sort -u; }; _"
+        # Delete dangling commits
+        delete-dangling = "!_() { git reflog expire --expire=now --all; git gc --prune=now; }; _"
+        # Delete merged branch
+        delete-merged = "!_() { git branch --merged | grep -v $(git main) | grep -v develop | xargs git branch -d; }; _"
+        # Submodule clean
+        submodule-clean = "!_() { git submodule update --init --recursive && git submodule foreach --recursive 'git reset --hard' && git submodule foreach --recursive 'git clean -fd' }; _"
+        # Update main branch
+        update-main = !bash ~/.config/git/helper.sh update_main
 
 [includeIf "gitdir/i:~/Working/**"]
         # Include config file from enterprise project
