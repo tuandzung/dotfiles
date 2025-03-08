@@ -9,5 +9,4 @@ GtkTheme=Tep
 MetacityTheme=Tep
 IconTheme=Tep
 CursorTheme=Tep-Cursor
-CursorSize=32
-ButtonLayout=close,minimize,maximize:menu
+CursorSize=24
