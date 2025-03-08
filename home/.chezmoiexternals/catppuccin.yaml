@@ -15,3 +15,22 @@
   type: file
   url: https://raw.githubusercontent.com/catppuccin/zellij/refs/heads/main/catppuccin.kdl
   refreshPeriod: 168h
+
+.local/share/themes/Tep:
+  type: archive
+  url: https://raw.githubusercontent.com/tuandzung/icons-and-themes/refs/heads/main/Catppuccin-Dark-Macchiato-BL-MB.zip
+  exact: true
+  refreshPeriod: 168h
+  stripComponents: 1
+  include:
+    - Catppuccin-Dark-Macchiato/gtk-*/*
+    - Catppuccin-Dark-Macchiato/gtk-*/assets/**
+
+.local/share/icons/Tep-Cursor:
+  type: archive
+  url: https://github.com/catppuccin/cursors/releases/latest/download/catppuccin-macchiato-sapphire-cursors.zip
+  exact: true
+  refreshPeriod: 168h
+  stripComponents: 1
+  exclude:
+    - catppuccin-macchiato-sapphire-cursors/index.theme
