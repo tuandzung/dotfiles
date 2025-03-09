@@ -76,7 +76,7 @@
         "format": " {bandwidthUpBits}  {bandwidthDownBits}",
     },
     "tray": {
-        "icon-size": 14,
+        "icon-size": 16,
         "spacing": 12
     },
     "custom/music": {
