@@ -20,7 +20,7 @@
     ],
     "hyprland/workspaces": {
         "persistent-workspaces": {
-            "DP-1": ["term", "web", "mail", "chat", "media", "games", "office", "others"],
+            "DP-1": ["term", "web", "mail", "chat", "media", "games", "office", "vm", "others"],
         },
         "sort-by": "id",
         "format": " {icon} ",
@@ -32,6 +32,7 @@
             "chat": "",
             "media": "",
             "games": "󰮃",
+            "vm": "",
             "others": "󰣆",
         },
     },
