@@ -1,0 +1,12 @@
+width=500
+height=300
+show_all=true
+print_command=true
+insensitive=true
+allow_images=true
+matching=fuzzy
+location=top
+columns=1
+layer=overlay
+
+run-always_parse_args=true
