@@ -1,0 +1,28 @@
+#!/bin/bash
+
+entries="⇠ Logout\n⏾ Suspend\n⭮ Reboot\n⏻ Shutdown"
+
+selected=$(echo -e $entries|wofi --width 250 --height 350 --dmenu --cache-file /dev/null | awk '{print tolower($2)}')
+
+case $selected in
+  logout)
+    pkill -u $USER;;
+  suspend)
+    {{- if eq .chezmoi.osRelease.id "gentoo" }}
+    exec loginctl suspend;;
+    {{ else }}
+    exec systemctl suspend;;
+    {{ end }}
+  reboot)
+    {{- if eq .chezmoi.osRelease.id "gentoo" }}
+    exec loginctl reboot;;
+    {{ else }}
+    exec systemctl reboot;;
+    {{ end }}
+  shutdown)
+    {{- if eq .chezmoi.osRelease.id "gentoo" }}
+    exec loginctl poweroff;;
+    {{ else }}
+    exec systemctl poweroff;;
+    {{ end }}
+esac

@@ -1,0 +1,68 @@
+# Plugin manager
+exec-once = hyprpm reload -n && hyprctl reload
+
+# Authentication agent
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+exec = /usr/libexec/hyprpolkitagent
+{{- else }}
+exec = /usr/lib/hyprpolkitagent
+{{- end }}
+
+# Sound & Screencast
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+exec-once = gentoo-pipewire-launcher restart
+{{- else }}
+exec-once = systemctl --user start wireplumber
+exec-once = systemctl --user start pipewire-pulse
+{{- end }}
+
+# Gtk theme
+exec-once = ~/.config/hypr/hyprland/scripts/gtk.sh
+
+# Wallpaper
+exec-once = hyprpaper
+
+# Bar & Panel & Widgets
+exec-once = ~/.config/hypr/hyprland/scripts/waybar.sh
+exec-once = swaync
+
+# Screen shader and changes detection
+exec = hyprshade auto
+exec-once = shikane
+
+# Screen idle
+exec-once = hypridle
+
+# Clipboard
+exec-once = wl-paste --type text --watch cliphist store
+exec-once = wl-paste --type image --watch cliphist store
+
+# Network & Bluetooth
+exec-once = nm-applet --indicator
+exec-once = blueman-applet
+
+# IM
+exec-once = fcitx5 -d --replace
+
+# Terminal
+exec-once = kitty
+
+# Browser
+exec-once = firefox -P Personal
+exec-once = firefox -P Work
+
+# Email client
+exec-once = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} -P Work
+
+# Spotify
+exec-once = spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
+
+# Chat
+exec-once = slack --enable-features=WebRTCPipeWireCapturer --ozone-platform=wayland --enable-wayland-ime --wayland-text-input-version=3
+exec-once = discord
+
+# Torrent
+exec-once = qbittorrent
+
+# Scratchpad
+exec-once = [workspace special:hdrop silent] kitty --class btop -e btop
