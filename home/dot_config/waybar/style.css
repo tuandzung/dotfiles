@@ -1,0 +1,161 @@
+@import "catppuccin.css";
+
+* {
+  font-family: Iosevka Nerd Font;
+  font-size: 12px;
+  min-height: 0;
+}
+
+#waybar {
+  background: transparent;
+  color: @text;
+  margin: 5px 5px;
+}
+
+/* make window module transparent when no windows present */
+window#waybar.empty #window {
+    background-color: transparent;
+    border: none;
+}
+
+#workspaces {
+  border-radius: 1rem;
+  margin: 5px;
+  background-color: @base;
+  margin-left: 1rem;
+  border: 1px solid @sapphire
+}
+
+#workspaces button {
+  color: @lavender;
+  border-radius: 1rem;
+  padding: 0.4rem;
+}
+
+#workspaces button.active {
+  color: @sapphire;
+  border-radius: 1rem;
+}
+
+#workspaces button:hover {
+  color: @teal;
+  border-radius: 1rem;
+  box-shadow: inherit;
+  text-shadow: inherit;
+}
+
+#workspaces button.urgent {
+  background-color: @red;
+}
+
+#custom-music,
+#window,
+#tray,
+#network,
+#clock,
+#battery,
+#pulseaudio {
+  background-color: @base;
+  padding: 0.5rem 1rem;
+  margin: 5px 0;
+  border: 1px solid @sapphire
+}
+
+#disk,
+#cpu,
+#memory,
+#temperature {
+  background-color: @base;
+  padding: 0.5rem 0.5rem;
+  margin: 5px 0;
+  border-bottom: 1px solid @sapphire;
+  border-top: 1px solid @sapphire;
+}
+
+#network {
+  color: @pink;
+  border-left: none;
+  border-right: none;
+}
+
+#tray {
+  border-radius: 1rem 1rem 1rem 1rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.charging {
+  color: @green;
+}
+
+#battery.warning:not(.charging) {
+  color: @red;
+}
+
+#backlight {
+  color: @yellow;
+}
+
+#backlight, #battery {
+    border-radius: 0;
+}
+
+#pulseaudio {
+  color: @rosewater;
+  border-radius: 1rem 0px 0px 1rem;
+  margin-left: 1rem;
+  border-right: none;
+}
+
+#custom-music {
+  color: @mauve;
+  border-radius: 1rem;
+}
+
+#window {
+  color: @flamingo;
+  border-radius: 1rem;
+  margin-right: 0.5rem;
+}
+
+#temperature {
+  color: @yellow;
+}
+
+#temperature.critical {
+  font-weight: bold;
+  color: @red;
+}
+
+#disk {
+  color: @peach;
+  border-radius: 0px 1rem 1rem 0px;
+  border-right: 1px solid @sapphire
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @red;
+}
+
+#cpu {
+    color: @green;
+}
+
+#memory {
+    color: @mauve;
+}
+
+#clock {
+  color: @sapphire;
+  margin-right: 1rem;
+  border-radius: 1rem;
+}
