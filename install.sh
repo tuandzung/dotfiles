@@ -93,6 +93,16 @@ _main() {
   else
     ${chezmoi} apply "$HOME/.ssh"
   fi
+
+  _notice "Apply git"
+  if [ -n "${DOTFILES_DEBUG-}" ]; then
+    ${chezmoi} apply --debug --verbose --dry-run "$HOME/.config/git"
+    ${chezmoi} apply --debug --verbose --dry-run "$HOME/.gitconfig"
+  else
+    ${chezmoi} apply "$HOME/.config/git"
+    ${chezmoi} apply "$HOME/.gitconfig"
+  fi
+
   _notice "Apply dotfiles"
   if [ -n "${DOTFILES_DEBUG-}" ]; then
     ${chezmoi} apply --debug --verbose --dry-run
