@@ -1,0 +1,22 @@
+**/.git/**
+**/.gitignore
+**/.gitmodules
+**/*.sqlite-wal
+
+{{- if .chezmoi.osRelease.id "darwin" }}
+.config/fontconfig
+.config/gtk-3.0
+.config/gtk-4.0
+.config/hypr
+.config/hyprshade
+.config/fcitx5
+.config/rootmoi
+.config/shikane
+.config/swaync
+.config/waybar
+.config/wofi
+.config/Trolltech.conf
+.icons
+.local
+.mozilla
+{{- end }}
