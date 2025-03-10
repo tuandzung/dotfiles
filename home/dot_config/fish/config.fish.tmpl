@@ -140,3 +140,21 @@ end
 ## }
 
 fish_add_path ~/.spicetify
+
+{{- if eq .chezmoi.os "darwin" }}
+__add_folder_to_path /opt/homebrew/bin
+__add_folder_to_path /opt/homebrew/opt/coreutils/libexec/gnubin
+__add_folder_to_path /opt/homebrew/opt/findutils/libexec/gnubin
+__add_folder_to_path /opt/homebrew/opt/gnu-tar/libexec/gnubin
+__add_folder_to_path /opt/homebrew/opt/gnu-sed/libexec/gnubin
+__add_folder_to_path /opt/homebrew/opt/gawk/libexec/gnubin
+__add_folder_to_path /opt/homebrew/opt/gnu-indent/libexec/gnubin
+__add_folder_to_path /opt/homebrew/opt/gnu-getopt/bin
+__add_folder_to_path /opt/homebrew/opt/grep/libexec/gnubin
+{{- end }}
+
+{{- if eq .chezmoi.os "linux" }}
+if type -q manpath
+  set -gx MANPATH (manpath -g)
+end
+{{- end }}
