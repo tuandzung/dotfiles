@@ -84,19 +84,20 @@ _main() {
   _notice "Initialize chezmoi"
   echo "sourceDir: \"$(readlink -f "$SETUP_DIR")\"" > "$SETUP_DIR"/home/.chezmoi.yaml.tmpl
   cat "$SETUP_DIR"/.chezmoi.yaml.tmpl >> "$SETUP_DIR"/home/.chezmoi.yaml.tmpl
-  # POSIX way to get script's dir: https://stackoverflow.com/a/29834779/12156188
-  # shellcheck disable=SC2312
 
-  set -- init -S $SETUP_DIR "$@"
+  ${chezmoi} init -S $SETUP_DIR
 
-  if [ -n "${DOTFILES_ONE_SHOT-}" ]; then
-    set -- "$@" --one-shot
-  else
-    set -- "$@" --apply
-  fi
-
+  _notice "Apply ssh"
   if [ -n "${DOTFILES_DEBUG-}" ]; then
-    set -- "$@" --debug --verbose --dry-run
+    ${chezmoi} apply --debug --verbose --dry-run "$HOME/.ssh"
+  else
+    ${chezmoi} apply "$HOME/.ssh"
+  fi
+  _notice "Apply dotfiles"
+  if [ -n "${DOTFILES_DEBUG-}" ]; then
+    ${chezmoi} apply --debug --verbose --dry-run
+  else
+    ${chezmoi} apply
   fi
 
   _notice "Running 'chezmoi $*'"
