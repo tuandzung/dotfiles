@@ -109,10 +109,6 @@ _main() {
   else
     ${chezmoi} apply
   fi
-
-  _notice "Running 'chezmoi $*'"
-  # replace current process with chezmoi
-  exec "${chezmoi}" "$@"
 }
 
 _main
