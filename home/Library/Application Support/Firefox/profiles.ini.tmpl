@@ -1,0 +1,19 @@
+{{- $configPath := joinPath .chezmoi.homeDir ".config/firefox/profiles" }}
+{{- $releaseId := mozillaInstallHash "/Applications/Firefox.app/Contents/MacOS" }}
+[Install{{- $releaseId -}}]
+Default={{- $configPath }}/personal
+Locked=1
+
+[Profile1]
+Name=Work
+IsRelative=0
+Path={{- $configPath }}/work
+
+[Profile0]
+Name=Personal
+IsRelative=0
+Path={{- $configPath }}/personal
+
+[General]
+StartWithLastProfile=1
+Version=2
