@@ -3,6 +3,7 @@
   url: https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Macchiato.tmTheme
   refreshPeriod: 168h
 
+{{ if ne .chezmoi.os "darwin" }}
 .local/share/fcitx5/themes/catppuccin:
   type: archive
   url: https://github.com/catppuccin/fcitx5/archive/refs/heads/main.zip
@@ -10,11 +11,6 @@
   stripComponents: 3
   include:
     - fcitx5-main/src/catppuccin-macchiato-sapphire/*
-
-.config/zellij/themes/catppuccin.kdl:
-  type: file
-  url: https://raw.githubusercontent.com/catppuccin/zellij/refs/heads/main/catppuccin.kdl
-  refreshPeriod: 168h
 
 .local/share/themes/Tep:
   type: archive
@@ -34,3 +30,9 @@
   stripComponents: 1
   exclude:
     - catppuccin-macchiato-sapphire-cursors/index.theme
+{{ end }}
+
+.config/zellij/themes/catppuccin.kdl:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/zellij/refs/heads/main/catppuccin.kdl
+  refreshPeriod: 168h
