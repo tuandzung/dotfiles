@@ -3,7 +3,7 @@
 **/.gitmodules
 **/*.sqlite-wal
 
-{{- if .chezmoi.osRelease.id "darwin" }}
+{{- if eq .chezmoi.os "darwin" }}
 .config/fontconfig
 .config/gtk-3.0
 .config/gtk-4.0
