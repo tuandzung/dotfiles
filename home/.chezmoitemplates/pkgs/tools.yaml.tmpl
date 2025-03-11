@@ -1,0 +1,4 @@
+{{- $tools := glob (joinPath .chezmoi.sourceDir ".chezmoitemplates/pkgs/tools/*") }}
+{{- range ($tools) }}
+- {{ includeTemplate . $ | nindent 2 | trim }}
+{{- end }}

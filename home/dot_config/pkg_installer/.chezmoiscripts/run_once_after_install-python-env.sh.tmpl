@@ -1,0 +1,12 @@
+#!{{ lookPath "bash" }}
+set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+
+_notice "Installing uv"
+if ! command -v uv &> /dev/null; then
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
+cd {{ .chezmoi.homeDir }}/.config/pkg_installer
+_notice "Initializing python environment"
+uv venv && uv sync

@@ -1,0 +1,12 @@
+#!{{ lookPath "bash" }}
+set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+trap "_error \"Can't install tools\"" ERR
+
+_notice "Installing tools"
+{{- range (joinPath .chezmoi.sourceDir ".chezmoitemplates/pkgs/tools/*" | glob) }}
+# {{ . }} hash: {{ . | include | sha256sum }}
+{{- end }}
+cd {{ .chezmoi.homeDir }}/.config/pkg_installer
+uv run main.py
+_success "Installed tools"
