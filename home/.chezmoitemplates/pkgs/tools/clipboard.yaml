@@ -1,0 +1,12 @@
+name: wl-clipboard
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-apps/wl-clipboard
+arch:
+  packages:
+    - name: wl-clipboard
+ubuntu:
+  packages:
+    - name: wl-clipboard
