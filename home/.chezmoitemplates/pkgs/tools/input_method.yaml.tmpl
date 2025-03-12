@@ -1,0 +1,26 @@
+{{- if eq .chezmoi.os "linux"}}
+name: fcitx-bamboo
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: app-i18n/fcitx-bamboo
+      repo: gentoo-zh
+      accept_keywords: |-
+        app-i18n/fcitx-bamboo **
+        app-i18n/fcitx ~amd64
+arch:
+  packages:
+    - name: fcitx5-bamboo-git
+ubuntu:
+  packages:
+    - name: fcitx-bamboo
+{{- else }}
+name: evkey
+method: os
+is_essential: true
+macos:
+  packages:
+    - name: evkey
+      cask: true
+{{- end }}
