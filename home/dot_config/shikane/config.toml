@@ -27,4 +27,4 @@ enable = true
 mode = "2560x1600@144Hz"
 transform = "normal"
 position = "0,0"
-scale = 1.666667
+scale = 1.333333
