@@ -1,0 +1,41 @@
+name: rg
+is_essential: true
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo" "ubuntu") }}
+method: binary
+github:
+  repo: BurntSushi/ripgrep
+  version: latest
+  {{- if eq .chezmoi.arch "amd64" }}
+  release_asset: ripgrep-%s-x86_64-unknown-linux-musl.tar.gz
+  {{- else if eq .chezmoi.arch "arm64" }}
+  release_asset: ripgrep-%s-arm-unknown-linux-gnueabihf.tar.gz
+  {{- end }}
+archive:
+  strip_components: 1
+  paths:
+  {{- if eq .chezmoi.arch "amd64" }}
+    - ripgrep-%s-x86_64-unknown-linux-musl/rg
+  {{- else if eq .chezmoi.arch "arm64" }}
+    - ripgrep-%s-arm-unknown-linux-gnueabihf/rg
+  {{- end }}
+hook:
+  after: |
+    {{- if eq .chezmoi.arch "amd64" }}
+    arch=x86_64
+    libc=musl
+    {{- else if eq .chezmoi.arch "arm64" }}
+    arch=aarch64
+    libc=gnueabihf
+    {{- end }}
+    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
+    mkdir -p "$MAN_DIR/man1"
+    tar $param --strip=2 -C "$MAN_DIR/man1" "ripgrep-%s-$arch-unknown-linux-$libc/doc/rg.1"
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: ripgrep
+arch:
+  packages:
+    - name: ripgrep
+{{- end }}
