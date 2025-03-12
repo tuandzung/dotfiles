@@ -1,0 +1,22 @@
+name: mise
+method: binary
+github:
+  repo: jdx/mise
+  {{- $os := "" }}
+  {{- $arch := "" }}
+  {{- $suffix := "" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{- $os = "macos" }}
+  {{- else if eq .chezmoi.os "linux" "android" }}
+  {{- $os = "linux" }}
+  {{- end }}
+  {{- if eq .chezmoi.arch "amd64" }}
+  {{- $arch = "x64" }}
+  {{- else if eq .chezmoi.arch "arm64" }}
+  {{- $arch = "arm64" }}
+  {{- end }}
+  {{- if eq .chezmoi.os "android" }}
+  {{- $suffix = "-musl" }}
+  version: latest
+  {{- end }}
+  release_asset: mise-%1s-{{ $os }}-{{ $arch }}{{ $suffix }}

@@ -10,6 +10,3 @@ gentoo:
 arch:
   packages:
     - name: betterbird-bin
-ubuntu:
-  packages:
-    - name: thunderbird
