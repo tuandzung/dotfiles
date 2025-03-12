@@ -7,6 +7,7 @@ from tqdm import tqdm
 from base64 import b64encode
 from functools import wraps
 from logger import logger
+from utils import run_hook, handle_version_tags
 
 # Directory to install binaries
 INSTALL_DIR = os.path.expanduser("~/.local/bin")
@@ -51,25 +52,21 @@ def __get_latest_release_tag_from_github_api(tool):
     return release_info["tag_name"]
 
 
-def __run_hook(f, tool, version, name):
+def __hook_wrapper(f, tool, version):
     @wraps(f)
     def wrapper(*args, **kwargs):
         hook_before = tool.get("hook", {}).get("before", None)
         hook_after = tool.get("hook", {}).get("after", None)
 
         if hook_before:
-            if hook_before.find("v%s") != -1 or hook_before.find("%s") != -1:
-                hook_before = hook_before.replace("v", "") % version
-            logger.info(f"Running hook before install {name}")
-            os.system(hook_before)
+            hook_before = handle_version_tags(hook_before, version)
+            run_hook(hook_before)
 
         f(*args, **kwargs)
 
         if hook_after:
-            if hook_after.find("v%s") != -1 or hook_after.find("%s") != -1:
-                hook_after = hook_after.replace("v", "") % version
-            logger.info(f"Running hook after install {name}")
-            os.system(hook_after)
+            hook_after = handle_version_tags(hook_after, version)
+            run_hook(hook_after)
 
     return wrapper
 
@@ -81,11 +78,9 @@ def __extract_and_install(tool, release_tag, release_assets, asset_path):
 
         # Move binaries to ~/.local/bin
         tool_paths = tool["archive"]["paths"]
+        version = release_tag.replace("v", "")
         for path in tool_paths:
-            if path.find("v%s") != -1 or path.find("%s") != -1:
-                version = release_tag.replace("v", "")
-                path = path % version
-
+            path = handle_version_tags(path, version)
             src_path = os.path.join(TEMP_DIR, path)
             bin_file = os.path.basename(path)
             dest_path = os.path.join(INSTALL_DIR, bin_file)
@@ -105,8 +100,7 @@ def binaries_installer(tool):
 
     repo = tool["github"]["repo"]
     release_assets = tool["github"]["release_asset"]
-    if release_assets.find("v%s") != -1 or release_assets.find("%s") != -1:
-        release_assets = tool["github"]["release_asset"] % version
+    release_assets = handle_version_tags(release_assets, version)
 
     # Download asset
     asset_url = f"https://github.com/{repo}/releases/download/{release_tag}/{release_assets}"
@@ -127,7 +121,7 @@ def binaries_installer(tool):
 
     logger.info(f"Successfully downloaded {release_assets}")
 
-    __run_hook(__extract_and_install, tool, version, name)(
+    __hook_wrapper(__extract_and_install, tool, version)(
         tool,
         release_tag,
         release_assets,

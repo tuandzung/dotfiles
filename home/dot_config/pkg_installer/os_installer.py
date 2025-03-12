@@ -4,6 +4,7 @@ import platform
 import sys
 import os
 from logger import logger
+from utils import run_hook
 
 def detect_os():
     """Detect the current operating system."""
@@ -36,17 +37,6 @@ def update_repositories(os_type):
     else:
         raise ValueError(f"Unsupported OS: {os_type}")
     logger.info("Repository update completed successfully.")
-
-def run_hook(hook_commands):
-    """Run a hook by executing the specified commands."""
-    if not hook_commands:
-        return
-
-    logger.info("Running hook...")
-    for command in hook_commands.strip().split("\n"):
-        if command.strip():  # Skip empty lines
-            logger.info(f"Executing: {command}")
-            subprocess.run(command, shell=True, check=True)
 
 def is_package_installed_gentoo(package_name):
     """Check if a package is installed on Gentoo."""
