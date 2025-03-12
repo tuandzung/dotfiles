@@ -95,12 +95,16 @@ def binaries_installer(tools):
     for tool in tools:
         name = tool["name"]
         is_essential = tool.get("is_essential", False)
+        flag_dont_install_is_essential = os.environ.get("FLAG_IS_ESSENTIAL", True)
+        flag_dont_install_exists = os.environ.get("FLAG_INSTALL_EXISTS", True)
 
-        if not is_essential:
-            logger.info(f"{name} is not an essential tool.")
-            if os.path.isfile(f"{INSTALL_DIR}/{name}"):
-                logger.info(f"{name} is already installed, skipping...")
-                return
+        if flag_dont_install_exists and os.path.isfile(f"{INSTALL_DIR}/{name}"):
+            logger.info(f"{name} is already installed, skipping...")
+            continue
+
+        if flag_dont_install_is_essential and not is_essential:
+            logger.info(f"{name} is not an essential tool, skipping...")
+            continue
 
         download_version = tool["github"].get("version", None)
         release_tag = download_version
