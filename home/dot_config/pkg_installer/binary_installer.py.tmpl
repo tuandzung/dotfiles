@@ -1,8 +1,10 @@
+import sys
 import os
 import requests
 import patoolib
 import shutil
 import tempfile
+import yaml
 from tqdm import tqdm
 from base64 import b64encode
 from functools import wraps
@@ -92,11 +94,11 @@ def __extract_and_install(tool, release_tag, release_assets, asset_path):
 
 
 def binaries_installer(tools):
+    flag_dont_install_is_essential = os.environ.get("FLAG_IS_ESSENTIAL", True)
+    flag_dont_install_exists = os.environ.get("FLAG_INSTALL_EXISTS", True)
     for tool in tools:
         name = tool["name"]
         is_essential = tool.get("is_essential", False)
-        flag_dont_install_is_essential = os.environ.get("FLAG_IS_ESSENTIAL", True)
-        flag_dont_install_exists = os.environ.get("FLAG_INSTALL_EXISTS", True)
 
         if flag_dont_install_exists and os.path.isfile(f"{INSTALL_DIR}/{name}"):
             logger.info(f"{name} is already installed, skipping...")
@@ -152,3 +154,15 @@ def binaries_installer(tools):
             )
 
         logger.info(f"Successfully extracted and installed {release_assets}\n")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        logger.info("Usage: python binary_installer.py <tool>")
+        sys.exit(1)
+
+    with open("tools.yaml", "r") as f:
+        tools = list(yaml.safe_load(f))
+
+    tool_name = sys.argv[1]
+    tools = filter(lambda tool: tool["name"] == tool_name, tools)
+    binaries_installer(tools)

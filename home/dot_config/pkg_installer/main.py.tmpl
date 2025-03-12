@@ -2,6 +2,7 @@ import yaml
 from logger import logger
 from binary_installer import binaries_installer, cleanup
 from os_installer import os_packages_installer
+from shell_installer import shell_installer
 
 
 if __name__ == "__main__":
@@ -10,6 +11,7 @@ if __name__ == "__main__":
 
         tools_os = filter(lambda tool: tool and tool.get("method") == "os", tools)
         tools_bin = filter(lambda tool: tool and tool.get("method") == "binary", tools)
+        tools_shell = filter(lambda tool: tool and tool.get("method") == "shell", tools)
 
         {{- $shortCode := "" }}
         {{- $name := "" }}
@@ -37,6 +39,7 @@ if __name__ == "__main__":
         os = "{{ $shortCode }}"
         os_packages_installer(os, tools_os)
         binaries_installer(tools_bin)
+        shell_installer(tools_shell)
 
         # Clean up temporary directory
         cleanup()

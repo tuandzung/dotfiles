@@ -1,0 +1,62 @@
+import yaml
+import subprocess
+import sys
+import os
+from logger import logger
+
+def run_shell_command(command):
+    """Run a shell command and handle errors."""
+    logger.info(f"Running command: {command}")
+    try:
+        subprocess.run(command, shell=True, check=True)
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to run command: {e}")
+        sys.exit(1)
+
+def install_dependencies(dependencies):
+    with open("tools.yaml", "r") as f:
+        tools = list(yaml.safe_load(f))
+    deps = list(filter(lambda tool: tool["name"] in dependencies, tools))
+    for dep in deps:
+        dep_method = dep.get("method")
+        dep_name = dep.get("name")
+        logger.info(f"Installing dependency: {dep_name}")
+        run_shell_command(f"uv run {dep_method}_installer.py {dep_name}")
+
+def shell_installer(packages):
+    flag_dont_install_is_essential = os.environ.get("FLAG_IS_ESSENTIAL", True)
+
+    for pkg in packages:
+        name = pkg.get("name")
+        is_essential = pkg.get("is_essential", False)
+        dependencies = pkg.get("dependencies", [])
+        content = pkg.get("content")
+
+        if flag_dont_install_is_essential and not is_essential:
+            logger.info(f"{name} is not an essential tool, skipping...")
+            continue
+
+        logger.info(f"Installing package: {name}")
+
+        # Check and install dependencies
+        if dependencies:
+            logger.info(f"Installing dependencies for {name}...")
+            install_dependencies(dependencies)
+
+        # Run the installation command
+        if content:
+            run_shell_command(content)
+
+        logger.info(f"Package {name} installed successfully.")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        logger.info("Usage: python shell_installer.py <tool>")
+        sys.exit(1)
+
+    with open("tools.yaml", "r") as f:
+        tools = list(yaml.safe_load(f))
+
+    tool_name = sys.argv[1]
+    tools = filter(lambda tool: tool["name"] == tool_name, tools)
+    shell_installer(tools)

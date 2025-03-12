@@ -272,48 +272,37 @@ def os_packages_installer(os_type, configs):
                 logger.error(f"Failed to install packages: {e}")
                 sys.exit(1)
 
-def main(yaml_file):
-    # Load the YAML file as a multi-document file
-    with open(yaml_file, "r") as f:
-        configs = list(yaml.safe_load_all(f))
-
-    # Detect the current OS
-    os_type = detect_os()
-    logger.info(f"Detected OS: {os_type}")
-
-    # Update repositories once at the start
-    # update_repositories(os_type)
-
-    # Process each configuration in the YAML file
-    for config in configs:
-        logger.info(f"\nProcessing configuration: {config.get('name')}")
-
-        # Get the package list and hooks for the detected OS
-        if os_type not in config:
-            logger.warning(f"No package configuration found for OS: {os_type}")
-            continue
-
-        packages = config[os_type].get("packages", [])
-        hooks = config[os_type].get("hook", {})
-
-        if not packages:
-            logger.warning(f"No packages to install for OS: {os_type}")
-            continue
-
-        # Install the packages
-        logger.warning(f"Installing packages for {os_type}...")
-        try:
-            install_packages(packages, hooks, os_type)
-            logger.info("Package installation completed successfully.")
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Failed to install packages: {e}")
-            sys.exit(1)
 
 if __name__ == "__main__":
-    # if len(sys.argv) != 2:
-    #     logger.info("Usage: python install_packages.py <yaml_file>")
-    #     sys.exit(1)
+    if len(sys.argv) != 2:
+        logger.info("Usage: python install_packages.py <tool>")
+        sys.exit(1)
 
-    # yaml_file = sys.argv[1]
-    # main(yaml_file)
-    pass
+    with open("{{ .chezmoi.homeDir }}/.config/pkg_installer/tools.yaml", "r") as f:
+        tools = list(yaml.safe_load(f))
+
+    tool_name = sys.argv[1]
+    tools = list(filter(lambda tool: tool["name"] == tool_name, tools))
+    {{- $shortCode := "" }}
+    {{- $name := "" }}
+    {{- if eq .chezmoi.os "linux" }}
+    {{- if eq .chezmoi.osRelease.id "gentoo" }}
+    {{- $shortCode = "gentoo" }}
+    {{- $name = "Gentoo Linux" }}
+    {{- else if eq .chezmoi.osRelease.id "arch" }}
+    {{- $shortCode = "arch" }}
+    {{- $name = "Arch Linux" }}
+    {{- else if eq .chezmoi.osRelease.id "debian" "ubuntu" }}
+    {{- $shortCode = "ubuntu" }}
+    {{- $name = "Debian-based Linux" }}
+    {{- end }}
+    {{- else if eq .chezmoi.os "android" }}
+    {{- $shortCode = "termux" }}
+    {{- $name = "Android" }}
+    {{- else if eq .chezmoi.os "darwin" }}
+    {{- $shortCode = "macos" }}
+    {{- $name = "MacOS" }}
+    {{- end }}
+    os = "{{ $shortCode }}"
+    os_packages_installer(os, tools)
+    sys.exit(0)
