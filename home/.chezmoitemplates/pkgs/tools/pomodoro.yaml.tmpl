@@ -1,0 +1,15 @@
+name: pomodoro
+method: binary
+is_essential: true
+github:
+  repo: open-pomodoro/openpomodoro-cli
+  {{- $os := "" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{- $os = "darwin" }}
+  {{- else if eq .chezmoi.os "linux" "android" }}
+  {{- $os = "linux" }}
+  {{- end }}
+  release_asset: openpomodoro-cli_%s_{{ $os }}_{{ .chezmoi.arch }}.tar.gz
+archive:
+  paths:
+    - pomodoro

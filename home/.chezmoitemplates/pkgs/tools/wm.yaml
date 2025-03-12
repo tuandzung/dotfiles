@@ -17,12 +17,25 @@ gentoo:
     - name: gui-apps/hypridle
       accept_keywords: |-
         gui-apps/hypridle ~amd64
+    - name: gui-apps/hyprpaper
+      repo: guru
+      accept_keywords: |-
+        dev-libs/hyprgraphics ~amd64
+        dev-libs/hyprlang ~amd64
+        gui-apps/hyprpaper ~amd64
+    - name: sys-auth/hyprpolkitagent
+      repo: guru
+      accept_keywords: |-
+        gui-libs/hyprland-qt-support ~amd64
+        sys-auth/hyprpolkitagent ~amd64
 arch:
   packages:
     - name: hyprland
+    - name: hyprpaper
     - name: xdg-desktop-portal-wlr
     - name: xdg-desktop-portal-hyprland
     - name: hypridle
     - name: cpio
     - name: cmake
     - name: meson
+    - name: hyprpolkitagent
