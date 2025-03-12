@@ -1,0 +1,26 @@
+{{- if eq .chezmoi.os "linux" }}
+name: greetd
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-libs/greetd
+    - name: gui-apps/ReGreet
+    - name: gui-apps/tuigreet
+      accept_keywords: |-
+        gui-apps/ReGreet **
+  hook:
+    after: |-
+      rootmoi apply --force
+      sudo rc-update add display-manager default
+      sudo rc-service display-manager start
+arch:
+  packages:
+    - name: greetd
+    - name: greetd-regreet
+    - name: greetd-tuigreet
+  hook:
+    after: |-
+      rootmoi apply --force
+      sudo systemctl enable greetd
+{{- end }}

@@ -1,0 +1,15 @@
+name: curlie
+{{- if eq .chezmoi.os "linux"}}
+method: binary
+github:
+  repo: rs/curlie
+  release_asset: curlie_%s_linux_{{ .chezmoi.arch }}.tar.gz
+archive:
+  paths:
+    - curlie
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: curlie
+{{- end }}
