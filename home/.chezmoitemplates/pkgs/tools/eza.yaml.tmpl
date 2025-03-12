@@ -1,0 +1,21 @@
+name: eza
+is_essential: true
+{{- if eq .chezmoi.os "darwin" }}
+method: os
+macos:
+  packages:
+    - name: eza
+{{- else }}
+method: binary
+github:
+  repo: eza-community/eza
+  version: latest
+  {{- if eq .chezmoi.arch "amd64" }}
+  release_asset: eza_x86_64-unknown-linux-gnu.tar.gz
+  {{- else if eq .chezmoi.arch "arm64" }}
+  release_asset: eza_aarch64-unknown-linux-gnu.tar.gz
+  {{- end }}
+archive:
+  paths:
+    - ./eza
+{{- end }}

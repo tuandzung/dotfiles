@@ -1,0 +1,24 @@
+name: ov
+is_essential: true
+{{- if eq .chezmoi.os "darwin" }}
+method: os
+macos:
+  packages:
+    - name: ov
+{{- else }}
+name: ov
+method: binary
+is_essential: true
+github:
+  repo: noborus/ov
+  {{- $os := "" }}
+  {{- if eq .chezmoi.os "linux" "android" }}
+  {{- $os = "linux" }}
+  {{- else }}
+  {{- $os = .chezmoi.os }}
+  {{- end }}
+  release_asset: ov_%s_{{ $os }}_{{ .chezmoi.arch }}.zip
+archive:
+  paths:
+    - ov
+{{- end }}
