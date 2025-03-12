@@ -1,0 +1,11 @@
+name: shikane
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-apps/shikane
+      accept_keywords: |-
+        gui-apps/shikane **
+arch:
+  packages:
+    - name: shikane
