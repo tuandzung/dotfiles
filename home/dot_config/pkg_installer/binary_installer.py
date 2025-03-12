@@ -134,6 +134,7 @@ def binaries_installer(tools):
                     pbar.update(len(data))
 
         logger.info(f"Successfully downloaded {release_assets}")
+        os.environ["RELEASE_ASSET"] = release_assets
 
         archive = tool.get("archive", {})
         if not archive:
