@@ -1,0 +1,11 @@
+name: systray
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gnome-extra/nm-applet
+    - name: net-wireless/blueman
+arch:
+  packages:
+    - name: network-manager-applet
+    - name: blueman
