@@ -1,4 +1,4 @@
-name: thunderbird
+name: betterbird
 method: os
 is_essential: true
 gentoo:
