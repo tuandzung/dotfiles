@@ -1,0 +1,28 @@
+name: dust
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo" "ubuntu") }}
+method: binary
+github:
+  repo: bootandy/dust
+  version: latest
+  {{- if eq .chezmoi.arch "amd64" }}
+  release_asset: dust-%1s-x86_64-unknown-linux-gnu.tar.gz
+  {{- else if eq .chezmoi.arch "arm64" }}
+  release_asset: dust-%1s-aarch64-unknown-linux-gnu.tar.gz
+  {{- end }}
+archive:
+  strip_components: 1
+  paths:
+    {{- if eq .chezmoi.arch "amd64" }}
+    - dust-%1s-x86_64-unknown-linux-gnu/dust
+    {{- else if eq .chezmoi.arch "arm64" }}
+    - dust-%1s-aarch64-unknown-linux-gnu/dust
+    {{- end }}
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: dust
+arch:
+  packages:
+    - name: dust
+{{- end }}

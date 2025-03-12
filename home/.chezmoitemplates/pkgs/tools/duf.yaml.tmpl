@@ -1,0 +1,23 @@
+name: duf
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo" "ubuntu") }}
+method: binary
+github:
+  repo: muesli/duf
+  version: latest
+  {{- if eq .chezmoi.arch "amd64" }}
+  release_asset:  duf_%s_linux_x86_64.tar.gz
+  {{- else if eq .chezmoi.arch "arm64" }}
+  release_asset:  duf_%s_linux_arm64.tar.gz
+  {{- end }}
+archive:
+  paths:
+    - duf
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: duf
+arch:
+  packages:
+    - name: duf
+{{- end }}
