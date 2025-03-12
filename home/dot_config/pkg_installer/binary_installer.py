@@ -85,6 +85,7 @@ def __extract_and_install(tool, release_tag, release_assets, asset_path):
             bin_file = os.path.basename(path)
             dest_path = os.path.join(INSTALL_DIR, bin_file)
             shutil.move(src_path, dest_path)
+            os.chmod(dest_path, os.stat(dest_path).st_mode | 0o111)
             logger.info(f"Installed {bin_file} to {dest_path}")
     except patoolib.util.PatoolError as e:
         logger.error(f"Failed to extract {release_assets}: {e}")
@@ -121,11 +122,19 @@ def binaries_installer(tool):
 
     logger.info(f"Successfully downloaded {release_assets}")
 
-    __hook_wrapper(__extract_and_install, tool, version)(
-        tool,
-        release_tag,
-        release_assets,
-        asset_path
-    )
+    archive = tool.get("archive", {})
+    if not archive:
+        src_path = os.path.join(TEMP_DIR, release_assets)
+        dest_path = os.path.join(INSTALL_DIR, name)
+        shutil.move(src_path, dest_path)
+        os.chmod(dest_path, os.stat(dest_path).st_mode | 0o111)
+        logger.info(f"Installed {name} to {dest_path}")
+    else:
+        __hook_wrapper(__extract_and_install, tool, version)(
+            tool,
+            release_tag,
+            release_assets,
+            asset_path
+        )
 
     logger.info(f"Successfully extracted and installed {release_assets}\n")
