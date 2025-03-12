@@ -36,12 +36,7 @@ if __name__ == "__main__":
         # Install OS packages
         os = "{{ $shortCode }}"
         os_packages_installer(os, tools_os)
-
-        # Install binaries
-        for tool in tools_bin:
-            is_essential = tool.get("is_essential", False)
-            if is_essential:
-                binaries_installer(tool)
+        binaries_installer(tools_bin)
 
         # Clean up temporary directory
         cleanup()

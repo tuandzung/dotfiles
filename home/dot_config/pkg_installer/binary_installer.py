@@ -91,50 +91,59 @@ def __extract_and_install(tool, release_tag, release_assets, asset_path):
         logger.error(f"Failed to extract {release_assets}: {e}")
 
 
-def binaries_installer(tool):
-    name = tool["name"]
-    download_version = tool["github"].get("version", None)
-    release_tag = download_version
-    if download_version == "latest" or download_version is None:
-        release_tag = __get_latest_release_tag_from_github_api(tool)
-    version = release_tag.replace("v", "")
+def binaries_installer(tools):
+    for tool in tools:
+        name = tool["name"]
+        is_essential = tool.get("is_essential", False)
 
-    repo = tool["github"]["repo"]
-    release_assets = tool["github"]["release_asset"]
-    release_assets = handle_version_tags(release_assets, version)
+        if not is_essential:
+            logger.info(f"{name} is not an essential tool.")
+            if os.path.isfile(f"{INSTALL_DIR}/{name}"):
+                logger.info(f"{name} is already installed, skipping...")
+                return
 
-    # Download asset
-    asset_url = f"https://github.com/{repo}/releases/download/{release_tag}/{release_assets}"
-    asset_path = os.path.join(TEMP_DIR, release_assets)
+        download_version = tool["github"].get("version", None)
+        release_tag = download_version
+        if download_version == "latest" or download_version is None:
+            release_tag = __get_latest_release_tag_from_github_api(tool)
+        version = release_tag.replace("v", "")
 
-    logger.info(f"Downloading {release_assets}...")
-    response = requests.get(asset_url, headers=AUTH_HEADER, stream=True)
-    if response.status_code != 200:
-        logger.error(f"Failed to download {release_assets}: {response.status_code}")
+        repo = tool["github"]["repo"]
+        release_assets = tool["github"]["release_asset"]
+        release_assets = handle_version_tags(release_assets, version)
 
-    total_size = int(response.headers.get("content-length", 0))
-    block_size = 1024  # 1 KB
-    with open(asset_path, "wb") as f:
-        with tqdm(total=total_size, unit="B", unit_scale=True, desc=release_assets) as pbar:
-            for data in response.iter_content(block_size):
-                f.write(data)
-                pbar.update(len(data))
+        # Download asset
+        asset_url = f"https://github.com/{repo}/releases/download/{release_tag}/{release_assets}"
+        asset_path = os.path.join(TEMP_DIR, release_assets)
 
-    logger.info(f"Successfully downloaded {release_assets}")
+        logger.info(f"Downloading {release_assets}...")
+        response = requests.get(asset_url, headers=AUTH_HEADER, stream=True)
+        if response.status_code != 200:
+            logger.error(f"Failed to download {release_assets}: {response.status_code}")
 
-    archive = tool.get("archive", {})
-    if not archive:
-        src_path = os.path.join(TEMP_DIR, release_assets)
-        dest_path = os.path.join(INSTALL_DIR, name)
-        shutil.move(src_path, dest_path)
-        os.chmod(dest_path, os.stat(dest_path).st_mode | 0o111)
-        logger.info(f"Installed {name} to {dest_path}")
-    else:
-        __hook_wrapper(__extract_and_install, tool, version)(
-            tool,
-            release_tag,
-            release_assets,
-            asset_path
-        )
+        total_size = int(response.headers.get("content-length", 0))
+        block_size = 1024  # 1 KB
+        with open(asset_path, "wb") as f:
+            with tqdm(total=total_size, unit="B", unit_scale=True, desc=release_assets) as pbar:
+                for data in response.iter_content(block_size):
+                    f.write(data)
+                    pbar.update(len(data))
 
-    logger.info(f"Successfully extracted and installed {release_assets}\n")
+        logger.info(f"Successfully downloaded {release_assets}")
+
+        archive = tool.get("archive", {})
+        if not archive:
+            src_path = os.path.join(TEMP_DIR, release_assets)
+            dest_path = os.path.join(INSTALL_DIR, name)
+            shutil.move(src_path, dest_path)
+            os.chmod(dest_path, os.stat(dest_path).st_mode | 0o111)
+            logger.info(f"Installed {name} to {dest_path}")
+        else:
+            __hook_wrapper(__extract_and_install, tool, version)(
+                tool,
+                release_tag,
+                release_assets,
+                asset_path
+            )
+
+        logger.info(f"Successfully extracted and installed {release_assets}\n")
