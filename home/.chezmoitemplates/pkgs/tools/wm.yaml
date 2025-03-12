@@ -1,0 +1,28 @@
+name: hyprland
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-wm/hyprland
+      accept_keywords: |-
+        gui-wm/hyprland ~amd64
+        dev-util/hyprwayland-scanner ~amd64
+        dev-libs/wayland-protocols ~amd64
+        gui-libs/aquamarine ~amd64
+        gui-libs/hyprutils ~amd64
+        gui-libs/xdg-desktop-portal-hyprland ~amd64
+        dev-cpp/sdbus-c++ ~amd64
+    - name: gui-libs/xdg-desktop-portal-hyprland
+    - name: x11-libs/xcb-util
+    - name: gui-apps/hypridle
+      accept_keywords: |-
+        gui-apps/hypridle ~amd64
+arch:
+  packages:
+    - name: hyprland
+    - name: xdg-desktop-portal-wlr
+    - name: xdg-desktop-portal-hyprland
+    - name: hypridle
+    - name: cpio
+    - name: cmake
+    - name: meson

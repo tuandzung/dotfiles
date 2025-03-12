@@ -1,0 +1,15 @@
+name: thunderbird
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: mail-client/betterbird-bin
+      repo: guru
+      accept_keywords: |-
+        mail-client/betterbird-bin **
+arch:
+  packages:
+    - name: betterbird-bin
+ubuntu:
+  packages:
+    - name: thunderbird

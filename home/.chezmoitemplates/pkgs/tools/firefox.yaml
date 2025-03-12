@@ -1,0 +1,17 @@
+name: firefox
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: www-client/firefox
+      use: |-
+        www-client/firefox pulseaudio dbus
+        # required by www-client/firefox-115.6.0::gentoo[system-libvpx]
+        # required by firefox (argument)
+        >=media-libs/libvpx-1.13.1-r1 postproc
+arch:
+  packages:
+    - name: firefox
+ubuntu:
+  packages:
+    - name: firefox

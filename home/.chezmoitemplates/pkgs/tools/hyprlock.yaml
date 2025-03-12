@@ -1,0 +1,10 @@
+name: hyprlock
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-apps/hyprlock
+      accept_keywords: gui-apps/hyprlock ~amd64
+arch:
+  packages:
+    - name: hyprlock

@@ -1,0 +1,12 @@
+name: tar
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: app-arch/tar
+arch:
+  packages:
+    - name: tar
+ubuntu:
+  packages:
+    - name: tar

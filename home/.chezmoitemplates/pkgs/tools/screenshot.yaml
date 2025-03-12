@@ -1,0 +1,17 @@
+name: screen_capture
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-apps/grim
+    - name: gui-apps/slurp
+    - name: gui-apps/swappy
+arch:
+  packages:
+    - name: grim
+    - name: slurp
+    - name: swappy
+ubuntu:
+  packages:
+    - name: grim
+    - name: slurp

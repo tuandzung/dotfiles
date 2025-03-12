@@ -1,0 +1,17 @@
+name: git
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: dev-vcs/git
+      use: |-
+        dev-vcs/git -perl
+arch:
+  packages:
+    - name: git
+ubuntu:
+  packages:
+    - name: git
+macos:
+  packages:
+    - name: git
