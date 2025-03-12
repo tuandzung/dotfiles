@@ -1,0 +1,19 @@
+name: age
+is_essential: true
+{{- if eq .chezmoi.os "darwin" }}
+method: os
+macos:
+  packages:
+    - name: age
+{{- else }}
+method: binary
+github:
+  repo: FiloSottile/age
+  version: latest
+  release_asset: age-%1s-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
+archive:
+  strip_components: 2
+  paths:
+    - age/age
+    - age/age-keygen
+{{- end }}

@@ -1,0 +1,18 @@
+{{- if eq .chezmoi.os "linux" }}
+name: bluetooth
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: net-wireless/bluez
+  hook:
+    after: |-
+      sudo rc-update add bluetooth default
+      sudo rc-service bluetooth restart
+arch:
+  packages:
+    - name: bluez
+  hook:
+    after: |-
+      sudo systemctl enable --now bluetooth
+{{- end }}
