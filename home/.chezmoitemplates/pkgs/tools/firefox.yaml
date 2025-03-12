@@ -15,3 +15,7 @@ arch:
 ubuntu:
   packages:
     - name: firefox
+macos:
+  packages:
+    - name: firefox
+      cask: true

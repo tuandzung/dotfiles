@@ -1,0 +1,17 @@
+name: spotify_player
+is_essential: true
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo" "ubuntu") }}
+method: shell
+dependencies:
+  - rust
+content: |-
+  cargo install spotify_player --no-default-features --locked --features pulseaudio-backend,streaming,notify
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: spotify_player
+arch:
+  packages:
+    - name: spotify-player-full
+{{- end }}

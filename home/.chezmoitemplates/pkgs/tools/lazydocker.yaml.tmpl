@@ -1,4 +1,6 @@
 name: lazydocker
+is_essential: true
+{{- if eq .chezmoi.os "linux" }}
 method: binary
 github:
   repo: jesseduffield/lazydocker
@@ -11,3 +13,9 @@ github:
 archive:
   paths:
     - lazydocker
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: lazydocker
+{{- end }}

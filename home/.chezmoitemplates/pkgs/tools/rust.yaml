@@ -1,0 +1,12 @@
+name: rust
+is_essential: true
+method: os
+gentoo:
+  packages:
+    - name: dev-lang/rust
+arch:
+  packages:
+    - name: rust
+macos:
+  packages:
+    - name: rust

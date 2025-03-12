@@ -9,3 +9,6 @@ arch:
 ubuntu:
   packages:
     - name: tree-sitter-cli
+macos:
+  packages:
+    - name: tree-sitter
