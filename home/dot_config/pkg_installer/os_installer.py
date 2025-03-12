@@ -213,6 +213,7 @@ def install_packages_termux(packages, hooks):
     """Install packages on Termux using pkg."""
     for pkg in packages:
         name = pkg.get("name")
+        logger.info(f"Installing package {name}...")
 
         # Check if the package is already installed
         if is_package_installed_termux(name):
@@ -264,7 +265,6 @@ def os_packages_installer(os_type, configs):
                 continue
 
             # Install the packages
-            logger.info(f"Installing packages for {os_type}...")
             try:
                 install_packages(packages, hooks, os_type)
                 logger.info("Package installation completed successfully.")
