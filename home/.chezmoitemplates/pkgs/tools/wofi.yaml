@@ -1,0 +1,12 @@
+name: wofi
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-apps/wofi
+arch:
+  packages:
+    - name: wofi
+ubuntu:
+  packages:
+    - name: wofi

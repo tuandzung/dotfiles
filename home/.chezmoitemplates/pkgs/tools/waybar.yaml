@@ -1,0 +1,11 @@
+name: waybar
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-apps/waybar
+      use: |-
+        gui-apps/waybar network pulseaudio tray upower
+arch:
+  packages:
+    - name: waybar
