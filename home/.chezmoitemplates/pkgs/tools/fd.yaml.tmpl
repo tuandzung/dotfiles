@@ -18,15 +18,16 @@ archive:
   {{- else if eq .chezmoi.arch "arm64" }}
     - fd-%1s-aarch64-unknown-linux-gnu/fd
   {{- end }}
-  hook:
-    after: |
-      {{- if eq .chezmoi.arch "amd64" }}
-      arch=x86_64
-      {{- else if eq .chezmoi.arch "arm64" }}
-      arch=aarch64
-      {{- end }}
-      mv "$TEMP_DIR/fd-%1s-$arch-unknown-linux-gnu/fd.1" "$MAN_DIR/man1"
-{{- else }}
+hook:
+  after: |
+    {{- if eq .chezmoi.arch "amd64" }}
+    arch=x86_64
+    {{- else if eq .chezmoi.arch "arm64" }}
+    arch=aarch64
+    {{- end }}
+    param="-xz --strip=1 -f $TEMP_DIR/$RELEASE_ASSET"
+    mkdir -p "$MAN_DIR/man1"
+    tar $param -C "$MAN_DIR/man1" "fd-%1s-$arch-unknown-linux-gnu/fd.1"{{- else }}
 method: os
 macos:
   packages:
