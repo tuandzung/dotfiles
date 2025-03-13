@@ -36,8 +36,8 @@ if __name__ == "__main__":
 
         logger.info("Detected OS: {{ $name }}")
         # Install OS packages
-        os = "{{ $shortCode }}"
-        os_packages_installer(os, tools_os)
+        detected_os = "{{ $shortCode }}"
+        os_packages_installer(detected_os, tools_os)
         binaries_installer(tools_bin)
         shell_installer(tools_shell)
 

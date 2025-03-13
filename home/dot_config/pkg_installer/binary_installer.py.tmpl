@@ -9,7 +9,7 @@ from tqdm import tqdm
 from base64 import b64encode
 from functools import wraps
 from logger import logger
-from utils import run_hook, handle_version_tags
+from utils import run_hook, handle_version_tags, load_all_tools
 
 # Directory to install binaries
 INSTALL_DIR = os.path.expanduser("~/.local/bin")
@@ -94,17 +94,17 @@ def __extract_and_install(tool, release_tag, release_assets, asset_path):
 
 
 def binaries_installer(tools):
-    flag_dont_install_is_essential = os.environ.get("FLAG_IS_ESSENTIAL", True)
-    flag_dont_install_exists = os.environ.get("FLAG_INSTALL_EXISTS", True)
+    flag_install_is_essential_only = os.environ.get("FLAG_INSTALL_IS_ESSENTIAL_ONLY")
+    flag_install_not_exists_only = os.environ.get("FLAG_INSTALL_NOT_EXISTS_ONLY")
     for tool in tools:
         name = tool["name"]
         is_essential = tool.get("is_essential", False)
 
-        if flag_dont_install_exists and os.path.isfile(f"{INSTALL_DIR}/{name}"):
+        if flag_install_not_exists_only and os.path.isfile(f"{INSTALL_DIR}/{name}"):
             logger.info(f"{name} is already installed, skipping...")
             continue
 
-        if flag_dont_install_is_essential and not is_essential:
+        if flag_install_is_essential_only and not is_essential:
             logger.info(f"{name} is not an essential tool, skipping...")
             continue
 
@@ -156,13 +156,14 @@ def binaries_installer(tools):
         logger.info(f"Successfully extracted and installed {release_assets}\n")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        logger.info("Usage: python binary_installer.py <tool>")
-        sys.exit(1)
-
-    with open("tools.yaml", "r") as f:
-        tools = list(yaml.safe_load(f))
+    all_tools = load_all_tools()
+    tools = filter(lambda tool: tool and tool["method"] == "binary", all_tools)
 
     tool_name = sys.argv[1]
-    tools = filter(lambda tool: tool and tool["name"] == tool_name, tools)
+    if tool_name:
+        tools = filter(lambda tool: tool and tool["name"] == tool_name, all_tools)
+
+    if not tools:
+        logger.warning(f"No tool with method: \"binary\" found with name: \"{tool_name}\"")
+
     binaries_installer(tools)

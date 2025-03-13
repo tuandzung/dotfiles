@@ -3,6 +3,7 @@ import subprocess
 import sys
 import os
 from logger import logger
+from utils import load_all_tools
 
 def run_shell_command(command):
     """Run a shell command and handle errors."""
@@ -14,17 +15,16 @@ def run_shell_command(command):
         sys.exit(1)
 
 def install_dependencies(dependencies):
-    with open("tools.yaml", "r") as f:
-        tools = list(yaml.safe_load(f))
-    deps = list(filter(lambda tool: tool and tool["name"] in dependencies, tools))
+    all_tools = load_all_tools()
+    deps = list(filter(lambda tool: tool and tool["name"] in dependencies, all_tools))
     for dep in deps:
         dep_method = dep.get("method")
         dep_name = dep.get("name")
         logger.info(f"Installing dependency: {dep_name}")
-        run_shell_command(f"uv run {dep_method}_installer.py {dep_name}")
+        run_shell_command(f"tep_{dep_method} -t {dep_name}")
 
 def shell_installer(packages):
-    flag_dont_install_is_essential = os.environ.get("FLAG_IS_ESSENTIAL", True)
+    flag_install_is_essential_only = os.environ.get("FLAG_INSTALL_IS_ESSENTIAL_ONLY")
 
     for pkg in packages:
         name = pkg.get("name")
@@ -32,7 +32,7 @@ def shell_installer(packages):
         dependencies = pkg.get("dependencies", [])
         content = pkg.get("content")
 
-        if flag_dont_install_is_essential and not is_essential:
+        if flag_install_is_essential_only and not is_essential:
             logger.info(f"{name} is not an essential tool, skipping...")
             continue
 
@@ -50,13 +50,12 @@ def shell_installer(packages):
         logger.info(f"Package {name} installed successfully.")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        logger.info("Usage: python shell_installer.py <tool>")
-        sys.exit(1)
-
-    with open("tools.yaml", "r") as f:
-        tools = list(yaml.safe_load(f))
+    all_tools = load_all_tools()
+    tools = filter(lambda tool: tool and tool["method"] == "shell", all_tools)
 
     tool_name = sys.argv[1]
-    tools = filter(lambda tool: tool["name"] == tool_name, tools)
+    if tool_name:
+        tools = filter(lambda tool: tool and tool["name"] == tool_name, all_tools)
+    if not tools:
+        logger.warning(f"No tool with method: \"shell\" found with name: \"{tool_name}\"")
     shell_installer(tools)

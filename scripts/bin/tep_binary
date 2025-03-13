@@ -1,0 +1,37 @@
+#!/bin/bash
+set -Eeuo pipefail
+
+RUNTIME_DIR="$HOME/.config/pkg_installer"
+source $RUNTIME_DIR/.venv/bin/activate
+
+_usage() {
+  echo "$0 usage:" && grep -E " \w) #" "$0" | sed -e 's/\(.\)) #/-\1/g'
+  exit 0
+}
+
+export GITHUB_API_USERNAME=${GITHUB_API_USERNAME:-tuandzung}
+export GITHUB_API_TOKEN=${GITHUB_API_TOKEN:-}
+
+_parse_args() {
+  while getopts ":hnedt:" arg; do
+    case $arg in
+      n) # Update only not existed tool
+        export FLAG_INSTALL_NOT_EXISTS_ONLY=true
+        ;;
+      e) # Update only essential tool
+        export FLAG_INSTALL_IS_ESSENTIAL_ONLY=true
+        ;;
+      h) # Display help
+        _usage
+        ;;
+      t) # Only one specific tool
+        TOOL=$OPTARG
+        ;;
+      *) ;;
+    esac
+  done
+}
+
+TOOL=
+_parse_args "$@"
+python $RUNTIME_DIR/binary_installer.py "$TOOL"

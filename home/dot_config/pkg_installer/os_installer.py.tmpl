@@ -4,7 +4,7 @@ import platform
 import sys
 import os
 from logger import logger
-from utils import run_hook
+from utils import run_hook, load_all_tools
 
 def detect_os():
     """Detect the current operating system."""
@@ -243,46 +243,51 @@ def install_packages(packages, hooks, os_type):
         raise ValueError(f"Unsupported OS: {os_type}")
 
 def os_packages_installer(os_type, configs):
+    flag_install_is_essential_only = os.environ.get("FLAG_INSTALL_IS_ESSENTIAL_ONLY")
+
     # Update repositories once at the start
     update_repositories(os_type)
 
     # Process each configuration in the YAML file
     for config in configs:
         is_essential = config.get("is_essential", False)
-        if is_essential:
-            logger.info(f"Processing configuration: {config.get('name')}")
+        if flag_install_is_essential_only and not is_essential:
+            continue
 
-            # Get the package list and hooks for the detected OS
-            if os_type not in config:
-                logger.warning(f"No package configuration found for OS: {os_type}")
-                continue
+        logger.info(f"Processing configuration: {config.get('name')}")
 
-            packages = config[os_type].get("packages", [])
-            hooks = config[os_type].get("hook", {})
+        # Get the package list and hooks for the detected OS
+        if os_type not in config:
+            logger.warning(f"No package configuration found for OS: {os_type}")
+            continue
 
-            if not packages:
-                logger.warning(f"No packages to install for OS: {os_type}")
-                continue
+        packages = config[os_type].get("packages", [])
+        hooks = config[os_type].get("hook", {})
 
-            # Install the packages
-            try:
-                install_packages(packages, hooks, os_type)
-                logger.info("Package installation completed successfully.")
-            except subprocess.CalledProcessError as e:
-                logger.error(f"Failed to install packages: {e}")
-                sys.exit(1)
+        if not packages:
+            logger.warning(f"No packages to install for OS: {os_type}")
+            continue
+
+        # Install the packages
+        try:
+            install_packages(packages, hooks, os_type)
+            logger.info("Package installation completed successfully.")
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to install packages: {e}")
+            sys.exit(1)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        logger.info("Usage: python install_packages.py <tool>")
-        sys.exit(1)
-
-    with open("{{ .chezmoi.homeDir }}/.config/pkg_installer/tools.yaml", "r") as f:
-        tools = list(yaml.safe_load(f))
+    all_tools = load_all_tools()
+    tools = filter(lambda tool: tool and tool["method"] == "os", all_tools)
 
     tool_name = sys.argv[1]
-    tools = list(filter(lambda tool: tool and tool["name"] == tool_name, tools))
+    if tool_name:
+        tools = filter(lambda tool: tool and tool["name"] == tool_name, all_tools)
+
+    if not tools:
+        logger.warning(f"No tool with method: \"os\" found with name: \"{tool_name}\"")
+
     {{- $shortCode := "" }}
     {{- $name := "" }}
     {{- if eq .chezmoi.os "linux" }}
@@ -303,6 +308,6 @@ if __name__ == "__main__":
     {{- $shortCode = "macos" }}
     {{- $name = "MacOS" }}
     {{- end }}
-    os = "{{ $shortCode }}"
-    os_packages_installer(os, tools)
+    detected_os = "{{ $shortCode }}"
+    os_packages_installer(detected_os, tools)
     sys.exit(0)
