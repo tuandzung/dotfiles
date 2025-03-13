@@ -126,7 +126,7 @@ _main() {
   git remote set-url origin git@github.com:tuandzung/dotfiles.git
   git config --local include.path .gitconfig
 
-  __success "Install complete"
+  _success "Install complete"
 }
 
 _main
