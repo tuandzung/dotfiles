@@ -64,8 +64,8 @@ if type -q grc
 end
 
 # Color for Virtual console
-if test "$TERM" = "linux"; and test $CONFIG_PATH/console_color
-  for i in (sed -n "s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p" $CONFIG_PATH/console_color | awk '$1 < 16 {printf "\\\e]P%X%s", $1, $2}')
+if test "$TERM" = "linux"; and test $CONFIG_PATH/console_colors
+  for i in (sed -n "s/.*\*color\([0-9]\{1,\}\).*#\([0-9a-fA-F]\{6\}\).*/\1 \2/p" $CONFIG_PATH/console_colors | awk '$1 < 16 {printf "\\\e]P%X%s", $1, $2}')
     echo -en "$i"
   end
   set -g theme_nerd_fonts no
