@@ -104,6 +104,8 @@ _main() {
   fi
 
   _notice "Initialize system configurations"
+  ${chezmoi} apply $HOME/.local/bin
+  ${chezmoi} apply $HOME/.config/rootmoi
   rootmoi init -S $SETUP_DIR/root
 
   _notice "Apply system configurations"
