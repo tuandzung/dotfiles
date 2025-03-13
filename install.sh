@@ -109,6 +109,16 @@ _main() {
   else
     ${chezmoi} apply
   fi
+
+  _notice "Initialize system configurations"
+  rootmoi init -S $SETUP_DIR/root
+
+  _notice "Apply system configurations"
+  if [ -n "${DOTFILES_DEBUG-}" ]; then
+    rootmoi apply --debug --verbose --dry-run
+  else
+    rootmoi apply
+  fi
 }
 
 _main

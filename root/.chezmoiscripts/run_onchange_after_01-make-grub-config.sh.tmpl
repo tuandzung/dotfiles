@@ -1,0 +1,8 @@
+#!{{ lookPath "bash" }}
+set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+
+_notice "Making grub config"
+# config hash: {{ joinPath .chezmoi.sourceDir "etc/default/grub.tmpl" | include | sha256sum }}
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+_notice "Done making grub config"
