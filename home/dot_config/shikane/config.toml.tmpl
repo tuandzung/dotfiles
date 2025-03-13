@@ -1,3 +1,4 @@
+{{- if eq .kind "pc" }}
 [[profile]]
 name = "home"
 
@@ -28,3 +29,14 @@ mode = "2560x1600@144Hz"
 transform = "normal"
 position = "0,0"
 scale = 1.333333
+
+{{- else if eq .kind "vm"}}
+[[profile]]
+name = "vm"
+
+[[profile.output]]
+enable = true
+mode = "1920x1080@60Hz"
+transform = "normal"
+position = "0,0"
+{{- end }}

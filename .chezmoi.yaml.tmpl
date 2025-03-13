@@ -18,3 +18,5 @@ diff:
 data:
   {{ $hostname := promptStringOnce . "hostname" "Name of the machine" "tuandzung" | quote }}
   hostname: {{ $hostname }}
+  {{ $kind := promptStringOnce . "kind" "What kind of this machine is it (pc/vm/laptop/...)" "pc" | quote }}
+  kind: {{ $kind }}

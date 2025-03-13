@@ -1,0 +1,12 @@
+#!{{ lookPath "bash" }}
+set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+trap "_error \"Can't setup hyprland\"" ERR
+
+_notice "Setup hyprland"
+# config hash: {{ joinPath .chezmoi.sourceDir "dot_config/hypr/hyprland/plugins.list" | include | sha256sum }}
+
+_progress "Install hyprland's header"
+hyprpm update -v
+hyprpm reload -n
+_success "Setup hyprland"
