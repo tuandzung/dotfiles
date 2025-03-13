@@ -7,5 +7,6 @@ _notice "Update submodules"
 # modules hash: {{ joinPath .chezmoi.workingTree ".gitmodules" | include | sha256sum }}
 cd {{ .chezmoi.workingTree }}
 git submodule update --init --remote --recursive \
+  modules/icons
   home/dot_config/nvim
 _success "Updated submodules"
