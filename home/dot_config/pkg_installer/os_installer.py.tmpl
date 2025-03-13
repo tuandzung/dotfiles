@@ -282,7 +282,7 @@ if __name__ == "__main__":
         tools = list(yaml.safe_load(f))
 
     tool_name = sys.argv[1]
-    tools = list(filter(lambda tool: tool["name"] == tool_name, tools))
+    tools = list(filter(lambda tool: tool and tool["name"] == tool_name, tools))
     {{- $shortCode := "" }}
     {{- $name := "" }}
     {{- if eq .chezmoi.os "linux" }}

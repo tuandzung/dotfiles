@@ -16,7 +16,7 @@ def run_shell_command(command):
 def install_dependencies(dependencies):
     with open("tools.yaml", "r") as f:
         tools = list(yaml.safe_load(f))
-    deps = list(filter(lambda tool: tool["name"] in dependencies, tools))
+    deps = list(filter(lambda tool: tool and tool["name"] in dependencies, tools))
     for dep in deps:
         dep_method = dep.get("method")
         dep_name = dep.get("name")

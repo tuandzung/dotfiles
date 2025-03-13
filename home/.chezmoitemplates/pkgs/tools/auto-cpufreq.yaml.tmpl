@@ -1,3 +1,4 @@
+{{- if eq .kind "laptop" }}
 name: auto-cpufreq
 method: os
 is_essential: true
@@ -12,3 +13,4 @@ arch:
   hook:
     after: |-
       sudo systemctl enable --now auto-cpufreq
+{{- end }}

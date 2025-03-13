@@ -164,5 +164,5 @@ if __name__ == "__main__":
         tools = list(yaml.safe_load(f))
 
     tool_name = sys.argv[1]
-    tools = filter(lambda tool: tool["name"] == tool_name, tools)
+    tools = filter(lambda tool: tool and tool["name"] == tool_name, tools)
     binaries_installer(tools)
