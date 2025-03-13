@@ -1,0 +1,13 @@
+
+name: inotify-tools
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: sys-fs/inotify-tools
+arch:
+  packages:
+    - name: inotify-tools
+ubuntu:
+  packages:
+    - name: inotify-tools
