@@ -103,9 +103,14 @@ _main() {
     ${chezmoi} apply "$HOME/.gitconfig"
   fi
 
+  _notice "Apply dotfiles"
+  if [ -n "${DOTFILES_DEBUG-}" ]; then
+    ${chezmoi} apply --debug --verbose --dry-run
+  else
+    ${chezmoi} apply
+  fi
+
   _notice "Initialize system configurations"
-  ${chezmoi} apply $HOME/.local/bin
-  ${chezmoi} apply $HOME/.config/rootmoi
   rootmoi init -S $SETUP_DIR/root
 
   _notice "Apply system configurations"
@@ -115,13 +120,13 @@ _main() {
     rootmoi apply
   fi
 
-  _notice "Apply dotfiles"
-  if [ -n "${DOTFILES_DEBUG-}" ]; then
-    ${chezmoi} apply --debug --verbose --dry-run
-  else
-    ${chezmoi} apply
-  fi
+  # Modify remote url of dotfiles
+  _notice "Modify remote url of dotfiles"
+  cd $SETUP_DIR
+  git remote set-url origin git@github.com:tuandzung/dotfiles.git
+  git config --local include.path .gitconfig
 
+  __success "Install complete"
 }
 
 _main
