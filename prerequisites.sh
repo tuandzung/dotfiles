@@ -10,14 +10,14 @@ if command -v sw_vers &> /dev/null; then
 elif command -v apt &> /dev/null; then
   sudo apt update && sudo apt install -y git curl gnupg openssh
 elif command -v pacman &> /dev/null; then
-  sudo pacman -Sy && sudo pacman -Sy git curl openssh
+  sudo pacman -Sy && sudo pacman -Sy --noconfirm git curl openssh
   if ! command -v yay > /dev/null; then
-    sudo pacman -Sy --needed git base-devel go
+    sudo pacman -S --noconfirm --needed git base-devel go
     git clone https://aur.archlinux.org/yay.git /tmp/yay
     cd /tmp/yay || exit
     makepkg -si --noconfirm
     rm -rf /tmp/yay
-    sudo pacman -Sy -Rscn --noconfirm go
+    sudo pacman -Rscn --noconfirm go
   fi
 elif command -v emerge &> /dev/null; then
   sudo emerge --sync && sudo emerge -uDN dev-vcs/git net-misc/curl net-misc/openssh app-portage/gentookit app-portage/portage-utils app-eselect/eselect-repository
