@@ -103,13 +103,6 @@ _main() {
     ${chezmoi} apply "$HOME/.gitconfig"
   fi
 
-  _notice "Apply dotfiles"
-  if [ -n "${DOTFILES_DEBUG-}" ]; then
-    ${chezmoi} apply --debug --verbose --dry-run
-  else
-    ${chezmoi} apply
-  fi
-
   _notice "Initialize system configurations"
   rootmoi init -S $SETUP_DIR/root
 
@@ -119,6 +112,14 @@ _main() {
   else
     rootmoi apply
   fi
+
+  _notice "Apply dotfiles"
+  if [ -n "${DOTFILES_DEBUG-}" ]; then
+    ${chezmoi} apply --debug --verbose --dry-run
+  else
+    ${chezmoi} apply
+  fi
+
 }
 
 _main
