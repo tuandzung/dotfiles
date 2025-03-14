@@ -1,3 +1,4 @@
+{{- if .hasSound }}
 name: pipewire
 method: os
 is_essential: true
@@ -18,3 +19,4 @@ arch:
     - name: pipewire-audio
     - name: pipewire-pulse
     - name: pipewire-alsa
+{{- end }}

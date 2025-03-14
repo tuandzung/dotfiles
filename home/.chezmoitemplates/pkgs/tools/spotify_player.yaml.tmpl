@@ -1,3 +1,4 @@
+{{- if .hasSound }}
 name: spotify_player
 is_essential: true
 {{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo" "ubuntu") }}
@@ -14,4 +15,5 @@ macos:
 arch:
   packages:
     - name: spotify-player-full
+{{- end }}
 {{- end }}

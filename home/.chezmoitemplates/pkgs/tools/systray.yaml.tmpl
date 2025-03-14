@@ -4,8 +4,12 @@ is_essential: true
 gentoo:
   packages:
     - name: gnome-extra/nm-applet
+    {{- if .hasBluetooth }}
     - name: net-wireless/blueman
+    {{- end }}
 arch:
   packages:
     - name: network-manager-applet
+    {{- if .hasBluetooth }}
     - name: blueman
+    {{- end }}
