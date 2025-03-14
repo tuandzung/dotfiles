@@ -6,10 +6,12 @@ gentoo:
   packages:
     - name: gui-libs/greetd
     - name: gui-apps/ReGreet
+      repo: guru
+      accept_keywords: |-
+        gui-apps/ReGreet ~amd64
     - name: gui-apps/tuigreet
       accept_keywords: |-
-        gui-apps/ReGreet **
-        gui-apps/tuigreet **
+        gui-apps/tuigreet ~amd64
 
   hook:
     after: |-
