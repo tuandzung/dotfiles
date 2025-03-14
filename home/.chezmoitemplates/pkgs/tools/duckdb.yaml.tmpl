@@ -1,0 +1,22 @@
+name: duckdb-cli
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo" "ubuntu") }}
+method: binary
+github:
+  repo: duckdb/duckdb
+  version: latest
+  release_asset: duckdb_cli-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.gz
+archive:
+  paths:
+    - duckdb_cli-{{ .chezmoi.os }}-{{ .chezmoi.arch }}
+hook:
+  after:
+    mv ~/.local/bin/duckdb_cli-{{ .chezmoi.os }}-{{ .chezmoi.arch }} ~/.local/bin/duckdb-cli
+{{- else }}
+method: os
+arch:
+  packages:
+    - name: duckdb
+macos:
+  packages:
+    - name: duckdb
+{{- end }}

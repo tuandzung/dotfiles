@@ -1,0 +1,17 @@
+name: file-manager
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: xfce-base/thunar
+    - name: xfce-base/thunar-volman
+    - name: gnome-base/gvfs
+    - name: xfce-extra/thunar-archive-plugin
+    - name: app-arch/file-roller
+arch:
+  packages:
+    - name: thunar
+    - name: thunar-archive-plugin
+    - name: file-roller
+    - name: thunar-volman
+    - name: gvfs
