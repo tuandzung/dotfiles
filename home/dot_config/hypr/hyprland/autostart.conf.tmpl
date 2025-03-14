@@ -15,6 +15,10 @@ exec-once = gentoo-pipewire-launcher restart
 exec-once = systemctl --user start wireplumber
 exec-once = systemctl --user start pipewire-pulse
 {{- end }}
+exec-once = ~/.config/hypr/hyprland/scripts/xdg_portal.sh
+
+# Thunar
+exec-once = thunar --daemon
 
 # Gtk theme
 exec-once = ~/.config/hypr/hyprland/scripts/gtk.sh
