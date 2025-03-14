@@ -8,6 +8,9 @@ gentoo:
     - name: gnome-base/gvfs
     - name: xfce-extra/thunar-archive-plugin
     - name: app-arch/file-roller
+    - name: xfce-base/tumbler
+      use: |-
+        xfce-base/tumbler curl ffmpeg jpeg pdf raw
 arch:
   packages:
     - name: thunar
@@ -15,3 +18,4 @@ arch:
     - name: file-roller
     - name: thunar-volman
     - name: gvfs
+    - name: tumbler
