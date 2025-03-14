@@ -7,6 +7,9 @@ gentoo:
       repo: guru
       accept_keywords: |-
         mail-client/betterbird-bin **
+      use: |-
+        >=x11-libs/cairo-1.18.2-r1 X
+        >=media-libs/libglvnd-1.7.0 X
 arch:
   packages:
     - name: betterbird-bin
