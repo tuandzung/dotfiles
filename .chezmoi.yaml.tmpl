@@ -24,3 +24,6 @@ data:
   hasSound: {{ $hasSound }}
   {{ $hasBluetooth := promptBoolOnce . "hasBluetooth" "Does this machine have a bluetooth device (y/n)" false }}
   hasBluetooth: {{ $hasBluetooth }}
+  {{ $graphicsChoices := list "NVIDIA" "AMD" "INTEL" }}
+  {{ $graphicsDriver := promptChoiceOnce . "graphicsDriver" "Which graphics card this machine uses" $graphicsChoices "INTEL" | quote }}
+  graphicsDriver: {{ $graphicsDriver }}

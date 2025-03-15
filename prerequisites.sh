@@ -20,7 +20,14 @@ elif command -v pacman &> /dev/null; then
     sudo pacman -Rscn --noconfirm go
   fi
 elif command -v emerge &> /dev/null; then
-  sudo emerge --sync && sudo emerge -uDN dev-vcs/git net-misc/curl net-misc/openssh app-portage/gentoolkit app-portage/portage-utils app-eselect/eselect-repository
+  sudo emerge --sync && sudo emerge -uDN \
+    dev-vcs/git \
+    net-misc/curl \
+    net-misc/openssh \
+    app-portage/gentoolkit \
+    app-portage/portage-utils \
+    app-eselect/eselect-repository \
+    app-portage/cpuid2cpuflags
 fi
 
 git clone https://github.com/tuandzung/dotfiles.git ~/Dotfiles

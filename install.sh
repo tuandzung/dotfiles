@@ -103,11 +103,13 @@ _main() {
     ${chezmoi} apply "$HOME/.gitconfig"
   fi
 
-  _notice "Apply dotfiles"
+  _notice "Apply rootmoi"
   if [ -n "${DOTFILES_DEBUG-}" ]; then
-    ${chezmoi} apply --debug --verbose --dry-run
+    ${chezmoi} apply --debug --verbose --dry-run "$HOME/.config/rootmoi"
+    ${chezmoi} apply --debug --verbose --dry-run "$HOME/.local/bin/rootmoi"
   else
-    ${chezmoi} apply
+    ${chezmoi} apply "$HOME/.config/rootmoi"
+    ${chezmoi} apply "$HOME/.local/bin/rootmoi"
   fi
 
   _notice "Initialize system configurations"
@@ -118,6 +120,13 @@ _main() {
     rootmoi apply --debug --verbose --dry-run
   else
     rootmoi apply
+  fi
+
+  _notice "Apply dotfiles"
+  if [ -n "${DOTFILES_DEBUG-}" ]; then
+    ${chezmoi} apply --debug --verbose --dry-run
+  else
+    ${chezmoi} apply
   fi
 
   # Modify remote url of dotfiles

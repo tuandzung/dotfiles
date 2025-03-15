@@ -1,0 +1,11 @@
+{{- if eq .kind "vm" }}
+*/* VIDEO_CARDS: virgl
+{{- else }}
+{{- if eq .graphicsDriver "AMD" }}
+*/* VIDEO_CARDS: amdgpu radeonsi
+{{- else if eq .graphicsDriver "NVIDIA" }}
+*/* VIDEO_CARDS: nvidia
+{{- else }}
+*/* VIDEO_CARDS: intel
+{{- end }}
+{{- end }}
