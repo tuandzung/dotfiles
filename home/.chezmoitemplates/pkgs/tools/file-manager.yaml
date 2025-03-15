@@ -4,6 +4,9 @@ is_essential: true
 gentoo:
   packages:
     - name: xfce-base/thunar
+      use: |-
+        dev-libs/libdbusmenu gtk3
+        app-crypt/gcr gtk
     - name: xfce-base/thunar-volman
     - name: gnome-base/gvfs
     - name: xfce-extra/thunar-archive-plugin
