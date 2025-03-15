@@ -6,7 +6,7 @@ gentoo:
   packages:
     - name: media-video/pipewire
       use: |-
-        media-video/pipewire sound-server bluetooth pipewire-alsa dbus
+        media-video/pipewire sound-server {{ if .hasBluetooth }}bluetooth{{ end }} pipewire-alsa dbus
       accept_keywords:
         media-video/pipewire ~amd64
     - name: media-video/wireplumber

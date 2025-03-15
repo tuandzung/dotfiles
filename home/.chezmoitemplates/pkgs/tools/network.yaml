@@ -3,6 +3,8 @@ method: os
 gentoo:
   packages:
     - name: net-misc/networkmanager
+      use: |-
+        net-wireless/wpa_supplicant dbus
   hook:
     after: |-
       sudo usermod -aG plugdev $USER
