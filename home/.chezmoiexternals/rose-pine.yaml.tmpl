@@ -1,0 +1,47 @@
+.config/bat/themes/rose-pine.tmTheme:
+  type: file
+  url: https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine.tmTheme
+  refreshPeriod: 168h
+
+{{ if ne .chezmoi.os "darwin" }}
+.local/share/fcitx5/themes/rose-pine:
+  type: archive
+  url: https://github.com/rose-pine/fcitx5/archive/refs/heads/main.zip
+  refreshPeriod: 168h
+  stripComponents: 2
+  include:
+    - rose-pine/*
+
+.local/share/themes/Tep-RP:
+  type: archive
+  url: https://github.com/tuandzung/icons-and-themes/raw/16215ffc92ee84c29cd0b6031e3ab3b46b2d819d/Rosepine-Dark-BL-MB.zip
+  exact: true
+  refreshPeriod: 168h
+  stripComponents: 1
+  include:
+    - Rosepine-Dark/gtk-*/*
+    - Rosepine-Dark/gtk-*/assets/**
+
+.local/share/icons/Tep-RP-Cursor:
+  type: archive
+  url: https://github.com/ndom91/rose-pine-hyprcursor/releases/download/v0.3.2/rose-pine-cursor-hyprcursor_0.3.2.tar.gz
+  exact: true
+  refreshPeriod: 168h
+  include:
+    - ./hyprcursors/*
+    - ./manifest.hl
+
+.local/share/icons/Tep-RP-Cursor/cursors:
+  type: archive
+  url: https://github.com/rose-pine/cursor/releases/latest/download/BreezeX-RosePine-Linux.tar.xz
+  exact: true
+  refreshPeriod: 168h
+  stripComponents: 2
+  include:
+    - BreezeX-RosePine-Linux/cursors/*
+{{ end }}
+
+.config/zellij/themes/rose-pine.kdl:
+  type: file
+  url: https://raw.githubusercontent.com/rose-pine/zellij/refs/heads/main/dist/rose-pine.kdl
+  refreshPeriod: 168h
