@@ -3,4 +3,6 @@ etc/default
 etc/greetd
 etc/hostname
 usr
+{{ else if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") }}
+etc/conf.d/display-manager
 {{- end }}
