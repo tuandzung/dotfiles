@@ -41,6 +41,15 @@ gentoo:
       use: |-
         sys-auth/polkit-qt qt6
         dev-qt/qtgui egl
+    - name: sys-auth/seatd
+      use: |-
+        sys-auth/seatd builtin server
+  hook:
+    after:
+      sudo gpasswd -a $USER video
+      sudo gpasswd -a $USER seat
+      sudo rc-update add seatd default
+      sudo rc-service seatd restart
 arch:
   packages:
     - name: hyprland
