@@ -7,3 +7,6 @@
 [submodule "home/dot_config/firefox/profiles/personal"]
 	path = home/dot_config/firefox/profiles/personal
 	url = git@github.com:tuandzung/FirefoxPersonal.git
+[submodule "home/.chezmoitemplates/firefox/chrome/lepton"]
+	path = home/.chezmoitemplates/firefox/chrome/lepton
+	url = git@github.com:black7375/Firefox-UI-Fix.git
