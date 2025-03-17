@@ -4,3 +4,6 @@
 [submodule "modules/icons"]
 	path = modules/icons
 	url = git@github.com:tuandzung/icons.git
+[submodule "home/dot_config/firefox/profiles/personal"]
+	path = home/dot_config/firefox/profiles/personal
+	url = git@github.com:tuandzung/FirefoxPersonal.git
