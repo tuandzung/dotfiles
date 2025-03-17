@@ -3,12 +3,12 @@ method: os
 is_essential: true
 gentoo:
   packages:
+    {{- if eq .kind "pc"}}
+    - name: sys-libs/libunwind
+    {{- end }}
     - name: www-client/firefox
       use: |-
-        www-client/firefox pulseaudio dbus
-        # required by www-client/firefox-115.6.0::gentoo[system-libvpx]
-        # required by firefox (argument)
-        >=media-libs/libvpx-1.13.1-r1 postproc
+        www-client/firefox pulseaudio dbus hardened
 arch:
   packages:
     - name: firefox
