@@ -1,0 +1,8 @@
+/** Import Lepton stylesheet (Chrome) *****************************************/
+@import url("lepton/css/leptonChrome.css");
+@import url("tabbar/window_control_placeholder_support.css");
+{{- if eq .chezmoi.os "darwin" }}
+@import url("tabbar/hide_tabs_toolbar_osx.css");
+{{- else }}
+@import url("tabbar/hide_tabs_toolbar.css");
+{{- end }}
