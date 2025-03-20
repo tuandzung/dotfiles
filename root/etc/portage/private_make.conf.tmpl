@@ -13,18 +13,20 @@ FFLAGS="${COMMON_FLAGS}"
 RUSTFLAGS="${RUSTFLAGS} -C target-cpu=native -C opt-level=3"
 
 # Portage
-{{- if eq .kind "vm" }}
-MAKEOPTS="-j4 -l4"
-EMERGE_DEFAULT_OPTS="${EMERGE_DEFAULT_OPTS} --ask --verbose --verbose-conflicts --with-bdeps=y --complete-graph=y --keep-going --jobs=4 --load-average=4.0"
-{{- else }}
-MAKEOPTS="-j12 -l12"
-EMERGE_DEFAULT_OPTS='${EMERGE_DEFAULT_OPTS} --ask --verbose --verbose-conflicts --with-bdeps=y --complete-graph=y --keep-going --jobs=12 --load-average=12.0'
-{{- end }}
+{{- $proc := output "awk" "/MemTotal:/ {printf \"%i\", $2/1024/1024/2}" "/proc/meminfo" | trim | int }}
+MAKEOPTS="-j{{ $proc }} -l{{ $proc }}"
+EMERGE_DEFAULT_OPTS='${EMERGE_DEFAULT_OPTS} --ask --verbose --verbose-conflicts --with-bdeps=y --complete-graph=y --keep-going --jobs={{ $proc }} --load-average={{ $proc }}.0'
 ACCEPT_LICENSE="*"
 ACCEPT_KEYWORDS="amd64"
-USE="wayland dist-kernel {{ if .hasSound }}pulseaudio{{ end }} -systemd -qtwebengine -webengine {{ if not .hasBluetooth }}-bluetooth{{ end }}"
-FEATURES="candy fixlafiles unmerge-orphans noman nodoc noinfo notitles parallel-install parallel-fetch clean-logs"
+USE="dist-kernel
+lto pgo zstd lz4 snappy llvm-libunwind
+{{ if .hasSound }}pipewire alsa pulseaudio{{ end }}
+screencast vulkan opencl opengl
+-systemd -qtwebengine -webengine {{ if not .hasBluetooth }}-bluetooth{{ end }} -handbook"
+FEATURES="candy fixlafiles unmerge-orphans notitles parallel-install parallel-fetch clean-logs"
 PORTAGE_SCHEDULING_POLICY="idle"
+
+INPUT_DEVICES="libinput"
 
 # NOTE: This stage was built with the bindist USE flag enabled
 
@@ -32,13 +34,13 @@ PORTAGE_SCHEDULING_POLICY="idle"
 # Please keep this setting intact when reporting bugs.
 LC_MESSAGES=C.utf8
 
-GENTOO_MIRRORS="https://mirror.rackspace.com/gentoo/ \
+GENTOO_MIRRORS="http://distfiles.gentoo.org \
+    https://mirror.rackspace.com/gentoo/ \
     http://mirror.rackspace.com/gentoo/ \
     rsync://mirror.rackspace.com/gentoo/ \
     https://mirror.freedif.org/gentoo \
     http://mirror.freedif.org/gentoo \
     rsync://mirror.freedif.org/gentoo \
     https://mirrors.aliyun.com/gentoo/ \
-    http://mirrors.aliyun.com/gentoo/ \
-    http://distfiles.gentoo.org"
+    http://mirrors.aliyun.com/gentoo/"
 GRUB_PLATFORMS="efi-64"

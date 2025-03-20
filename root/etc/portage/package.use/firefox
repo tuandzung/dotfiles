@@ -1,0 +1,2 @@
+www-client/firefox pulseaudio dbus openh264 system-png -X -telemetry -gmp-autoupdate
+media-libs/libpng apng
