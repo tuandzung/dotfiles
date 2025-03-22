@@ -1,0 +1,15 @@
+name: gh
+method: binary
+github:
+  repo: cli/cli
+  version: latest
+  release_asset: gh_%s_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz
+archive:
+  strip_components: 2
+  paths:
+    - gh_%s_{{ .chezmoi.os }}_{{ .chezmoi.arch }}/bin/gh
+hook:
+  after: |
+    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
+    mkdir -p "$MAN_DIR/man1"
+    tar $param --strip=4 -C "$MAN_DIR/man1" --wildcards gh_%s_{{ .chezmoi.os }}_{{ .chezmoi.arch }}/share/man/man1/*

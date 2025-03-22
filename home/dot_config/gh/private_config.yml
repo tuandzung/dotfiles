@@ -1,0 +1,12 @@
+# The current version of the config schema
+version: 1
+git_protocol: ssh
+editor: nvim
+prompt: disabled
+prefer_editor_prompt: enabled
+pager: delta --side-by-side
+aliases:
+  co: pr checkout
+  ci: workflow run
+http_unix_socket:
+browser:
