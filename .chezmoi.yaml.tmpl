@@ -20,6 +20,8 @@ data:
   hostname: {{ $hostname }}
   {{ $kind := promptStringOnce . "kind" "What kind of this machine is it (pc/vm/laptop/...)" "pc" | quote }}
   kind: {{ $kind }}
+  {{ $dualBoot := promptBoolOnce . "dualBoot" "Does this machine have dual boot (y/n)" false }}
+  dualBoot: {{ $dualBoot }}
   {{ $hasSound := promptBoolOnce . "hasSound" "Does this machine have a sound card (y/n)" false }}
   hasSound: {{ $hasSound }}
   {{ $hasBluetooth := promptBoolOnce . "hasBluetooth" "Does this machine have a bluetooth device (y/n)" false }}

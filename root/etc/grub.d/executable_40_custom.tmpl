@@ -1,0 +1,23 @@
+#!/bin/sh
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the 'exec tail' line above.
+{{- if .dualBoot }}
+menuentry "Windows 11" {
+    insmod part_gpt
+    insmod search_fs_uuid
+    insmod chain
+    search --fs-uuid --no-floppy --set=root 5421-DC00
+    chainloader ($root)/EFI/MICROSOFT/BOOT/bootmgfw.efi
+}
+{{- end }}
+menuentry "System Rescue" {
+  iso_path="/boot/iso/systemrescue.iso"
+  export iso_path
+  search --set=root --file $iso_path
+  rmmod tpm
+  loopback loop $iso_path
+  set root=(loop)
+  configfile /boot/grub/loopback.cfg
+}
