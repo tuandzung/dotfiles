@@ -14,3 +14,6 @@
 	path = home/dot_config/firefox/profiles/work
 	url = git@github.com:tuandzung/FirefoxPersonal.git
 	branch = work
+[submodule "home/Wallpapers"]
+	path = home/Wallpapers
+	url = git@github.com:tuandzung/wallpapers.git

@@ -2,13 +2,3 @@
   type: file
   url: https://raw.githubusercontent.com/neuromask/catppuccin-linux-theme/refs/heads/main/assets/linuxpuccinn.png
   refreshPeriod: 168h
-
-Pictures/Wallpapers/display1.png:
-  type: file
-  url: https://raw.githubusercontent.com/tuandzung/awesome-config/5832d0c73a2f0d83524d62ca05bb046f4729a72c/theme/wall.png
-  refreshPeriod: 168h
-
-Pictures/Wallpapers/display2.png:
-  type: file
-  url: https://raw.githubusercontent.com/tuandzung/awesome-config/office/theme/wall.png
-  refreshPeriod: 168h
