@@ -1,12 +1,16 @@
 [submodule "nvim"]
 	path = home/dot_config/nvim
 	url = git@github.com:tuandzung/vim-config.git
-[submodule "modules/icons"]
+[submodule "icons"]
 	path = modules/icons
 	url = git@github.com:tuandzung/icons.git
-[submodule "home/dot_config/firefox/profiles/personal"]
+[submodule "firefox-personal"]
 	path = home/dot_config/firefox/profiles/personal
 	url = git@github.com:tuandzung/FirefoxPersonal.git
-[submodule "home/.chezmoitemplates/firefox/chrome/lepton"]
+[submodule "lepton"]
 	path = home/.chezmoitemplates/firefox/chrome/lepton
 	url = git@github.com:black7375/Firefox-UI-Fix.git
+[submodule "firefox-work"]
+	path = home/dot_config/firefox/profiles/work
+	url = git@github.com:tuandzung/FirefoxPersonal.git
+	branch = work
