@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="startpage for firefox" />
+    <link
+      rel="stylesheet"
+      href="https://www.nerdfonts.com/assets/css/webfont.css"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Startpage</title>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="clock-time"></div>
+      <div class="clock-date"><i class="nf nf-fa-calendar"></i></div>
+    </div>
+    <h1 class="welcome-message">Have a nice day, tuandzung!</h1> 
+
+    <!-- Search bar container -->
+    <div class="searching">
+      <!-- Search form that submits to Google -->
+      <!-- Label for the search bar, styled as a terminal prompt -->
+      <div class="starter">
+      <span class="user">{{- .chezmoi.username }}</span>
+      <span class="host">@{{- .hostname }}</span>
+      <span class="term">:~$</span>
+      </div>
+      <!-- Input field for searching -->
+      <input type="text" class="search-input" placeholder="" autocomplete="off" autofocus>
+      <div class="shortcut-hints">
+        <span><i class="nf nf-fa-youtube"></i>y: YouTube</span>
+        <span><i class="nf nf-fa-reddit"></i>r: Reddit</span>
+        <span><i class="nf nf-fa-github"></i>gh: GitHub</span>
+      </div>
+    </div>
+
+    <main>
+      <div class="container general-container">
+        <h2><i class="nf nf-fae-tools"></i>General</h2>
+        <a href="https://chat.deepseek.com"><i class="nf nf-fa-robot"></i>DeepSeek</a>
+        <a href="https://www.youtube.com"
+          ><i class="nf nf-fa-youtube"></i>YouTube</a
+        >
+        <a href="https://mail.google.com"
+          ><i class="nf nf-fa-envelope"></i>Gmail</a
+        >
+      </div>
+      <div class="container social-container">
+        <h2><i class="nf nf-fa-users"></i>Social</h2>
+        <a href="https://www.facebook.com/"
+          ><i class="nf nf-fa-facebook"></i>Facebook</a
+        >
+        <a href="https://www.reddit.com"
+          ><i class="nf nf-fa-reddit"></i>Reddit</a
+        >
+        <a href="https://voz.vn"
+          ><i class="nf nf-md-forum"></i>VOZ</a
+        >
+      </div>
+      <div class="container dev-container">
+        <h2><i class="nf nf-fa-code"></i>Dev</h2>
+        <a href="https://github.com"><i class="nf nf-fa-github"></i>GitHub</a>
+        <a href="https://wiki.archlinux.org"
+          ><i class="nf nf-fa-terminal"></i>Arch Wiki</a
+        >
+        <a href="https://stackoverflow.com/questions"
+          ><i class="nf nf-fa-stack_overflow"></i>Stack Overflow</a
+        >
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
