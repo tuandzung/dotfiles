@@ -28,6 +28,8 @@ elif command -v emerge &> /dev/null; then
     app-portage/portage-utils \
     app-eselect/eselect-repository \
     app-portage/cpuid2cpuflags
+  sudo eselect repository add tep git https://github.com/tuandzung/gentoo-overlay.git
+  sudo emerge --sync tep
 fi
 
 git clone https://github.com/tuandzung/dotfiles.git ~/Dotfiles
