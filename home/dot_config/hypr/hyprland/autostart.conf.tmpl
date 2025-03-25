@@ -58,12 +58,9 @@ exec-once = firefox -P Work
 # Email client
 exec-once = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} -P Work
 
-# Spotify
-exec-once = spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
-
 # Chat
-exec-once = slack --enable-features=WebRTCPipeWireCapturer --ozone-platform=wayland --enable-wayland-ime --wayland-text-input-version=3
-exec-once = discord
+exec-once = slack --enable-webrtc-pipewire-capturer --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime --ozone-platform-hint=auto
+exec-once = ferdium{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} --enable-webrtc-pipewire-capturer --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime --ozone-platform-hint=auto
 
 # Torrent
 exec-once = qbittorrent
