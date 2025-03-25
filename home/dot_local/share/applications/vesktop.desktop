@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Vesktop
+StartupWMClass=vesktop
+Comment=All-in-one voice and text chat for gamers that's free, secure, and works on both your desktop and phone.
+GenericName=Internet Messenger
+Exec=/usr/bin/vesktop-bin --enable-webrtc-pipewire-capturer --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime --ozone-platform-hint=auto %U
+Icon=discord
+Type=Application
+Categories=Network;InstantMessaging;
+Path=/usr/bin
