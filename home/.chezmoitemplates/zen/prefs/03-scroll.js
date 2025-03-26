@@ -1,0 +1,12 @@
+user_pref("apz.overscroll.enabled", true);
+user_pref("general.smoothScroll", true);
+user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 16);
+user_pref("general.smoothScroll.msdPhysics.enabled", true);
+user_pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant", 500);
+user_pref("general.smoothScroll.msdPhysics.regularSpringConstant", 500);
+user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS", 25);
+user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio", "2.0");
+user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant", 250);
+user_pref("general.smoothScroll.currentVelocityWeighting", "1.0");
+user_pref("general.smoothScroll.stopDecelerationWeighting", "1.0");
+user_pref("mousewheel.default.delta_multiplier_y", 275);
