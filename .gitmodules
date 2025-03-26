@@ -17,6 +17,7 @@
 [submodule "wallpapers"]
 	path = home/Wallpapers
 	url = git@github.com:tuandzung/wallpapers.git
-[submodule "home/dot_config/zen/profiles/personal"]
+[submodule "zen-personal"]
 	path = home/dot_config/zen/profiles/personal
 	url = git@github.com:tuandzung/FirefoxPersonal.git
+  branch = zen-personal
