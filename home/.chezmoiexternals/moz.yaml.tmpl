@@ -2,3 +2,7 @@
   type: file
   url: 'https://raw.githubusercontent.com/arkenfox/user.js/master/user.js'
   refreshPeriod: 168h
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/zen/profiles/personal/extensions/tridactyl.vim.betas@cmcaine.co.uk.xpi:
+  type: file
+  url: 'https://tridactyl.cmcaine.co.uk/betas/tridactyl-latest.xpi'
+  refreshPeriod: 168h
