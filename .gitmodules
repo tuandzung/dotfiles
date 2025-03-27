@@ -21,3 +21,6 @@
 	path = home/dot_config/zen/profiles/personal
 	url = git@github.com:tuandzung/FirefoxPersonal.git
   branch = zen-personal
+[submodule "fx-autoconfig"]
+	path = home/.chezmoitemplates/firefox/chrome/fx-autoconfig
+	url = git@github.com:MrOtherGuy/fx-autoconfig.git
