@@ -29,3 +29,11 @@ data:
   {{ $graphicsChoices := list "NVIDIA" "AMD" "INTEL" }}
   {{ $graphicsDriver := promptChoiceOnce . "graphicsDriver" "Which graphics card this machine uses" $graphicsChoices "INTEL" | quote }}
   graphicsDriver: {{ $graphicsDriver }}
+
+hooks:
+  diff:
+    pre:
+      command: "bash"
+      args:
+        - -c
+        - bash {{ .chezmoi.homeDir }}/.config/update_browser_profiles.sh
