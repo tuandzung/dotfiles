@@ -1,133 +1,167 @@
 {
-    // "output": "DP-1",
-    "layer": "top",
-    "position": "top",
-    "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/window",
-        "custom/music"
-    ],
-    "modules-right": [
-        "pulseaudio",
-        "network",
-        "battery",
-        "cpu",
-        "temperature",
-        "memory",
-        "disk",
-        "tray",
-        "clock",
-    ],
-    "hyprland/workspaces": {
-        "persistent-workspaces": {
-            "DP-1": ["term", "web", "mail", "chat", "media", "games", "office", "vm", "others"],
-        },
-        "sort-by": "id",
-        "format": " {icon} ",
-        "format-icons": {
-            "term": "",
-            "web": "",
-            "mail": "",
-            "office": "󰏆",
-            "chat": "",
-            "media": "",
-            "games": "󰮃",
-            "vm": "",
-            "others": "󰣆",
-        },
+  // "output": "DP-1",
+  "layer": "top",
+  "position": "top",
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/window",
+    "custom/music"
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "network",
+    "battery",
+    "cpu",
+    "temperature",
+    "memory",
+    "disk",
+    "tray",
+    "clock",
+  ],
+  "hyprland/workspaces": {
+    "persistent-workspaces": {
+      "DP-1": [
+        "term",
+        "web",
+        "mail",
+        "chat",
+        "media",
+        "games",
+        "office",
+        "vm",
+        "others"
+      ],
     },
-    "hyprland/window": {
-        "format": "{title}",
-        "rewrite": {
-            "(.*) — Mozilla Firefox": "󰈹  $1",
-            "Zellij (.*)": "  Zellij: $1",
-            "(.*) - Betterbird": "  $1",
-            "(.*) - Discord": "  $1",
-            "(.*) - Slack": "  $1",
-            "Spotify (.*)": "󰓇  Spotify",
-            "qBittorrent (.*)": "  qBittorrent",
-            "Telegram (.*)": "  Telegram $1",
-            "(.*) - mpv": "  $1",
-        },
-        "separate-outputs": true
+    "sort-by": "id",
+    "format": " {icon} ",
+    "format-icons": {
+      "term": "",
+      "web": "",
+      "mail": "",
+      "office": "󰏆",
+      "chat": "",
+      "media": "",
+      "games": "󰮃",
+      "vm": "",
+      "others": "󰣆",
     },
-    "cpu": {
-        "format": " {usage:2}%",
-        "tooltip": false,
-        "interval": 1
+  },
+  "hyprland/window": {
+    "format": "{title}",
+    "rewrite": {
+      "(.*) — Mozilla Firefox": "󰈹  $1",
+      "(.*) — Zen Browser": "󰈹  $1",
+      "Zellij (.*)": "  Zellij: $1",
+      "(.*) - Betterbird": "  $1",
+      "(.*) - Discord": "  $1",
+      "(.*) - Slack": "  $1",
+      "Spotify (.*)": "󰓇  Spotify",
+      "qBittorrent (.*)": "  qBittorrent",
+      "Telegram (.*)": "  Telegram $1",
+      "(.*) - mpv": "  $1",
     },
-    "memory": {
-        "format": "  {:2}%",
-        "interval": 1
+    "separate-outputs": true
+  },
+  "cpu": {
+    "format": " {usage:2}%",
+    "tooltip": false,
+    "interval": 1
+  },
+  "memory": {
+    "format": "  {:2}%",
+    "interval": 1
+  },
+  "temperature": {
+    "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+    "critical-threshold": 95,
+    "format": "{icon} {temperatureC:2}°C",
+    "format-icons": [
+      ""
+    ]
+  },
+  "disk": {
+    "interval": 3,
+    "format": "  {free} ",
+    "path": "/home"
+  },
+  "network": {
+    "format": " {bandwidthUpBits}  {bandwidthDownBits}",
+  },
+  "tray": {
+    "icon-size": 16,
+    "spacing": 12
+  },
+  "custom/music": {
+    "format": "  {}",
+    "escape": true,
+    "interval": 5,
+    "tooltip": false,
+    "exec": "playerctl metadata --format='{{ title }} - {{ artist }}'",
+    "on-click": "playerctl play-pause",
+    "max-length": 50
+  },
+  "clock": {
+    "timezone": "Asia/Ho_Chi_Minh",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "  {:%H:%M}",
+    "format-alt": "󰃭  {:%d/%m/%Y}"
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{icon}",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
     },
-    "temperature": {
-        "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
-        "critical-threshold": 95,
-        "format": "{icon} {temperatureC:2}°C",
-        "format-icons": [
-        ""
-        ]
-    },
-    "disk": {
-        "interval": 3,
-        "format": "  {free} ",
-        "path": "/home"
-    },
-    "network": {
-        "format": " {bandwidthUpBits}  {bandwidthDownBits}",
-    },
-    "tray": {
-        "icon-size": 16,
-        "spacing": 12
-    },
-    "custom/music": {
-        "format": "  {}",
-        "escape": true,
-        "interval": 5,
-        "tooltip": false,
-        "exec": "playerctl metadata --format='{{ title }} - {{ artist }}'",
-        "on-click": "playerctl play-pause",
-        "max-length": 50
-    },
-    "clock": {
-        "timezone": "Asia/Ho_Chi_Minh",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format": "  {:%H:%M}",
-        "format-alt": "󰃭  {:%d/%m/%Y}"
-    },
-    "backlight": {
-        "device": "intel_backlight",
-        "format": "{icon}",
-        "format-icons": ["", "", "", "", "", "", "", "", ""]
-    },
-    "battery": {
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon}",
-        "format-charging": "",
-        "format-plugged": "",
-        "format-alt": "{icon}",
-        "format-icons": ["", "",  "", "", "", "", "", "", "", "", "", ""]
-    },
-    "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-bluetooth": "{volume}% {icon}",
-        "format-bluetooth-muted": "{icon}",
-        "format-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": [
-                "",
-                "",
-                ""
-            ]
+    "format": "{icon}",
+    "format-charging": "",
+    "format-plugged": "",
+    "format-alt": "{icon}",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-bluetooth": "{volume}% {icon}",
+    "format-bluetooth-muted": "{icon}",
+    "format-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
     },
     "on-click": "pavucontrol"
   },

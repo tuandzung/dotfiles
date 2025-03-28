@@ -52,8 +52,8 @@ exec-once = fcitx5 -d --replace
 exec-once = kitty
 
 # Browser
-exec-once = firefox -P Personal
-exec-once = firefox -P Work
+exec-once = zen-browser -P Personal
+exec-once = zen-browser -P Work
 
 # Email client
 exec-once = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} -P Work
