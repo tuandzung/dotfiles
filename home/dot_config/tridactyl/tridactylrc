@@ -2,6 +2,8 @@
 " Core settings
 "------------------------------------------------------------------------------
 
+set browser zen-browser
+
 " Vimperator-like hinting mode.
 set hintfiltermode vimperator-reflow
 set hintchars neiohtsrad
@@ -70,6 +72,16 @@ bind --mode=visual t composite js document.getSelection().toString() | fillcmdli
 
 " Open right click menu on links
 bind ;C composite hint_focus; !s xdotool key Menu
+
+" Open videos in MPV
+bind ,v composite js document.location.href | shellescape | js -p 'mpv ' + JS_ARG | !s
+bind ;v composite hint -W js hints.elements.href | shellescape | js -p 'mpv ' + JS_ARG | !s
+
+" Git{Hub,Lab} git clone via SSH yank
+bind yg composite js "git clone " + document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git") | clipboard yank
+ 
+" As above but execute it and open terminal in folder
+bind ,g js let uri = document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git"); tri.native.run("cd ~/Documents; git clone " + uri + "; cd \"$(basename \"" + uri + "\" .git)\"; st")
 
 " Use Firefox default keybind
 " search
