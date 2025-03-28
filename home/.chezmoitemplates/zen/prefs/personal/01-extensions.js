@@ -6,6 +6,7 @@ user_pref("extensions.webextensions.ExtensionStorageIDB.migrated.jid1-xUfzOsOFlz
 user_pref("extensions.webextensions.ExtensionStorageIDB.migrated.screenshots@mozilla.org", true);
 user_pref("extensions.webextensions.ExtensionStorageIDB.migrated.skipredirect@sblask", true);
 user_pref("extensions.webextensions.ExtensionStorageIDB.migrated.suziwen1@gmail.com", true);
+user_pref("extensions.webextensions.ExtensionStorageIDB.migrated.tridactyl.vim.betas.nonewtab@cmcaine.co.uk", true);
 user_pref("extensions.webextensions.ExtensionStorageIDB.migrated.tridactyl.vim.betas@cmcaine.co.uk", true);
 user_pref("extensions.webextensions.ExtensionStorageIDB.migrated.uBlock0@raymondhill.net", true);
 user_pref("extensions.webextensions.ExtensionStorageIDB.migrated.voznext@nmtrung.com", true);
