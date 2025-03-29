@@ -2,6 +2,10 @@
   type: file
   url: 'https://raw.githubusercontent.com/arkenfox/user.js/master/user.js'
   refreshPeriod: 168h
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/.chezmoitemplates/thunderbird/prefs/00-arkenfox.js:
+  type: file
+  url: https://raw.githubusercontent.com/HorlogeSkynet/thunderbird-user.js/master/user.js
+  refreshPeriod: 168h
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/zen/profiles/personal/extensions/tridactyl.vim.betas@cmcaine.co.uk.xpi:
   type: file
   url: 'https://tridactyl.cmcaine.co.uk/betas/tridactyl-latest.xpi'
@@ -17,4 +21,12 @@
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/firefox/profiles/work/extensions/tridactyl.vim.betas@cmcaine.co.uk.xpi:
   type: file
   url: 'https://tridactyl.cmcaine.co.uk/betas/tridactyl-latest.xpi'
+  refreshPeriod: 168h
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/thunderbird/profiles/personal/extensions/{2ab1b709-ba03-4361-abf9-c50b964ff75d}.xpi:
+  type: file
+  url: 'https://github.com/catppuccin/thunderbird/raw/refs/heads/main/themes/macchiato/macchiato-sapphire.xpi'
+  refreshPeriod: 168h
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/thunderbird/profiles/work/extensions/{2ab1b709-ba03-4361-abf9-c50b964ff75d}.xpi:
+  type: file
+  url: 'https://github.com/catppuccin/thunderbird/raw/refs/heads/main/themes/macchiato/macchiato-sapphire.xpi'
   refreshPeriod: 168h

@@ -2,7 +2,7 @@
 set -Eeou pipefail
 source {{ .chezmoi.sourceDir }}/../scripts/logger.sh
 
-if [ $(ps aux | grep firefox | wc -l) -gt 0 ]; then
+if [ $(ps aux | grep firefox | wc -l) -gt 1 ]; then
   _notice "Update firefox settings"
   for profile in "personal" "work"; do
     if [ -f ~/.config/firefox/profiles/${profile}/prefs.js ]; then
@@ -35,7 +35,7 @@ if [ $(ps aux | grep firefox | wc -l) -gt 0 ]; then
   _success "Update firefox settings"
 fi
 
-if [ $(ps aux | grep zen-browser | wc -l) -gt 0 ]; then
+if [ $(ps aux | grep zen-browser | wc -l) -gt 1 ]; then
   _notice "Update zen settings"
   for profile in "personal" "work"; do
     if [ -f ~/.config/zen/profiles/${profile}/prefs.js ]; then
@@ -66,4 +66,30 @@ if [ $(ps aux | grep zen-browser | wc -l) -gt 0 ]; then
     chezmoi add ~/.config/zen/profiles/${profile}/storage/default/moz-extension+++* --create || true
   done
   _success "Update zen settings"
+fi
+
+if [ $(ps aux | grep betterbird | wc -l) -gt 1 ]; then
+  _notice "Update thunderbird settings"
+  for profile in "personal" "work"; do
+    if [ -f ~/.config/thunderbird/profiles/${profile}/prefs.js ]; then
+      _progress "Update addon setting for profile ${profile}"
+      grep "extensions.webextensions.uuids" ~/.config/thunderbird/profiles/${profile}/prefs.js > {{ .chezmoi.sourceDir }}/.chezmoitemplates/thunderbird/prefs/${profile}/04-extensions.js || true
+      grep "extensions.webextensions.ExtensionStorageIDB.migrated" ~/.config/thunderbird/profiles/${profile}/prefs.js >> {{ .chezmoi.sourceDir }}/.chezmoitemplates/thunderbird/prefs/${profile}/04-extensions.js || true
+      grep "privacy.userContext.extension" ~/.config/thunderbird/profiles/${profile}/prefs.js >> {{ .chezmoi.sourceDir }}/.chezmoitemplates/thunderbird/prefs/${profile}/04-extensions.js || true
+    fi
+
+    _progress "Update extensions data for profile ${profile}"
+    chezmoi add ~/.config/thunderbird/profiles/${profile}/extensions || true
+    chezmoi add ~/.config/thunderbird/profiles/${profile}/addons.json --create || true
+    chezmoi add ~/.config/thunderbird/profiles/${profile}/addonStartup.json.lz4 --create || true
+    chezmoi add ~/.config/thunderbird/profiles/${profile}/extension*.json --create || true
+
+    _progress "Update search engines for profile ${profile}"
+    chezmoi add ~/.config/thunderbird/profiles/${profile}/search.json.mozlz4 --create || true
+
+    _progress "Update storage data for profile ${profile}"
+    chezmoi add ~/.config/thunderbird/profiles/${profile}/storage.sqlite --create || true
+    chezmoi add ~/.config/thunderbird/profiles/${profile}/storage/default/moz-extension+++* --create || true
+  done
+  _success "Update thunderbird settings"
 fi

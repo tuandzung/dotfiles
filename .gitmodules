@@ -28,3 +28,10 @@
 [submodule "fx-autoconfig"]
 	path = home/.chezmoitemplates/firefox/chrome/fx-autoconfig
 	url = git@github.com:MrOtherGuy/fx-autoconfig.git
+[submodule "thunderbird-personal"]
+	path = home/dot_config/thunderbird/profiles/personal
+	url = git@github.com:tuandzung/Thunderbird.git
+[submodule "thunderbird-work"]
+	path = home/dot_config/thunderbird/profiles/work
+	url = git@github.com:tuandzung/Thunderbird.git
+  branch = work
