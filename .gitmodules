@@ -1,37 +1,48 @@
 [submodule "nvim"]
 	path = home/dot_config/nvim
 	url = git@github.com:tuandzung/vim-config.git
+  shallow = true
 [submodule "icons"]
 	path = modules/icons
 	url = git@github.com:tuandzung/icons.git
+  shallow = true
 [submodule "firefox-personal"]
 	path = home/dot_config/firefox/profiles/personal
 	url = git@github.com:tuandzung/FirefoxPersonal.git
+  shallow = true
 [submodule "lepton"]
 	path = home/.chezmoitemplates/firefox/chrome/lepton
 	url = git@github.com:black7375/Firefox-UI-Fix.git
+  shallow = true
 [submodule "firefox-work"]
 	path = home/dot_config/firefox/profiles/work
 	url = git@github.com:tuandzung/FirefoxPersonal.git
 	branch = work
+  shallow = true
 [submodule "wallpapers"]
 	path = home/Wallpapers
 	url = git@github.com:tuandzung/wallpapers.git
+  shallow = true
 [submodule "zen-personal"]
 	path = home/dot_config/zen/profiles/personal
 	url = git@github.com:tuandzung/FirefoxPersonal.git
   branch = zen-personal
+  shallow = true
 [submodule "zen-work"]
 	path = home/dot_config/zen/profiles/work
 	url = git@github.com:tuandzung/FirefoxPersonal.git
   branch = zen-work
+  shallow = true
 [submodule "fx-autoconfig"]
 	path = home/.chezmoitemplates/firefox/chrome/fx-autoconfig
 	url = git@github.com:MrOtherGuy/fx-autoconfig.git
+  shallow = true
 [submodule "thunderbird-personal"]
 	path = home/dot_config/thunderbird/profiles/personal
 	url = git@github.com:tuandzung/Thunderbird.git
+  shallow = true
 [submodule "thunderbird-work"]
 	path = home/dot_config/thunderbird/profiles/work
 	url = git@github.com:tuandzung/Thunderbird.git
   branch = work
+  shallow = true
