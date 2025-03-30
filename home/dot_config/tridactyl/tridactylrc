@@ -74,8 +74,8 @@ bind --mode=visual t composite js document.getSelection().toString() | fillcmdli
 bind ;C composite hint_focus; !s xdotool key Menu
 
 " Open videos in MPV
-bind ,v composite js document.location.href | shellescape | js -p 'mpv ' + JS_ARG | !s
-bind ;v composite hint -W js hints.elements.href | shellescape | js -p 'mpv ' + JS_ARG | !s
+bind ,v composite js document.location.href | shellescape | js -p 'mpv --ytdl ' + JS_ARG | !s
+bind ;v composite hint -W js hints.elements.href | shellescape | js -p 'mpv --ytdl ' + JS_ARG | !s
 
 " Git{Hub,Lab} git clone via SSH yank
 bind yg composite js "git clone " + document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git") | clipboard yank
