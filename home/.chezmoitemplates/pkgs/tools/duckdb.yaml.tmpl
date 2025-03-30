@@ -1,5 +1,5 @@
 name: duckdb-cli
-{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo" "ubuntu") }}
+{{- if and eq .chezmoi.os "linux" }}
 method: binary
 github:
   repo: duckdb/duckdb
@@ -13,9 +13,6 @@ hook:
     mv ~/.local/bin/duckdb_cli-{{ .chezmoi.os }}-{{ .chezmoi.arch }} ~/.local/bin/duckdb-cli
 {{- else }}
 method: os
-arch:
-  packages:
-    - name: duckdb
 macos:
   packages:
     - name: duckdb
