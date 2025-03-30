@@ -29,6 +29,9 @@ data:
   {{ $graphicsChoices := list "NVIDIA" "AMD" "INTEL" }}
   {{ $graphicsDriver := promptChoiceOnce . "graphicsDriver" "Which graphics card this machine uses" $graphicsChoices "INTEL" | quote }}
   graphicsDriver: {{ $graphicsDriver }}
+  {{ $browserChoices := list "ZEN" "FIREFOX" }}
+  {{ $browser := promptChoiceOnce . "browser" "Which browser do you wanna use" $browserChoices "ZEN" | quote }}
+  browser: {{ $browser }}
 
 hooks:
   diff:

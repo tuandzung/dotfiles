@@ -1,3 +1,4 @@
+{{- if eq .browser "FIREFOX" }}
 name: firefox
 method: os
 is_essential: true
@@ -7,8 +8,6 @@ gentoo:
     - name: sys-libs/libunwind
     {{- end }}
     - name: www-client/firefox
-      use: |-
-        www-client/firefox pulseaudio dbus hardened
 arch:
   packages:
     - name: firefox
@@ -19,3 +18,21 @@ macos:
   packages:
     - name: firefox
       cask: true
+{{- else }}
+name: zen-browser
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: www-client/zen-browser
+      repo: edgets
+      accept_keywords: |-
+        www-client/zen-browser ~amd64
+arch:
+  packages:
+    - name: zen-browser-bin
+macos:
+  packages:
+    - name: zen-browser
+      cask: true
+{{- end }}

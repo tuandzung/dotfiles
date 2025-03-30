@@ -20,6 +20,14 @@
 .local/share
 .mozilla
 .thunderbird
+.zen
 {{- else }}
 Library
+{{- if eq .browser "ZEN" }}
+.mozilla
+.config/firefox/profiles
+{{- else }}
+.zen
+.config/zen
+{{- end }}
 {{- end }}
