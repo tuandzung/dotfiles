@@ -7,6 +7,6 @@ gentoo:
     - name: sys-kernel/linux-firmware
 arch:
   packages:
-    - name: linux-hardened
-    - name: linux-hardened-headers
+    - name: linux-zen
+    - name: linux-zen-headers
     - name: linux-firmware
