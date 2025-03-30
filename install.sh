@@ -38,9 +38,9 @@ _install_chezmoi() {
     bin_dir="${HOME}/.local/bin"
     chezmoi="${bin_dir}/chezmoi"
     _notice "Installing chezmoi to '${chezmoi}'"
-    if command -v curl >/dev/null; then
+    if command -v curl > /dev/null; then
       chezmoi_install_script="$(curl -fsSL https://get.chezmoi.io)"
-    elif command -v wget >/dev/null; then
+    elif command -v wget > /dev/null; then
       chezmoi_install_script="$(wget -qO- https://get.chezmoi.io)"
     else
       _error "To install chezmoi, you must have curl or wget."
@@ -85,22 +85,13 @@ _main() {
   echo "sourceDir: \"$(readlink -f "$SETUP_DIR")\"" > "$SETUP_DIR"/home/.chezmoi.yaml.tmpl
   cat "$SETUP_DIR"/.chezmoi.yaml.tmpl >> "$SETUP_DIR"/home/.chezmoi.yaml.tmpl
 
-  ${chezmoi} init -S $SETUP_DIR
+  ${chezmoi} init -S "$SETUP_DIR"
 
   _notice "Apply ssh"
   if [ -n "${DOTFILES_DEBUG-}" ]; then
     ${chezmoi} apply --debug --verbose --dry-run "$HOME/.ssh"
   else
     ${chezmoi} apply "$HOME/.ssh"
-  fi
-
-  _notice "Apply git"
-  if [ -n "${DOTFILES_DEBUG-}" ]; then
-    ${chezmoi} apply --debug --verbose --dry-run "$HOME/.config/git"
-    ${chezmoi} apply --debug --verbose --dry-run "$HOME/.gitconfig"
-  else
-    ${chezmoi} apply "$HOME/.config/git"
-    ${chezmoi} apply "$HOME/.gitconfig"
   fi
 
   _notice "Apply rootmoi"
@@ -113,7 +104,7 @@ _main() {
   fi
 
   _notice "Initialize system configurations"
-  rootmoi init -S $SETUP_DIR/root
+  rootmoi init -S "$SETUP_DIR"/root
 
   _notice "Apply system configurations"
   if [ -n "${DOTFILES_DEBUG-}" ]; then
@@ -131,7 +122,7 @@ _main() {
 
   # Modify remote url of dotfiles
   _notice "Modify remote url of dotfiles"
-  cd $SETUP_DIR
+  cd "$SETUP_DIR"
   git remote set-url origin git@github.com:tuandzung/dotfiles.git
   git config --local include.path .gitconfig
 
