@@ -1,0 +1,12 @@
+#!{{ lookPath "bash" }}
+set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+trap "rm -rf TEMP && _error \"Can't setup Firefox EA\"" ERR
+
+TEMP=$(mktemp -d)
+_notice "Setup EA for Firefox"
+curl -sSL https://github.com/andy-portmen/native-client/releases/latest/download/linux.zip | bsdtar -xvf- -C "$TEMP"
+cd "$TEMP"
+bash install.sh
+rm -rf "$TEMP"
+_success "Setup EA for Firefox done"
