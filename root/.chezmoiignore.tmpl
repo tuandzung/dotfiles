@@ -28,5 +28,7 @@ etc/pacman.conf
 {{- end }}
 {{- if ne .chezmoi.osRelease.id "gentoo" }}
 etc/ntp.conf
+etc/portage
+etc/conf.d
 {{- end }}
 {{- end }}
