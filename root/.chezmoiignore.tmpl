@@ -7,8 +7,13 @@ usr
 etc/conf.d/display-manager
 etc/portage
 usr/lib64/firefox
+etc/ntp.conf
 {{ else if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo") }}
 usr/lib/firefox
+etc/makepkg.conf
+etc/pacman.conf
+etc/pacman.d
+etc/systemd
 {{- end }}
 {{- if eq .browser "ZEN" }}
 usr/lib/firefox
