@@ -19,7 +19,7 @@ elif command -v pacman &> /dev/null; then
     rm -rf /tmp/yay
     sudo pacman -Rscn --noconfirm go
   fi
-  yay -Syu
+  yay -Syu --noconfirm
 elif command -v emerge &> /dev/null; then
   sudo emerge --sync && sudo emerge -uDN \
     dev-vcs/git \
