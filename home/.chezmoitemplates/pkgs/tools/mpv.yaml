@@ -1,0 +1,12 @@
+name: mpv
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: media-video/mpv
+arch:
+  packages:
+    - name: mpv
+macos:
+  packages:
+    - name: mpv
