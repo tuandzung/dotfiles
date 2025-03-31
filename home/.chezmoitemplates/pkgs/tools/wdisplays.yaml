@@ -1,0 +1,11 @@
+name: wdisplays
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-apps/wdisplays
+      accept_keywords: |-
+        gui-apps/wdisplays ~amd64
+arch:
+  packages:
+    - name: wdisplays
