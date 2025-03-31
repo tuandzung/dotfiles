@@ -14,6 +14,7 @@ set browser firefox
 " Vimperator-like hinting mode.
 set hintfiltermode vimperator-reflow
 set hintchars neiohtsrad
+set hintuppercase false
 
 " Open new tabs at the end of the tab list instead of after the current tab.
 " (Remember to also set browser.tabs.insertRelatedAfterCurrent=false in
@@ -36,6 +37,9 @@ set editorcmd kitty nvim
 
 " Defaults to 300ms but I'm a 'move fast and close the wrong tabs' kinda chap
 set hintdelay 100
+
+" Use wl-copy
+set externalclipboardcmd wl-copy
 
 " Equivalent to `set csp clobber` before it was removed. This weakens your
 " defences against cross-site-scripting attacks and other types of
@@ -63,9 +67,30 @@ comclear
 bind J tabprev
 bind K tabnext
 
+" Find
+bind / fillcmdline find
+bind ? fillcmdline find --reverse
+bind n findnext --search-from-view
+bind N findnext --search-from-view --reverse
+bind gn findselect
+bind gN composite findnext --search-from-view --reverse; findselect
+bind ,<Space> nohlsearch
+
+" Close tab
+unbind d
+bind x tabclose
+
 " Backward/forward in history.
 bind h back
 bind l forward
+
+" Scroll line
+bind j scrollline 5
+bind k scrollline -5
+
+" Scroll page
+bind { scrollpage -0.7
+bind } scrollpage 0.7
 
 " Handy multiwindow/multitasking binds
 bind gd tabdetach
@@ -130,3 +155,12 @@ bindurl ^https://github.com gi hint -Vc .AppHeader-searchButton
 set auconcreatecontainer true
 autocontain facebook\.com facebook
 
+"------------------------------------------------------------------------------
+" Search engines
+"------------------------------------------------------------------------------
+set searchurls.ddg https://duckduckgo.com/?q=%s
+set searchurls.gg https://www.google.com/search?q=%s
+set searchurls.yt https://www.youtube.com/results?search_query=%s
+set searchurls.w https://en.wikipedia.org/w/index.php?search=%s&title=Special%3ASearch
+set searchurls.gh https://github.com/search?utf8=%E2%9C%93&q=%s&ref=simplesearch
+set searchurls.glab https://gitlab.com/search?utf8=%E2%9C%93&search=%s
