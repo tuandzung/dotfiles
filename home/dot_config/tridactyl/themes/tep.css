@@ -1,6 +1,6 @@
 :root {
   /* Catppuccin Colors */
-  --bg: #1e2030;
+  --bg: #181926;
   --currentline: #363a4f;
   --fg: #d9e0ee;
   --comment: #5b6078;
@@ -26,17 +26,27 @@
   --tridactyl-url-fg: var(--sapphire);
   --tridactyl-url-bg: var(--bg);
   --tridactyl-highlight-box-bg: var(--currentline);
-  --tridactyl-highlight-box-fg: var(--fg);
   --tridactyl-of-fg: var(--fg);
   --tridactyl-of-bg: var(--currentline);
-  --tridactyl-cmdl-fg: var(--bg);
-  --tridactyl-cmdl-font-family: var(--font);
-  --tridactyl-cmplt-font-family: var(--font);
-  --tridactyl-hintspan-font-family: var(--font);
 
-  /* Hint character tags */
-  --tridactyl-hintspan-fg: var(--bg) !important;
-  --tridactyl-hintspan-bg: var(--peach) !important;
+  --tridactyl-font-family: var(--font);
+
+  --tridactyl-status-font-size: 12px;
+  --tridactyl-status-font-family: var(--font);
+  --tridactyl-status-font-bg: var(--tridactyl-cmdl-bg);
+  --tridactyl-status-border: 2px solid var(--sapphire);
+  --tridactyl-status-border-radius: 4px;
+
+  --tridactyl-header-font-size: 16px;
+
+  --tridactyl-hintspan-fg: var(--bg);
+  --tridactyl-hintspan-bg: var(--peach);
+
+  --tridactyl-cmdl-fg: var(--mauve);
+  --tridactyl-cmdl-font-size: 1.5rem;
+  --tridactyl-cmplt-option-height: 1.9em;
+
+  --tridactyl-border-radius: 4px;
 
   /* Element Highlights */
   --tridactyl-hint-active-fg: none;
@@ -46,149 +56,101 @@
   --tridactyl-hint-outline: none;
 }
 
-#command-line-holder {
+:root.TridactylOwnNamespace {
+  scrollbar-width: thin;
+}
+
+:root.TridactylOwnNamespace a {
+  color: var(--blue);
+}
+
+:root.TridactylOwnNamespace code {
+  background-color: var(--bg);
+  padding: 3px 7px;
+}
+
+:root #command-line-holder {
   order: 1;
   border: 2px solid var(--lavender);
-  background: var(--tridactyl-bg);
 }
 
-#tridactyl-input {
-  padding: 1rem;
-  color: var(--tridactyl-fg);
-  width: 90%;
-  font-size: 1.5rem;
-  line-height: 1.5;
-  background: var(--tridactyl-bg);
-  padding-left: unset;
+:root #command-line-holder,
+:root #tridactyl-input {
+  border-radius: var(--tridactyl-border-radius) !important;
+}
+
+:root #tridactyl-colon::before {
+  content: "";
+}
+
+:root #tridactyl-input {
+  width: 96%;
   padding: 1rem;
 }
 
-#completions table {
-  font-size: 0.8rem;
+:root #completions table {
   font-weight: 200;
-  border-spacing: 0;
   table-layout: fixed;
-  padding: 1rem 0;
-  /* padding-top: 1rem; */
-  /* padding-bottom: 1rem; */
+  padding: 1rem;
+  padding-top: 0;
 }
 
-#completions > div {
-  max-height: calc(20 * var(--option-height));
-  min-height: calc(10 * var(--option-height));
+:root #completions > div {
+  max-height: calc(20 * var(--tridactyl-cmplt-option-height));
+  min-height: calc(10 * var(--tridactyl-cmplt-option-height));
 }
 
-/* COMPLETIONS */
-
-#completions {
-  --option-height: 1.4em;
-  color: var(--tridactyl-fg);
-  background: var(--tridactyl-bg);
-  display: inline-block;
-  font-size: unset;
-  font-weight: 200;
-  overflow: hidden;
-  width: 100%;
-  border-top: unset;
+:root #completions {
+  border: none !important;
+  font-family: var(--tridactyl-font-family);
   order: 2;
+  margin-top: 10px;
+  border-radius: var(--tridactyl-border-radius);
 }
 
-/* Olie doesn't know how CSS inheritance works */
-#completions .HistoryCompletionSource {
-  max-height: unset;
-  min-height: unset;
-}
-
-#completions .HistoryCompletionSource table {
+:root #completions .HistoryCompletionSource table {
   width: 100%;
-  font-size: 9pt;
   border-spacing: 0;
   table-layout: fixed;
 }
 
-/* redundancy 2: redundancy 2: more redundancy */
-#completions .BmarkCompletionSource {
-  max-height: unset;
-  min-height: unset;
-}
-
-#completions table tr td.prefix,
-#completions table tr td.privatewindow,
-#completions table tr td.container,
-#completions table tr td.icon {
-  display: none;
-}
-
-#completions .BufferCompletionSource table {
+:root #completions .BufferCompletionSource table {
   width: unset;
   font-size: unset;
   border-spacing: unset;
   table-layout: unset;
 }
 
-#completions table tr .title,
-#completions table tr td.excmd {
+:root #completions table tr .title {
   width: 50%;
-  padding-left: 1rem;
-  color: var(--blue);
 }
 
-#completions table tr .content,
-#completions table tr td.documentation {
-  padding-right: 1rem;
-}
-
-#completions table tr {
+:root #completions tr .documentation {
   white-space: nowrap;
-  overflow: hidden;
+  overflow: auto;
   text-overflow: ellipsis;
 }
 
-#completions table tr td {
-  padding: 0.5rem 0;
+:root #completions .sectionHeader {
+  background: transparent;
+  padding: 1rem 1rem 0.4rem !important;
 }
 
-#completions .sectionHeader {
-  background: unset;
-  font-weight: bold;
-  border-bottom: unset;
-  padding: 1rem 1rem 0 !important;
-  padding-left: unset;
-  padding-bottom: 0.2rem;
-  color: var(--peach);
-}
-
-#cmdline_iframe {
+:root #cmdline_iframe {
   position: fixed !important;
   bottom: unset;
   top: 25% !important;
   left: 10% !important;
   z-index: 2147483647 !important;
   width: 80% !important;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 20px !important;
+  filter: drop-shadow(0px 0px 20px #000000) !important;
+  color-scheme: only light; /* Prevent Firefox from adding a white background on dark-mode sites */
 }
 
-.TridactylStatusIndicator {
+:root .TridactylStatusIndicator {
   position: fixed !important;
-  bottom: 0 !important;
-  background: var(--tridactyl-bg) !important;
-  border: unset !important;
-  border: 1px var(--purple) solid !important;
-  font-size: 12pt !important;
-  /*font-weight: 200 !important;*/
-  padding: 0.8ex !important;
-}
-
-#completions .focused {
-  background: var(--currentline);
-  /* color: var(--blue); */
-  font-weight: bold;
-}
-#completions .focused td.title {
-  color: var(--pink);
-}
-
-#completions .focused .url {
-  background: var(--currentline);
-  color: var(--green);
+  bottom: 10px !important;
+  right: 10px !important;
+  font-weight: 200 !important;
+  padding: 5px !important;
 }

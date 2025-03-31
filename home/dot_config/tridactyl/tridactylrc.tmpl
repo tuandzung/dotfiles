@@ -1,8 +1,15 @@
+# vim: filetype=vim
+
+sanitise tridactyllocal tridactylsync
 "------------------------------------------------------------------------------
 " Core settings
 "------------------------------------------------------------------------------
 
+{{- if eq .browser "ZEN" }}
 set browser zen-browser
+{{- else }}
+set browser firefox
+{{- end }}
 
 " Vimperator-like hinting mode.
 set hintfiltermode vimperator-reflow
@@ -70,8 +77,10 @@ bind yy clipboard yankcanon
 " Open the selection with tabopen
 bind --mode=visual t composite js document.getSelection().toString() | fillcmdline tabopen
 
+" Stupid workaround to let hint -; be used with composite which steals semi-colons
+command hint_focus hint -;
 " Open right click menu on links
-bind ;C composite hint_focus; !s xdotool key Menu
+bind ;C composite hint_focus; !s wtype -P Menu
 
 " Open videos in MPV
 bind ,v composite js document.location.href | shellescape | js -p 'mpv --ytdl ' + JS_ARG | !s
@@ -90,6 +99,8 @@ unbind <C-f>
 unbind <C-a>
 " copy in the commandline
 unbind --mode=ex <C-c>
+" Allow Ctrl-a to select all in the commandline
+unbind --mode=ex <C-a>
 
 "------------------------------------------------------------------------------
 " Website specific
@@ -97,9 +108,25 @@ unbind --mode=ex <C-c>
 
 " Ignore sites
 blacklistadd teams.microsoft.com
+blacklistadd atlassian.net
+
+" New reddit is bad
+autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", "old")
 
 " Comment toggler for Reddit, Hacker News and Lobste.rs
 bind ;c hint -Jc [class*="expand"],[class="togg"],[class="comment_folder"]
 
 " Take back to subreddit from comments
 bindurl reddit.com gu urlparent 4
+
+" Only hint search results on Google and DDG
+bindurl www.google.com ;f hint -Jc #search a
+bindurl www.google.com ;F hint -Jbc #search a
+
+" Make `gi` on GitHub take you to the search box
+bindurl ^https://github.com gi hint -Vc .AppHeader-searchButton
+
+" Isolate Facebook in its own container
+set auconcreatecontainer true
+autocontain facebook\.com facebook
+
