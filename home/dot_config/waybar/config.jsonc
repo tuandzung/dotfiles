@@ -17,7 +17,28 @@
     "disk",
     "tray",
     "clock",
+    "custom/notification"
   ],
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "󰂚<span foreground='red'><sup></sup></span>",
+      "none": "󰂚",
+      "dnd-notification": "󰂛<span foreground='red'><sup></sup></span>",
+      "dnd-none": "󰂛",
+      "inhibited-notification": "󰂚<span foreground='red'><sup></sup></span>",
+      "inhibited-none": "󰂚",
+      "dnd-inhibited-notification": "󰂛<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": "󰂛"
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
   "hyprland/workspaces": {
     "persistent-workspaces": {
       "DP-1": [
@@ -30,7 +51,7 @@
         "office",
         "vm",
         "others"
-      ],
+      ]
     },
     "sort-by": "id",
     "format": " {icon} ",
@@ -43,7 +64,7 @@
       "media": "",
       "games": "󰮃",
       "vm": "",
-      "others": "󰣆",
+      "others": "󰣆"
     },
   },
   "hyprland/window": {
@@ -60,7 +81,8 @@
       "Telegram (.*)": "  Telegram $1",
       "(.*) - mpv": "  $1",
     },
-    "separate-outputs": true
+    "separate-outputs": true,
+    "max-length": 20
   },
   "cpu": {
     "format": " {usage:2}%",
@@ -98,7 +120,7 @@
     "tooltip": false,
     "exec": "playerctl metadata --format='{{ title }} - {{ artist }}'",
     "on-click": "playerctl play-pause",
-    "max-length": 50
+    "max-length": 20
   },
   "clock": {
     "timezone": "Asia/Ho_Chi_Minh",

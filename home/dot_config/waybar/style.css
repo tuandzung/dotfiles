@@ -14,8 +14,8 @@
 
 /* make window module transparent when no windows present */
 window#waybar.empty #window {
-    background-color: transparent;
-    border: none;
+  background-color: transparent;
+  border: none;
 }
 
 #workspaces {
@@ -23,7 +23,7 @@ window#waybar.empty #window {
   margin: 5px;
   background-color: @base;
   margin-left: 1rem;
-  border: 1px solid @sapphire
+  border: 1px solid @sapphire;
 }
 
 #workspaces button {
@@ -49,6 +49,7 @@ window#waybar.empty #window {
 }
 
 #custom-music,
+#custom-notification,
 #window,
 #tray,
 #network,
@@ -58,7 +59,7 @@ window#waybar.empty #window {
   background-color: @base;
   padding: 0.5rem 1rem;
   margin: 5px 0;
-  border: 1px solid @sapphire
+  border: 1px solid @sapphire;
 }
 
 #disk,
@@ -80,8 +81,8 @@ window#waybar.empty #window {
 
 #tray {
   border-radius: 1rem 1rem 1rem 1rem;
-  margin-right: 1rem;
-  margin-left: 1rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 #battery {
@@ -100,8 +101,9 @@ window#waybar.empty #window {
   color: @yellow;
 }
 
-#backlight, #battery {
-    border-radius: 0;
+#backlight,
+#battery {
+  border-radius: 0;
 }
 
 #pulseaudio {
@@ -114,6 +116,12 @@ window#waybar.empty #window {
 #custom-music {
   color: @mauve;
   border-radius: 1rem;
+}
+
+#custom-notification {
+  color: @sapphire;
+  border-radius: 1rem;
+  margin-right: 1rem;
 }
 
 #window {
@@ -134,28 +142,28 @@ window#waybar.empty #window {
 #disk {
   color: @peach;
   border-radius: 0px 1rem 1rem 0px;
-  border-right: 1px solid @sapphire
+  border-right: 1px solid @sapphire;
 }
 
 #tray > .passive {
-    -gtk-icon-effect: dim;
+  -gtk-icon-effect: dim;
 }
 
 #tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: @red;
+  -gtk-icon-effect: highlight;
+  background-color: @red;
 }
 
 #cpu {
-    color: @green;
+  color: @green;
 }
 
 #memory {
-    color: @mauve;
+  color: @mauve;
 }
 
 #clock {
   color: @sapphire;
-  margin-right: 1rem;
+  margin-right: 0.5rem;
   border-radius: 1rem;
 }
