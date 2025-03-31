@@ -10,9 +10,11 @@ usr
 {{- else }}
 {{- if ne .chezmoi.osRelease.id "gentoo" }}
 usr/lib64
+opt/zen-browser
 {{- end }}
 {{- if ne .chezmoi.osRelease.id "arch" }}
 usr/lib
+opt/zen-browser-bin
 {{- end }}
 {{- if eq .browser "ZEN" }}
 usr/lib
@@ -20,6 +22,7 @@ usr/lib64
 {{- end }}
 {{- if eq .browser "FIREFOX" }}
 /opt/zen-browser
+/opt/zen-browser-bin
 {{- end }}
 {{- if not (eq .chezmoi.osRelease.id "arch" "ubuntu") }}
 etc/systemd
