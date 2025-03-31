@@ -9,7 +9,7 @@ layout {
     }
   }
 
-  tab name="dot" cwd="~/dotfiles" split_direction="vertical" {
+  tab name="dot" cwd="~/Dotfiles" split_direction="vertical" {
     pane focus=true
     floating_panes {
       pane {
@@ -30,7 +30,7 @@ layout {
       }
     }
   }
-  tab name="nvim" cwd="~/neovim" split_direction="vertical" {
+  tab name="nvim" cwd="~/Dotfiles/modules/nvim" split_direction="vertical" {
     pane focus=true
     floating_panes {
       pane {
