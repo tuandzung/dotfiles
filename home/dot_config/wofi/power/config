@@ -1,0 +1,10 @@
+stylesheet=power/style.css
+width=200
+height=205
+cache_file=/dev/null
+insensitive=true
+location=top
+columns=1
+layer=overlay
+hide_search=true
+hide_scroll=true
