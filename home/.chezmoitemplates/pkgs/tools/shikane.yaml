@@ -1,11 +1,6 @@
 name: shikane
-method: os
+method: shell
 is_essential: true
-gentoo:
-  packages:
-    - name: gui-apps/shikane
-      accept_keywords: |-
-        gui-apps/shikane **
-arch:
-  packages:
-    - name: shikane
+dependencies:
+  - rust
+content: cargo install shikane

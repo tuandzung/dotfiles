@@ -4,48 +4,19 @@ is_essential: true
 gentoo:
   packages:
     - name: gui-wm/hyprland
-      accept_keywords: |-
-        gui-wm/hyprland ~amd64
-        dev-util/hyprwayland-scanner ~amd64
-        dev-libs/wayland-protocols ~amd64
-        gui-libs/aquamarine ~amd64
-        gui-libs/hyprutils ~amd64
-        gui-libs/xdg-desktop-portal-hyprland ~amd64
-        dev-cpp/sdbus-c++ ~amd64
-      use: |-
-        >=dev-qt/qtbase-6.8.2-r2 opengl
     - name: gui-apps/hyprlock
-      accept_keywords: |-
-        gui-apps/hyprlock ~amd64
     - name: gui-libs/xdg-desktop-portal-hyprland
     - name: x11-libs/xcb-util
     - name: gui-apps/hypridle
-      accept_keywords: |-
-        gui-apps/hypridle ~amd64
     - name: gui-apps/hyprpaper
       repo: guru
-      accept_keywords: |-
-        dev-libs/hyprgraphics ~amd64
-        dev-libs/hyprlang ~amd64
-        gui-apps/hyprpaper ~amd64
     - name: gui-apps/hyprshade
       repo: guru
-      accept_keywords: |-
-        gui-apps/hyprshade ~amd64
-        dev-python/chevron ~amd64
     - name: sys-auth/hyprpolkitagent
       repo: guru
-      accept_keywords: |-
-        gui-libs/hyprland-qt-support ~amd64
-        sys-auth/hyprpolkitagent ~amd64
-      use: |-
-        sys-auth/polkit-qt qt6
-        dev-qt/qtgui egl
     - name: sys-auth/seatd
-      use: |-
-        sys-auth/seatd builtin server
   hook:
-    after:
+    after: |-
       sudo gpasswd -a $USER video
       sudo gpasswd -a $USER seat
       sudo rc-update add seatd default
