@@ -21,7 +21,7 @@ elif command -v pacman &> /dev/null; then
   fi
   yay -Syu --noconfirm
 elif command -v emerge &> /dev/null; then
-  sudo emerge --sync && sudo emerge -uDN \
+  sudo emerge --sync && sudo emerge -av \
     dev-vcs/git \
     net-misc/curl \
     net-misc/openssh \
