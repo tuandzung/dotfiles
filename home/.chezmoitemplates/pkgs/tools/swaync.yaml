@@ -5,10 +5,6 @@ gentoo:
   packages:
     - name: gui-apps/swaync
       repo: guru
-      accept_keywords: |-
-        gui-apps/swaync **
-      use: |-
-        gui-libs/gtk-layer-shell introspection vala
 arch:
   packages:
     - name: swaync

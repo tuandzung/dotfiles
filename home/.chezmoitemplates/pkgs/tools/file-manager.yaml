@@ -4,21 +4,10 @@ is_essential: true
 gentoo:
   packages:
     - name: xfce-base/thunar
-      use: |-
-        xfce-base/thunar udisks
-        dev-libs/libdbusmenu gtk3
-        app-crypt/gcr gtk
     - name: xfce-base/thunar-volman
-      use: |-
-        xfce-base/thunar-volman libnotify
-        gnome-base/gvfs udisks
     - name: xfce-extra/thunar-archive-plugin
     - name: app-arch/file-roller
     - name: xfce-base/tumbler
-      use: |-
-        xfce-base/tumbler curl ffmpeg jpeg pdf raw
-        app-text/poppler cairo
-        media-libs/libopenraw gtk
 arch:
   packages:
     - name: thunar

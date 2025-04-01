@@ -3,7 +3,7 @@ method: os
 is_essential: true
 gentoo:
   packages:
-    - name: sys-kernel/gentoo-kernel
+    - name: sys-kernel/gentoo-sources
     - name: sys-kernel/linux-firmware
 arch:
   packages:
