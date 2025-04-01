@@ -1,0 +1,18 @@
+name: fonts
+is_essential: true
+method: os
+gentoo:
+  packages:
+    - name: media-fonts/roboto
+    - name: media-fonts/noto
+    - name: media-fonts/noto-cjk
+arch:
+  packages:
+    - name: ttf-roboto
+    - name: noto-fonts
+    - name: noto-fonts-cjk
+ubuntu:
+  packages:
+    - name: fonts-roboto
+    - name: fonts-noto
+    - name: fonts-noto-cjk
