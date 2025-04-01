@@ -1,0 +1,16 @@
+app-emulation/qemu QEMU_SOFTMMU_TARGETS: arm x86_64 sparc QEMU_USER_TARGETS: x86_64
+app-emulation/qemu spice virgl opengl
+# required by app-emulation/virt-manager-5.0.0::gentoo[gui]
+# required by app-emulation/virt-manager (argument)
+>=net-misc/spice-gtk-0.42-r4 usbredir
+# required by app-emulation/libvirt-10.10.0-r1::gentoo[virt-network]
+# required by app-emulation/libvirt-glib-5.0.0::gentoo
+# required by app-emulation/virt-manager-5.0.0::gentoo
+# required by app-emulation/virt-manager (argument)
+>=net-dns/dnsmasq-2.90 script
+# required by app-crypt/swtpm-0.10.0::gentoo
+# required by app-emulation/libvirt-10.10.0-r1::gentoo[qemu]
+# required by app-emulation/libvirt-glib-5.0.0::gentoo
+# required by app-emulation/virt-manager-5.0.0::gentoo
+# required by app-emulation/virt-manager (argument)
+>=net-libs/gnutls-3.8.8 tools pkcs11

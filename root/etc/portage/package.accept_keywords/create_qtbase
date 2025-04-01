@@ -1,0 +1,13 @@
+dev-qt/qtgui ~amd64
+dev-qt/qtchooser ~amd64
+dev-qt/qtdbus ~amd64
+dev-qt/qtcore ~amd64
+dev-qt/qtbase ~amd64
+dev-qt/qtwayland ~amd64
+dev-qt/qtdeclarative ~amd64
+dev-qt/qtshadertools ~amd64
+dev-qt/qtsvg ~amd64
+dev-qt/qttools ~amd64
+dev-qt/qt5compat ~amd64
+dev-qt/qtimageformats ~amd64
+dev-qt/qttranslations ~amd64

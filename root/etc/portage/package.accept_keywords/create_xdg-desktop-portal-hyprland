@@ -1,0 +1,5 @@
+gui-libs/xdg-desktop-portal-hyprland
+dev-qt/qtbase
+dev-qt/qtwayland
+dev-qt/qtdeclarative
+dev-qt/qtshadertools

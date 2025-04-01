@@ -1,0 +1,4 @@
+# required by net-im/telegram-desktop-5.10.7::gentoo
+# required by net-im/telegram-desktop (argument)
+media-video/ffmpeg vpx opu
+sys-libs/zlib minizip

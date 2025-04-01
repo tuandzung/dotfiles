@@ -18,8 +18,7 @@ MAKEOPTS="-j{{ $proc }} -l{{ $proc }}"
 EMERGE_DEFAULT_OPTS='${EMERGE_DEFAULT_OPTS} --ask --verbose --verbose-conflicts --with-bdeps=y --complete-graph=y --keep-going --jobs={{ $proc }} --load-average={{ $proc }}.0'
 ACCEPT_LICENSE="*"
 ACCEPT_KEYWORDS="amd64"
-USE="dist-kernel
-lto pgo zstd lz4 snappy llvm-libunwind
+USE="symlink lto pgo zstd lz4 snappy llvm-libunwind
 {{ if .hasSound }}pipewire alsa pulseaudio{{ end }}
 screencast vulkan opencl opengl
 -systemd -qtwebengine -webengine {{ if not .hasBluetooth }}-bluetooth{{ end }} -handbook"

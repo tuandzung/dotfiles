@@ -1,0 +1,3 @@
+dev-qt/qtbase opengl egl eglfs gles2-only
+dev-qt/qtdeclarative opengl
+sys-apps/xdg-desktop-portal screencast

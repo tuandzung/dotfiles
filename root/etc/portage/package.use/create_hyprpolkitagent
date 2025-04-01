@@ -1,0 +1,2 @@
+sys-auth/polkit-qt qt6
+dev-qt/qtgui egl
