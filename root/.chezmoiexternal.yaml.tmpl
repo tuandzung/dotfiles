@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "linux" }}
 usr/share/grub/themes/catppuccin:
   type: archive
   url: https://github.com/catppuccin/grub/archive/refs/heads/main.zip
@@ -5,3 +6,4 @@ usr/share/grub/themes/catppuccin:
   stripComponents: 3
   include:
     - grub-main/src/catppuccin-macchiato-grub-theme/*
+{{- end }}
