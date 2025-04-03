@@ -23,11 +23,13 @@
 .zen
 {{- else }}
 Library
+{{- end }}
 {{- if eq .browser "ZEN" }}
 .mozilla
 .config/firefox/profiles
+Library/Application Support/Firefox
 {{- else }}
 .zen
 .config/zen
-{{- end }}
+Library/Application Support/zen
 {{- end }}

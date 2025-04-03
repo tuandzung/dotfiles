@@ -3,11 +3,17 @@ etc/conf.d
 etc/default
 etc/greetd
 etc/grub.d
+etc/pacman.d
 etc/portage
 etc/systemd
 etc/hostname
+etc/makepkg.conf
+etc/ntp.conf
+etc/pacman.conf
 usr
+opt
 {{- else }}
+Applications
 {{- if ne .chezmoi.osRelease.id "gentoo" }}
 usr/lib64
 opt/zen-browser

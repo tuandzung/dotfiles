@@ -15,6 +15,11 @@
   type: file
   url: https://raw.githubusercontent.com/devicons/devicon/master/fonts/devicon.ttf
   refreshPeriod: 168h
+
+.local/share/fonts/SymbolsNerdFont:
+  type: archive
+  url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
+  refreshPeriod: 168h
 {{ else }}
 Library/Fonts/Tepiosevka:
   type: archive
@@ -27,4 +32,14 @@ Library/Fonts/TepiosevkaNF:
   url: https://github.com/tuandzung/iosevka-build/releases/latest/download/TepiosevkaNF.zip
   refreshPeriod: 168h
   stripComponents: 2
+
+Library/Fonts/DevIcons/devicon.ttf:
+  type: file
+  url: https://raw.githubusercontent.com/devicons/devicon/master/fonts/devicon.ttf
+  refreshPeriod: 168h
+
+Library/Fonts/SymbolsNerdFont:
+  type: archive
+  url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
+  refreshPeriod: 168h
 {{ end }}
