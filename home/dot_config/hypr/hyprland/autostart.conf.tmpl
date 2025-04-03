@@ -34,8 +34,10 @@ exec-once = swaync
 exec = hyprshade auto
 exec-once = shikane
 
+{{- if ne .place "HOME" }}
 # Screen idle
 exec-once = hypridle
+{{- end }}
 
 # Clipboard
 exec-once = wl-paste --type text --watch cliphist store
@@ -57,11 +59,18 @@ $browser = "firefox"
 {{- else if eq .browser "ZEN" }}
 $browser = "zen-browser"
 {{- end }}
+{{- if eq .place "HOME" }}
 exec-once = $browser -P Personal
+{{- else if eq .place "OFFICE" }}
 exec-once = $browser -P Work
+{{- end }}
 
 # Email client
+{{- if eq .place "HOME" }}
+exec-once = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} -P Personal
+{{- else if eq .place "OFFICE" }}
 exec-once = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} -P Work
+{{- end }}
 
 # Chat
 exec-once = slack --enable-webrtc-pipewire-capturer --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime --ozone-platform-hint=auto

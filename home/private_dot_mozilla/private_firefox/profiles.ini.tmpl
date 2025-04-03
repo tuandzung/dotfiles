@@ -6,7 +6,11 @@
 {{- $releaseId = mozillaInstallHash "/usr/lib/firefox" }}
 {{- end -}}
 [Install{{- $releaseId -}}]
+{{- if eq .place "OFFICE" }}
+Default={{- $configPath }}/work
+{{- else }}
 Default={{- $configPath }}/personal
+{{- end }}
 Locked=1
 
 [Profile1]
