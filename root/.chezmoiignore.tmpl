@@ -12,6 +12,12 @@ etc/ntp.conf
 etc/pacman.conf
 usr
 opt
+{{- if eq .browser "ZEN" }}
+Applications/Firefox.app
+{{- end }}
+{{- if eq .browser "FIREFOX" }}
+Applications/Zen.app
+{{- end }}
 {{- else }}
 Applications
 {{- if ne .chezmoi.osRelease.id "gentoo" }}
