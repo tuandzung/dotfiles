@@ -19,5 +19,4 @@ macos:
     - name: fail2ban
   hook:
     after: |-
-      sudo brew services enable fail2ban
-      sudo brew services start fail2ban
+      brew services start fail2ban
