@@ -13,11 +13,11 @@ ubuntu:
   packages:
     - name: fcitx-bamboo
 {{- else }}
-name: evkey
+name: openkey
 method: os
 is_essential: true
 macos:
   packages:
-    - name: evkey
+    - name: openkey
       cask: true
 {{- end }}
