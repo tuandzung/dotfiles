@@ -94,8 +94,13 @@ open_url_modifiers kitty_mod
 # mouse cursor.
 url_prefixes http https file ftp
 
+macos_titlebar_color background
+
 # BEGIN_KITTY_THEME
 # Espresso
 include current-theme.conf
 # END_KITTY_THEME
 include font.conf
+{{- if eq .chezmoi.os "darwin" }}
+include mac.conf
+{{- end }}
