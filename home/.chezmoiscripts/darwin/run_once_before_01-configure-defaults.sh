@@ -1,5 +1,4 @@
-{{- if eq .chezmoi.os "darwin" }}
-#!{{ lookPath "bash" }}
+#!/bin/bash
 
 set -Eeou pipefail
 
@@ -37,4 +36,3 @@ defaults write com.apple.finder FXPreferredViewStyle -string Nlsv
 defaults write com.apple.finder _FXSortFoldersFirst -int 1
 defaults write com.apple.finder FXRemoveOldTrashItems -int 1
 defaults write com.apple.finder FXEnableExtensionChangeWarning -int 0
-{{- end }}

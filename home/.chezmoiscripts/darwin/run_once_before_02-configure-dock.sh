@@ -1,5 +1,4 @@
-{{- if eq .chezmoi.os "darwin" }}
-#!{{ lookPath "bash" }}
+#!/bin/bash
 
 set -Eeou pipefail
 
@@ -29,4 +28,3 @@ declare -a remove_labels=(
 for label in "${remove_labels[@]}"; do
   dockutil --no-restart --remove "${label}" || true
 done
-{{- end }}
