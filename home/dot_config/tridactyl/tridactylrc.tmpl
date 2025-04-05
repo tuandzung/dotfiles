@@ -108,8 +108,9 @@ command hint_focus hint -;
 bind ;C composite hint_focus; !s wtype -P Menu
 
 " Open videos in MPV
-bind ,v composite js document.location.href | shellescape | js -p 'mpv --ytdl ' + JS_ARG | !s
-bind ;v composite hint -W js hints.elements.href | shellescape | js -p 'mpv --ytdl ' + JS_ARG | !s
+alias mpv js -p tri.excmds.shellescape(JS_ARG).then(url => tri.excmds.exclaim_quiet('mpv --no-terminal --ytdl ' + url))
+bind ,v composite js document.location.href | mpv
+bind ;v composite hint -W mpv
 
 " Git{Hub,Lab} git clone via SSH yank
 bind yg composite js "git clone " + document.location.href.replace(/https?:\/\//,"git@").replace("/",":").replace(/$/,".git") | clipboard yank
