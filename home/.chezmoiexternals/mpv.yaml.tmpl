@@ -17,3 +17,8 @@
   type: file
   url: https://raw.githubusercontent.com/po5/memo/refs/heads/master/memo.lua
   refreshPeriod: 168h
+
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/mpv/scripts/ytdl-preload.lua:
+  type: file
+  url: https://gist.githubusercontent.com/bitingsock/17d90e3deeb35b5f75e55adb19098f58/raw/39759ecdc3a0855c8afac1dce028e499bfa4d9c1/ytdl-preload.lua
+  refreshPeriod: 168h
