@@ -35,3 +35,6 @@
 	path = home/dot_config/thunderbird/profiles/work
 	url = git@github.com:tuandzung/Thunderbird.git
   branch = work
+[submodule "mpv"]
+	path = home/dot_config/mpv
+	url = git@github.com:tuandzung/mpv.git

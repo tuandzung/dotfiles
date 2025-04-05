@@ -1,0 +1,19 @@
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/mpv:
+  type: archive
+  url: https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip
+  refreshPeriod: 168h
+
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/mpv/scripts/thumbfast.lua:
+  type: file
+  url: https://raw.githubusercontent.com/po5/thumbfast/refs/heads/master/thumbfast.lua
+  refreshPeriod: 168h
+
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/mpv/scripts/quality-menu.lua:
+  type: file
+  url: https://raw.githubusercontent.com/christoph-heinrich/mpv-quality-menu/refs/heads/master/quality-menu.lua
+  refreshPeriod: 168h
+
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/mpv/scripts/memo.lua:
+  type: file
+  url: https://raw.githubusercontent.com/po5/memo/refs/heads/master/memo.lua
+  refreshPeriod: 168h
