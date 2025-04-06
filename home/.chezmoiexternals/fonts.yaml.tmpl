@@ -1,45 +1,27 @@
-{{ if ne .chezmoi.os "darwin" }}
-.local/share/fonts/Tepiosevka:
+{{- $fontDir := "" }}
+{{- if eq .chezmoi.os "darwin" }}
+{{- $fontDir = "Library/Fonts" }}
+{{- else if eq .chezmoi.os "linux" }}
+{{- $fontDir = ".local/share/fonts" }}
+{{- end }}
+{{ $fontDir }}/Tepiosevka:
   type: archive
-  url: https://github.com/tuandzung/iosevka-build/releases/latest/download/Tepiosevka.zip
+  url: {{ gitHubLatestReleaseAssetURL "tuandzung/iosevka-build" "Tepiosevka.zip" }}
   refreshPeriod: 168h
   stripComponents: 2
 
-.local/share/fonts/TepiosevkaNF:
+{{ $fontDir }}/TepiosevkaNF:
   type: archive
-  url: https://github.com/tuandzung/iosevka-build/releases/latest/download/TepiosevkaNF.zip
+  url: {{ gitHubLatestReleaseAssetURL "tuandzung/iosevka-build" "TepiosevkaNF.zip" }}
   refreshPeriod: 168h
   stripComponents: 2
 
-.local/share/fonts/DevIcons/devicon.ttf:
+{{ $fontDir }}/DevIcons/devicon.ttf:
   type: file
   url: https://raw.githubusercontent.com/devicons/devicon/master/fonts/devicon.ttf
   refreshPeriod: 168h
 
-.local/share/fonts/SymbolsNerdFont:
+{{ $fontDir }}/SymbolsNerdFont:
   type: archive
-  url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
+  url: {{ gitHubLatestReleaseAssetURL "ryanoasis/nerd-fonts" "NerdFontsSymbolsOnly.zip" }}
   refreshPeriod: 168h
-{{ else }}
-Library/Fonts/Tepiosevka:
-  type: archive
-  url: https://github.com/tuandzung/iosevka-build/releases/latest/download/Tepiosevka.zip
-  refreshPeriod: 168h
-  stripComponents: 2
-
-Library/Fonts/TepiosevkaNF:
-  type: archive
-  url: https://github.com/tuandzung/iosevka-build/releases/latest/download/TepiosevkaNF.zip
-  refreshPeriod: 168h
-  stripComponents: 2
-
-Library/Fonts/DevIcons/devicon.ttf:
-  type: file
-  url: https://raw.githubusercontent.com/devicons/devicon/master/fonts/devicon.ttf
-  refreshPeriod: 168h
-
-Library/Fonts/SymbolsNerdFont:
-  type: archive
-  url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
-  refreshPeriod: 168h
-{{ end }}
