@@ -1,0 +1,41 @@
+#!{{ lookPath "bash" }}
+set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+trap "_error \"Can't setup extra packages for Darwin\"" ERR
+
+{{ $brews := list
+     "dockutil"
+     "gh"
+     "gnu-units"
+     "gnupg"
+     "openjdk"
+     "pinentry-mac"
+     "pkg-config" 
+     "stats" -}}
+{{ $casks := list
+     "alt-tab"
+     "appcleaner"
+     "balenaetcher"
+     "hammerspoon"
+     "itsycal"
+     "karabiner-elements"
+     "raycast"
+     "reminders-menubar"
+     "spotify"
+     "vesktop"
+     "telegram"
+     "tiles" -}}
+{{- if eq .kind "laptop" }}
+{{- $casks = concat $casks (list "battery" "coconutbattery") }}
+{{- end }}
+
+_notice "Install extra packages for Darwin"
+brew bundle --file=/dev/stdin <<EOF
+{{ range ($brews | sortAlpha | uniq) -}}
+brew "{{ . }}"
+{{ end -}}
+{{ range ($casks | sortAlpha | uniq) -}}
+cask "{{ . }}"
+{{ end -}}
+EOF
+_success "Install extra packages for Darwin completed"

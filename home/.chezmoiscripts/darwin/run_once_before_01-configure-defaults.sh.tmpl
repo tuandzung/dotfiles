@@ -1,7 +1,9 @@
-#!/bin/bash
-
+#!{{ lookPath "bash" }}
 set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
+trap "_error \"Can't setup default configs for Darwin\"" ERR
 
+_notice "Setup default configs for Darwin"
 defaults write -g AppleEnableSwipeNavigateWithScrolls -int 0
 defaults write -g AppleMiniaturizeOnDoubleClick -int 0
 defaults write -g ApplePressAndHoldEnabled -int 0
@@ -36,3 +38,4 @@ defaults write com.apple.finder FXPreferredViewStyle -string Nlsv
 defaults write com.apple.finder _FXSortFoldersFirst -int 1
 defaults write com.apple.finder FXRemoveOldTrashItems -int 1
 defaults write com.apple.finder FXEnableExtensionChangeWarning -int 0
+_success "Setup default configs for Darwin done"

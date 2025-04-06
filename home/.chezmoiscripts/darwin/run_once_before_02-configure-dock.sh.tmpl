@@ -1,9 +1,11 @@
-#!/bin/bash
-
+#!{{ lookPath "bash" }}
 set -Eeou pipefail
+source {{ .chezmoi.workingTree }}/scripts/logger.sh
 
+trap "_error \"Can't setup dock\"" ERR
 trap 'killall Dock' EXIT
 
+_notice "Setup dock for Darwin"
 declare -a remove_labels=(
   Launchpad
   Safari
@@ -28,3 +30,4 @@ declare -a remove_labels=(
 for label in "${remove_labels[@]}"; do
   dockutil --no-restart --remove "${label}" || true
 done
+_success "Setup dock for Darwin done"
