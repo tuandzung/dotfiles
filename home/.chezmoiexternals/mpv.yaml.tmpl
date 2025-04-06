@@ -22,3 +22,13 @@
   type: file
   url: https://gist.githubusercontent.com/bitingsock/17d90e3deeb35b5f75e55adb19098f58/raw/39759ecdc3a0855c8afac1dce028e499bfa4d9c1/ytdl-preload.lua
   refreshPeriod: 168h
+
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/mpv/scripts/notify-send.lua:
+  type: file
+  url: https://raw.githubusercontent.com/Parranoh/mpv-notify-send/refs/heads/master/notify-send.lua
+  refreshPeriod: 168h
+
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/mpv/scripts/clipshot.lua:
+  type: file
+  url: https://raw.githubusercontent.com/ObserverOfTime/mpv-scripts/refs/heads/master/clipshot.lua
+  refreshPeriod: 168h
