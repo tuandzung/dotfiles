@@ -48,6 +48,7 @@ window#waybar.empty #window {
   background-color: @red;
 }
 
+#custom-hw,
 #custom-music,
 #custom-notification,
 #window,
@@ -75,6 +76,7 @@ window#waybar.empty #window {
 
 #network {
   color: @pink;
+  border-radius: 1rem 0rem 0rem 1rem;
   border-left: none;
   border-right: none;
 }
@@ -83,6 +85,12 @@ window#waybar.empty #window {
   border-radius: 1rem 1rem 1rem 1rem;
   margin-right: 0.5rem;
   margin-left: 0.5rem;
+}
+
+#custom-hw {
+  border-radius: 1rem 1rem 1rem 1rem;
+  margin-left: 0.5rem;
+  padding-right: 1.2rem;
 }
 
 #battery {
@@ -108,9 +116,9 @@ window#waybar.empty #window {
 
 #pulseaudio {
   color: @rosewater;
-  border-radius: 1rem 0px 0px 1rem;
-  margin-left: 1rem;
-  border-right: none;
+  border-radius: 1rem 1rem;
+  padding-right: 1.5rem;
+  margin-right: 0.5rem;
 }
 
 #custom-music {

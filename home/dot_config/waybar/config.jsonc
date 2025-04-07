@@ -8,17 +8,33 @@
     "custom/music"
   ],
   "modules-right": [
-    "pulseaudio",
-    "network",
-    "battery",
-    "cpu",
-    "temperature",
-    "memory",
-    "disk",
+    "group/hardware",
     "tray",
+    "pulseaudio",
     "clock",
     "custom/notification"
   ],
+  "group/hardware": {
+    "orientation": "inherit",
+    "drawer": {
+      "click-to-reveal": true,
+      "transition-left-to-right": false,
+      "children-class": "not-hardware",
+    },
+    "modules": [
+      "custom/hw",
+      "network",
+      "battery",
+      "cpu",
+      "temperature",
+      "memory",
+      "disk",
+    ]
+  },
+  "custom/hw": {
+    "format": "",
+    "tooltip-format": "Hardware group",
+  },
   "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
@@ -82,7 +98,7 @@
       "(.*) - mpv": "  $1",
     },
     "separate-outputs": true,
-    "max-length": 20
+    "max-length": 50
   },
   "cpu": {
     "format": " {usage:2}%",
@@ -120,7 +136,7 @@
     "tooltip": false,
     "exec": "playerctl metadata --format='{{ title }} - {{ artist }}'",
     "on-click": "playerctl play-pause",
-    "max-length": 20
+    "max-length": 50
   },
   "clock": {
     "timezone": "Asia/Ho_Chi_Minh",
