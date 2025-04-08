@@ -3,6 +3,7 @@
 **/.gitmodules
 **/*.sqlite-wal
 **/__pycache__
+.DS_Store
 
 {{- if eq .chezmoi.os "darwin" }}
 .config/fontconfig
@@ -25,6 +26,7 @@
 .chezmoiscripts/darwin/**
 Library
 .hammerspoon
+.config/karabiner
 {{- end }}
 {{- if eq .browser "ZEN" }}
 .mozilla
