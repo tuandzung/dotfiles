@@ -1,0 +1,14 @@
+name: k3d
+is_essential: true
+{{- if eq .chezmoi.os "linux" }}
+method: binary
+github:
+  repo: k3d-io/k3d
+  version: latest
+  release_asset: k3d-linux-{{ .chezmoi.arch }}
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: k3d
+{{- end }}
