@@ -96,7 +96,7 @@ end
 local browser = '{{ $browser }}'
 
 local bindings = {
-  [{'alt', 'ctrl'}] = {
+  [{'option', 'ctrl'}] = {
     [1] = moveFrontmostWindow(grid.rightTopHalf),
     [2] = moveFrontmostWindow(grid.rightBottomHalf),
 
@@ -141,7 +141,7 @@ local bindings = {
     ['\\'] = moveFocusedWindowToScreen,
   },
 
-  [{'alt', 'cmd', 'ctrl'}] = {
+  [{'option', 'cmd', 'ctrl'}] = {
     [1] = moveFrontmostWindow(grid.leftTopHalf),
     [2] = moveFrontmostWindow(grid.leftBottomHalf),
 
@@ -154,7 +154,7 @@ local bindings = {
     [9] = moveFrontmostWindow(grid.leftFourthQuarter),
   },
 
-  [{'alt', 'cmd', 'ctrl', 'shift'}] = {
+  [{'option', 'cmd', 'ctrl', 'shift'}] = {
     e = launchOrFocus(browser),
     f = launchOrFocus('Finder'),
     t = launchOrFocus('Telegram'),
