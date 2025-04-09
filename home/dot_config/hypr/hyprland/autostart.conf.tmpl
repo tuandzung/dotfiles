@@ -73,7 +73,6 @@ exec-once = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} -P
 {{- end }}
 
 # Chat
-exec-once = slack --enable-webrtc-pipewire-capturer --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime --ozone-platform-hint=auto
 exec-once = ferdium{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} --enable-webrtc-pipewire-capturer --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime --ozone-platform-hint=auto
 
 # Torrent
