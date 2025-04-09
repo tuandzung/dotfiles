@@ -139,6 +139,11 @@ if status is-interactive
 end
 ## }
 
+function starship_transient_rprompt_func
+  starship module time
+end
+enable_transience
+
 fish_add_path ~/.spicetify
 
 {{- if eq .chezmoi.os "darwin" }}
