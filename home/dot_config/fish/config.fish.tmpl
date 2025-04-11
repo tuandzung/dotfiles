@@ -99,8 +99,13 @@ if status is-interactive
     fd --gen-completions fish | source
   end
 
+
   # Starship
+  function starship_transient_rprompt_func
+    starship module time
+  end
   type -q starship; and starship init fish | source
+  enable_transience
   # Zoxide
   type -q zoxide; and zoxide init --cmd cd fish | source
   # Navi
@@ -136,13 +141,10 @@ if status is-interactive
   type -q rbw; and rbw gen-completions fish | source
   # k0s
   type -q k0sctl; and k0sctl completion fish | source
+  # k3d
+  type -q k3d; and k3d completion fish | source
 end
 ## }
-
-function starship_transient_rprompt_func
-  starship module time
-end
-enable_transience
 
 fish_add_path ~/.spicetify
 
