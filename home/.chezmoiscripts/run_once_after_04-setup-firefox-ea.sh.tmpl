@@ -5,7 +5,13 @@ trap "rm -rf TEMP && _error \"Can't setup Firefox EA\"" ERR
 
 TEMP=$(mktemp -d)
 _notice "Setup EA for Firefox"
-curl -sSL https://github.com/andy-portmen/native-client/releases/latest/download/linux.zip | bsdtar -xvf- -C "$TEMP"
+{{- $fn := "" }}
+{{- if eq .chezmoi.os "linux" }}
+{{- $fn = "linux" }}
+{{- else }}
+{{- $fn = "mac" }}
+{{- end }}
+curl -sSL https://github.com/andy-portmen/native-client/releases/latest/download/{{ $fn }}.zip | bsdtar -xvf- -C "$TEMP"
 cd "$TEMP"
 bash install.sh
 rm -rf "$TEMP"
