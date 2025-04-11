@@ -136,6 +136,9 @@ unbind --mode=ex <C-a>
 blacklistadd teams.microsoft.com
 blacklistadd atlassian.net
 
+" Super ignore sites
+seturl https://console.cloud.google.com/bigquery superignore true
+
 " New reddit is bad
 autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", "old")
 
