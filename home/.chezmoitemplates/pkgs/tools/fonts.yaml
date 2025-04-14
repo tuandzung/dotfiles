@@ -6,11 +6,13 @@ gentoo:
     - name: media-fonts/roboto
     - name: media-fonts/noto
     - name: media-fonts/noto-cjk
+    - name: media-fonts/noto-emoji
 arch:
   packages:
     - name: ttf-roboto
     - name: noto-fonts
     - name: noto-fonts-cjk
+    - name: noto-fonts-emoji
 ubuntu:
   packages:
     - name: fonts-roboto
