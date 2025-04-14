@@ -1,0 +1,25 @@
+{{- if and (eq .chezmoi.os "linux") }}
+name: task
+is_essential: true
+method: binary
+github:
+  repo: go-task/task
+  version: latest
+  release_asset: task_linux_{{ .chezmoi.arch }}.tar.gz
+archive:
+  paths:
+    - task
+hook:
+  after: |
+    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
+    if [ -d ~/.config/fish/completions ]; then
+      tar $param --strip=2 -C ~/.config/fish/completions completion/fish/task.fish
+    fi
+{{- else }}
+name: task
+is_essential: true
+method: os
+macos:
+  packages:
+    - name: go-task
+{{- end }}
