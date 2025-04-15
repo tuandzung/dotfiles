@@ -1,0 +1,12 @@
+name: streamlink
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: net-misc/streamlink
+arch:
+  packages:
+    - name: streamlink
+macos:
+  packages:
+    - name: streamlink

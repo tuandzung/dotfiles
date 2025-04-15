@@ -11,9 +11,6 @@ user_pref("layout.css.prefers-color-scheme.content-override", 0);
  * [SETTING] General->Language and Appearance->Fonts and Colors */
 user_pref("font.default.x-western", "sans-serif"); // Change Latin to Sans-serif
 user_pref("font.default.x-unicode", "sans-serif"); // Change Latin to Sans-serif
-user_pref("font.name.monospace.x-western", "Tepiosevka");
-user_pref("font.name.sans-serif.x-western", "Tepiosevka Nerd Font");
-user_pref("font.name.serif.x-western", "Tepiosevka Nerd Font");
 /* Set default font size
  * [SETTING] General->Language and Appearance->Fonts and Colors */
 user_pref("font.size.monospace.x-western", 14);
