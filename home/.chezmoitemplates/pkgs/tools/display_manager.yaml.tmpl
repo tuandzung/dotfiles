@@ -6,7 +6,8 @@ gentoo:
   packages:
     - name: gui-libs/display-manager-init
     - name: gui-libs/greetd
-    - name: gui-apps/tuigreet
+    - name: gui-apps/ReGreet
+      repo: guru
   hook:
     after: |-
       sudo rc-update add display-manager default
@@ -14,7 +15,7 @@ gentoo:
 arch:
   packages:
     - name: greetd
-    - name: greetd-tuigreet
+    - name: greetd-regreet
   hook:
     after: |-
       sudo systemctl enable greetd
