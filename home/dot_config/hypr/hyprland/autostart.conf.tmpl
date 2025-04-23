@@ -65,11 +65,12 @@ exec-once = $browser -P Personal
 exec-once = $browser -P Work
 {{- end }}
 
+$emailClient = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }}
 # Email client
 {{- if eq .place "HOME" }}
-exec-once = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} -P Personal
+exec-once = $emailClient -P Personal
 {{- else if eq .place "OFFICE" }}
-exec-once = betterbird{{ if eq .chezmoi.osRelease.id "gentoo" }}-bin{{ end }} -P Work
+exec-once = $emailClient -P Work
 {{- end }}
 
 # Chat
