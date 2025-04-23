@@ -7,6 +7,9 @@ gentoo:
 arch:
   packages:
     - name: mpv
+    {{- if eq .graphicsDriver "AMD" }}
+    - name: vulkan-radeon
+    {{- end }}
 macos:
   packages:
     - name: mpv
