@@ -23,7 +23,7 @@ window#waybar.empty #window {
   margin: 5px;
   background-color: @base;
   margin-left: 1rem;
-  border: 1px solid @sapphire;
+  border: 2px solid @sapphire;
 }
 
 #workspaces button {
@@ -60,7 +60,7 @@ window#waybar.empty #window {
   background-color: @base;
   padding: 0.5rem 1rem;
   margin: 5px 0;
-  border: 1px solid @sapphire;
+  border: 2px solid @sapphire;
 }
 
 #disk,
@@ -70,14 +70,14 @@ window#waybar.empty #window {
   background-color: @base;
   padding: 0.5rem 0.5rem;
   margin: 5px 0;
-  border-bottom: 1px solid @sapphire;
-  border-top: 1px solid @sapphire;
+  border-bottom: 2px solid @sapphire;
+  border-top: 2px solid @sapphire;
 }
 
 #network {
   color: @pink;
   border-radius: 1rem 0rem 0rem 1rem;
-  border-left: none;
+  border-left: 2px solid @sapphire;
   border-right: none;
 }
 
@@ -150,7 +150,7 @@ window#waybar.empty #window {
 #disk {
   color: @peach;
   border-radius: 0px 1rem 1rem 0px;
-  border-right: 1px solid @sapphire;
+  border-right: 2px solid @sapphire;
 }
 
 #tray > .passive {
