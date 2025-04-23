@@ -1,4 +1,5 @@
-{{- if eq .kind "pc" }}
+{{- $id := printf "%s_%s" .place .kind }}
+{{- if eq $id "HOME_pc" }}
 [[profile]]
 name = "home"
 
@@ -29,6 +30,26 @@ mode = "2560x1600@144Hz"
 transform = "normal"
 position = "0,0"
 scale = 1.333333
+
+{{- else if eq $id "OFFICE_pc" }}
+[[profile]]
+name = "office"
+
+[[profile.output]]
+search = ["m=Dell P2422H", "s=D0FB0K3", "v=Dell Inc."]
+enable = true
+mode = "1920x1080@60Hz"
+position = "0,540"
+scale = 1.00
+transform = "normal"
+
+[[profile.output]]
+search = ["m=Dell P2422H", "s=4YFZDQ3", "v=Dell Inc."]
+enable = true
+mode = "1920x1080@60Hz"
+transform = "270"
+position = "1920,0"
+scale = 1.00
 
 {{- else if eq .kind "vm"}}
 [[profile]]
