@@ -25,6 +25,14 @@ exec-once = ~/.config/hypr/hyprland/scripts/gtk.sh
 
 # Wallpaper
 exec-once = hyprpaper
+{{- $wall := "" }}
+{{- $id := printf "%s_%s" .place .kind }}
+{{- if eq $id "HOME_pc" }}
+{{- $wall = "1.mp4" }}
+{{- else }}
+{{- $wall = "3.mp4" }}
+{{- end }}
+exec-once = mpvpaper DP-1 animated/{{ $wall }} --mpv-options "loop-file=inf no-config hwdec=auto-safe gpu-context=auto gpu-api=vulkan no-audio" --fork
 
 # Bar & Panel & Widgets
 exec-once = ~/.config/hypr/hyprland/scripts/waybar.sh
