@@ -34,9 +34,10 @@ scale = 1.333333
 {{- else if eq $id "OFFICE_pc" }}
 [[profile]]
 name = "office"
+exec = ["notify-send shikane \"Profile $SHIKANE_PROFILE_NAME has been applied\""]
 
 [[profile.output]]
-search = ["m=Dell P2422H", "s=D0FB0K3", "v=Dell Inc."]
+search = "n/DP-[1-9]"
 enable = true
 mode = "1920x1080@60Hz"
 position = "0,540"
@@ -44,7 +45,7 @@ scale = 1.00
 transform = "normal"
 
 [[profile.output]]
-search = ["m=Dell P2422H", "s=4YFZDQ3", "v=Dell Inc."]
+search = "n/HDMI-[ABC]-[1-9]"
 enable = true
 mode = "1920x1080@60Hz"
 transform = "270"
