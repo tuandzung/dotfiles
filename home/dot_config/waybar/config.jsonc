@@ -11,6 +11,7 @@
     "group/hardware",
     "tray",
     "pulseaudio",
+    "custom/pomodoro",
     "clock",
     "custom/notification"
   ],
@@ -134,8 +135,11 @@
     "escape": true,
     "interval": 5,
     "tooltip": false,
-    "exec": "playerctl metadata --format='{{ title }} - {{ artist }}'",
-    "on-click": "playerctl play-pause",
+    "exec": "playerctl -p spotify metadata --format='{{ title }} - {{ artist }}'",
+    "exec-if": "pgrep spotify",
+    "on-click": "playerctl -p spotify play-pause",
+    "on-scroll-up": "playerctl -p spotify previous",
+    "on-scroll-down": "playerctl -p spotify next",
     "max-length": 50
   },
   "clock": {
@@ -203,4 +207,11 @@
     },
     "on-click": "pavucontrol"
   },
+  "custom/pomodoro": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "waybar-module-pomodoro -o  -b   --no-icons",
+    "on-click": "waybar-module-pomodoro toggle",
+    "on-click-right": "waybar-module-pomodoro reset",
+  }
 }

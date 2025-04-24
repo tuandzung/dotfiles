@@ -50,6 +50,7 @@ window#waybar.empty #window {
 
 #custom-hw,
 #custom-music,
+#custom-pomodoro,
 #custom-notification,
 #window,
 #tray,
@@ -85,6 +86,26 @@ window#waybar.empty #window {
   border-radius: 1rem 1rem 1rem 1rem;
   margin-right: 0.5rem;
   margin-left: 0.5rem;
+}
+
+#custom-pomodoro {
+  border-radius: 1rem 1rem 1rem 1rem;
+  margin-right: 0.5rem;
+}
+
+#custom-pomodoro.work {
+  color: @maroon;
+  border: 2px solid @maroon;
+}
+
+#custom-pomodoro.break {
+  color: @green;
+  border: 2px solid @green;
+}
+
+#custom-pomodoro.pause {
+  color: @yellow;
+  border: 2px solid @yellow;
 }
 
 #custom-hw {
