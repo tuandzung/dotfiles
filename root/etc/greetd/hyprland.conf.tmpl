@@ -2,6 +2,9 @@ exec-once = regreet; hyprctl dispatch exit
 exec-once = bash {{ .chezmoi.sourceDir }}/../../.config/hypr/hyprland/scripts/gtk.sh
 
 monitor = DP-1, preferred, 0x0, 1
+{{- if eq .place "OFFICE" }}
+monitor = HDMI-A-1, disable
+{{- end }}
 
 {{- if eq .graphicsDriver "NVIDIA" }}
 # NVIDIA setting
