@@ -10,11 +10,18 @@
   "modules-right": [
     "group/hardware",
     "tray",
-    "pulseaudio",
+    "group/audio",
     "custom/pomodoro",
     "clock",
     "custom/notification"
   ],
+  "group/audio": {
+    "orientation": "inherit",
+    "modules": [
+      "pulseaudio",
+      "custom/pulseaudio-cycle"
+    ]
+  },
   "group/hardware": {
     "orientation": "inherit",
     "drawer": {
@@ -32,8 +39,16 @@
       "disk",
     ]
   },
+  "custom/pulseaudio-cycle": {
+    "return-type": "json",
+    "exec-on-event": true,
+    "interval": 5,
+    "exec": "pactl --format=json list sinks | jq -cM --unbuffered \"map(select(.name == \\\"$(pactl get-default-sink)\\\"))[0].properties | [.\\\"node.nick\\\",.\\\"alsa.name\\\",.\\\"media.name\\\",.\\\"alsa.long_card_name\\\"] | map(select(length>0))[0] | {text:.}\"",
+    "exec-if": "sleep 0.1", // Give enough time for `pactl get-default-sink` to update
+    "on-click": "pactl --format=json list sinks short | jq -cM --unbuffered \"[.[].name] | .[((index(\\\"$(pactl get-default-sink)\\\")+1)%length)]\" | xargs pactl set-default-sink"
+  },
   "custom/hw": {
-    "format": "",
+    "format": "",
     "tooltip-format": "Hardware group",
   },
   "custom/notification": {

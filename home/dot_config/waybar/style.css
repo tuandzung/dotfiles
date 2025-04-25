@@ -48,38 +48,78 @@ window#waybar.empty #window {
   background-color: @red;
 }
 
-#custom-hw,
 #custom-music,
 #custom-pomodoro,
 #custom-notification,
 #window,
 #tray,
-#network,
 #clock,
-#battery,
-#pulseaudio {
+#hardware,
+#audio {
   background-color: @base;
   padding: 0.5rem 1rem;
   margin: 5px 0;
   border: 2px solid @sapphire;
 }
 
-#disk,
-#cpu,
-#memory,
-#temperature {
-  background-color: @base;
-  padding: 0.5rem 0.5rem;
-  margin: 5px 0;
-  border-bottom: 2px solid @sapphire;
-  border-top: 2px solid @sapphire;
+#hardware {
+  color: @rosewater;
+  border-radius: 1rem 1rem;
+}
+
+#custom-hw {
+  margin-right: 0.3rem;
 }
 
 #network {
   color: @pink;
-  border-radius: 1rem 0rem 0rem 1rem;
-  border-left: 2px solid @sapphire;
-  border-right: none;
+  margin-right: 1rem;
+}
+
+#cpu {
+  color: @green;
+  margin-right: 1rem;
+}
+
+#memory {
+  color: @mauve;
+  margin-right: 1rem;
+}
+
+#temperature {
+  color: @yellow;
+  margin-right: 1rem;
+}
+
+#temperature.critical {
+  font-weight: bold;
+  color: @red;
+}
+
+#disk {
+  color: @peach;
+  margin-right: 0.5rem;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.charging {
+  color: @green;
+}
+
+#battery.warning:not(.charging) {
+  color: @red;
+}
+
+#backlight {
+  color: @yellow;
+}
+
+#backlight,
+#battery {
+  border-radius: 0;
 }
 
 #tray {
@@ -108,38 +148,14 @@ window#waybar.empty #window {
   border: 2px solid @yellow;
 }
 
-#custom-hw {
-  border-radius: 1rem 1rem 1rem 1rem;
-  margin-left: 0.5rem;
-  padding-right: 1.2rem;
-}
-
-#battery {
-  color: @green;
-}
-
-#battery.charging {
-  color: @green;
-}
-
-#battery.warning:not(.charging) {
-  color: @red;
-}
-
-#backlight {
-  color: @yellow;
-}
-
-#backlight,
-#battery {
-  border-radius: 0;
+#audio {
+  color: @rosewater;
+  border-radius: 1rem 1rem;
+  margin-right: 0.5rem;
 }
 
 #pulseaudio {
-  color: @rosewater;
-  border-radius: 1rem 1rem;
-  padding-right: 1.5rem;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
 }
 
 #custom-music {
@@ -159,21 +175,6 @@ window#waybar.empty #window {
   margin-right: 0.5rem;
 }
 
-#temperature {
-  color: @yellow;
-}
-
-#temperature.critical {
-  font-weight: bold;
-  color: @red;
-}
-
-#disk {
-  color: @peach;
-  border-radius: 0px 1rem 1rem 0px;
-  border-right: 2px solid @sapphire;
-}
-
 #tray > .passive {
   -gtk-icon-effect: dim;
 }
@@ -181,14 +182,6 @@ window#waybar.empty #window {
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
   background-color: @red;
-}
-
-#cpu {
-  color: @green;
-}
-
-#memory {
-  color: @mauve;
 }
 
 #clock {
