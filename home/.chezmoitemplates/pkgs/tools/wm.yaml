@@ -12,6 +12,8 @@ gentoo:
       repo: guru
     - name: gui-apps/hyprshade
       repo: guru
+    - name: gui-apps/hyprsunset
+      repo: guru
     - name: sys-auth/hyprpolkitagent
       repo: guru
     - name: sys-auth/seatd
@@ -29,6 +31,7 @@ arch:
     - name: hyprlock
     - name: hyprpaper
     - name: hyprshade
+    - name: hyprsunset
     - name: xdg-desktop-portal-wlr
     - name: xdg-desktop-portal-hyprland
     - name: hypridle

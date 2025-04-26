@@ -39,7 +39,14 @@ exec-once = ~/.config/hypr/hyprland/scripts/waybar.sh
 exec-once = swaync
 
 # Screen shader and changes detection
-exec = hyprshade auto
+{{- if ne .chezmoi.osRelease.id "gentoo" }}
+exec-once = dbus-update-activation-environment --systemd HYPRLAND_INSTANCE_SIGNATURE
+exec-once = systemctl --user start hyprsunset.service
+exec-once = sunsetr
+{{- else }}
+exec = hyprsunset
+exec = sunsetr
+{{- end }}
 exec-once = shikane
 
 {{- if ne .place "HOME" }}
