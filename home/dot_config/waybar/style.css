@@ -71,6 +71,10 @@ window#waybar.empty #window {
   margin-right: 0.3rem;
 }
 
+#custom-vpn {
+  margin-right: 1rem;
+}
+
 #network {
   color: @pink;
   margin-right: 1rem;

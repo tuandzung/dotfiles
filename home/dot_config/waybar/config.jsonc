@@ -1,5 +1,5 @@
 {
-  // "output": "DP-1",
+  "output": "DP-1",
   "layer": "top",
   "position": "top",
   "modules-left": [
@@ -31,6 +31,7 @@
     },
     "modules": [
       "custom/hw",
+      "custom/vpn",
       "network",
       "battery",
       "cpu",
@@ -228,5 +229,12 @@
     "exec": "waybar-module-pomodoro -o  -b   --no-icons",
     "on-click": "waybar-module-pomodoro toggle",
     "on-click-right": "waybar-module-pomodoro reset",
+  },
+  "custom/vpn": {
+    "format": "VPN ",
+    "exec": "echo '{\"class\": \"connected\"}'",
+    "exec-if": "test -d /proc/sys/net/ipv4/conf/tun0",
+    "return-type": "json",
+    "interval": 5
   }
 }
