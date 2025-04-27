@@ -19,8 +19,14 @@
     "orientation": "inherit",
     "modules": [
       "pulseaudio",
+      "pulseaudio/slider",
       "custom/pulseaudio-cycle"
-    ]
+    ],
+    "drawer": {
+      "click-to-reveal": false,
+      "transition-left-to-right": true,
+      "children-class": "not-audio",
+    },
   },
   "group/hardware": {
     "orientation": "inherit",
@@ -204,8 +210,8 @@
     ]
   },
   "pulseaudio": {
-    "format": "{volume}% {icon}",
-    "format-bluetooth": "{volume}% {icon}",
+    "format": "{icon}",
+    "format-bluetooth": "{icon}",
     "format-bluetooth-muted": "{icon}",
     "format-muted": "",
     "format-icons": {
