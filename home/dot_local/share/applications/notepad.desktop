@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Notepad++
+Exec=/usr/bin/kitty -e nvim %F
+Type=Application
+Icon=nvim
+StartupWMClass=Notepad++
+Comment=File editor
