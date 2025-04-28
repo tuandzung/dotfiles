@@ -1,0 +1,6 @@
+name: rbw
+method: shell
+is_essential: true
+dependencies:
+  - rust
+content: cargo install rbw
