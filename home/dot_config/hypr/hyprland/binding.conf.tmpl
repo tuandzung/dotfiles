@@ -76,6 +76,9 @@ bind = $mainMod, E, exec, $browser -P
 bind = $mainMod, M, exec, $emailClient -P
 bind = $mainMod, N, exec, swaync-client -t -sw
 bind = $mainMod, X, exec, cliphist list | wofi --dmenu --allow-images --allow-markup | cliphist decode | wl-copy
+bind = $mainMod, U, exec, {{ if eq .place "OFFICE" }}RBW_PROFILE=work{{- end }} ~/.config/hypr/hyprland/scripts/rbw-menu.sh username | wtype -
+bind = $mainMod, P, exec, {{ if eq .place "OFFICE" }}RBW_PROFILE=work{{- end }} ~/.config/hypr/hyprland/scripts/rbw-menu.sh password | wtype -
+bind = $mainMod, T, exec, {{ if eq .place "OFFICE" }}RBW_PROFILE=work{{- end }} ~/.config/hypr/hyprland/scripts/rbw-menu.sh code | wtype -
 bind = $mainMod, L, exec, hyprlock
 bind = $mainMod, S, exec, grim -g "$(slurp)" - | swappy -f -
 bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" $screenshotDir/$(date +"screenshot_%Y-%m-%d-%H%M%S.png")
