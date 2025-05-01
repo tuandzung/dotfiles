@@ -3,6 +3,7 @@ set -Eeou pipefail
 source {{ .chezmoi.workingTree }}/scripts/logger.sh
 trap "_error \"Can't setup ytproxy\"" ERR
 
+{{- if not .isHeadless }}
 MPV_SCRIPTS_DIR={{ .chezmoi.homeDir }}/.config/mpv/scripts
 
 _notice "Setup ytproxy for mpv"
@@ -13,3 +14,4 @@ cp target/release/http-ytproxy .
 openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 3650 -passout pass:"third-wheel" -subj "/C=US/ST=private/L=province/O=city/CN=hostname.example.com"
 rm -rf target Cargo.lock
 _success "Setup ytproxy for mpv done"
+{{- end }}

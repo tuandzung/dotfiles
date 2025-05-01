@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 name: file-manager
 method: os
 is_essential: true
@@ -16,3 +17,4 @@ arch:
     - name: thunar-archive-plugin
     - name: file-roller
     - name: tumbler
+{{- end }}

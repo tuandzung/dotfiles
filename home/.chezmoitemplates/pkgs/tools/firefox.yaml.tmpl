@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 {{- if eq .browser "FIREFOX" }}
 name: firefox
 method: os
@@ -33,4 +34,5 @@ macos:
   packages:
     - name: zen-browser
       cask: true
+{{- end }}
 {{- end }}

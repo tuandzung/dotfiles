@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 {{- $fontDir := "" }}
 {{- if eq .chezmoi.os "darwin" }}
 {{- $fontDir = "Library/Fonts" }}
@@ -25,3 +26,4 @@
   type: archive
   url: {{ gitHubLatestReleaseAssetURL "ryanoasis/nerd-fonts" "NerdFontsSymbolsOnly.zip" }}
   refreshPeriod: 168h
+{{- end }}

@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/.chezmoitemplates/firefox/prefs/00-arkenfox.js:
   type: file
   url: 'https://raw.githubusercontent.com/arkenfox/user.js/master/user.js'
@@ -34,3 +35,4 @@
   type: file
   url: 'https://github.com/catppuccin/thunderbird/raw/refs/heads/main/themes/macchiato/macchiato-sapphire.xpi'
   refreshPeriod: 168h
+{{- end }}

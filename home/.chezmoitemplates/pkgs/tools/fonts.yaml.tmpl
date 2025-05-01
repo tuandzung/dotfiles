@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 name: fonts
 is_essential: true
 method: os
@@ -18,3 +19,4 @@ ubuntu:
     - name: fonts-roboto
     - name: fonts-noto
     - name: fonts-noto-cjk
+{{- end }}

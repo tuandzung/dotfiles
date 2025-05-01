@@ -3,7 +3,7 @@
   url: https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Macchiato.tmTheme
   refreshPeriod: 168h
 
-{{ if ne .chezmoi.os "darwin" }}
+{{ if and (ne .chezmoi.os "darwin") (not .isHeadless) }}
 .local/share/fcitx5/themes/catppuccin:
   type: archive
   url: https://github.com/catppuccin/fcitx5/archive/refs/heads/main.zip

@@ -1,6 +1,7 @@
 name: betterbird
 method: os
 is_essential: true
+{{- if not .isHeadless }}
 gentoo:
   packages:
     - name: mail-client/betterbird-bin
@@ -8,6 +9,7 @@ gentoo:
 arch:
   packages:
     - name: betterbird-bin
+{{- end }}
 macos:
   packages:
     - name: thunderbird

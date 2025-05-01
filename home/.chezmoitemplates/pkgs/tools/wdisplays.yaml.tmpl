@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 name: wdisplays
 method: os
 is_essential: true
@@ -7,3 +8,4 @@ gentoo:
 arch:
   packages:
     - name: wdisplays
+{{- end }}

@@ -7,6 +7,7 @@ _notice "Update submodules"
 # modules hash: {{ joinPath .chezmoi.workingTree ".gitmodules" | include | sha256sum }}
 cd {{ .chezmoi.workingTree }}
 git submodule update --init --remote --recursive \
+  {{- if not .isHeadless }}
   {{- if eq .browser "ZEN" }}
   home/dot_config/zen/profiles \
   {{- else }}
@@ -15,7 +16,8 @@ git submodule update --init --remote --recursive \
   {{- end }}
   home/.chezmoitemplates/firefox/chrome/fx-autoconfig \
   home/dot_config/thunderbird/profiles \
-  home/dot_config/nvim \
   home/dot_config/mpv \
-  home/Wallpapers
+  home/Wallpapers \
+  {{- end }}
+  home/dot_config/nvim
 _success "Updated submodules"

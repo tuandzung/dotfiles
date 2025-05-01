@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 name: ferdium
 method: os
 is_essential: true
@@ -12,3 +13,4 @@ macos:
   packages:
     - name: ferdium
       cask: true
+{{- end }}

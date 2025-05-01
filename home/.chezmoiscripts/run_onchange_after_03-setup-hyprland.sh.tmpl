@@ -3,6 +3,7 @@ set -Eeou pipefail
 source {{ .chezmoi.workingTree }}/scripts/logger.sh
 trap "_error \"Can't setup hyprland\"" ERR
 
+{{- if not .isHeadless }}
 _notice "Setup hyprland"
 # config hash: {{ joinPath .chezmoi.sourceDir "dot_config/hypr/hyprland/plugins.list" | include | sha256sum }}
 
@@ -12,3 +13,4 @@ if [[ -v HYPRLAND_INSTANCE_SIGNATURE ]]; then
   hyprpm reload -n
 fi
 _success "Setup hyprland"
+{{- end }}

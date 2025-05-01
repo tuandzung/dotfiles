@@ -1,4 +1,4 @@
-{{- if eq .chezmoi.os "linux" }}
+{{- if and (eq .chezmoi.os "linux") (not .isHeadless) }}
 name: greetd
 method: os
 is_essential: true

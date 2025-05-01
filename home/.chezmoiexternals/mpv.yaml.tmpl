@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/mpv:
   type: archive
   url: https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip
@@ -32,3 +33,4 @@
   type: file
   url: https://raw.githubusercontent.com/ObserverOfTime/mpv-scripts/refs/heads/master/clipshot.lua
   refreshPeriod: 168h
+{{- end }}

@@ -1,4 +1,5 @@
 {{- if eq .chezmoi.os "linux"}}
+{{- if not .isHeadless }}
 name: fcitx-bamboo
 method: os
 is_essential: true
@@ -12,6 +13,7 @@ arch:
 ubuntu:
   packages:
     - name: fcitx-bamboo
+{{- end }}
 {{- else }}
 name: openkey
 method: os

@@ -1,6 +1,7 @@
 name: mpv
 method: os
 is_essential: true
+{{- if not .isHeadless }}
 gentoo:
   packages:
     - name: media-video/mpv
@@ -10,6 +11,7 @@ arch:
     {{- if eq .graphicsDriver "AMD" }}
     - name: vulkan-radeon
     {{- end }}
+{{- end }}
 macos:
   packages:
     - name: mpv
