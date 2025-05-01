@@ -1,17 +1,5 @@
 .DS_Store
 
-{{- if .isHeadless }}
-etc/greetd
-opt/zen-browser
-opt/zen-browser-bin
-usr/lib
-usr/lib64
-Applications
-usr/share/fonts
-usr/share/icons
-usr/share/themes
-usr/share/wayland-sessions
-{{- else }}
 {{- if eq .chezmoi.os "darwin" }}
 etc/sysctl.d
 etc/conf.d
@@ -35,6 +23,18 @@ Applications/Zen.app
 {{- end }}
 {{- else }}
 Applications
+{{- if .isHeadless }}
+etc/greetd
+opt/zen-browser
+opt/zen-browser-bin
+usr/lib
+usr/lib64
+Applications
+usr/share/fonts
+usr/share/icons
+usr/share/themes
+usr/share/wayland-sessions
+{{- end }}
 {{- if ne .chezmoi.osRelease.id "gentoo" }}
 usr/lib64
 opt/zen-browser
@@ -63,6 +63,5 @@ etc/pacman.conf
 etc/ntp.conf
 etc/portage
 etc/conf.d
-{{- end }}
 {{- end }}
 {{- end }}

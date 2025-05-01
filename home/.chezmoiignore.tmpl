@@ -5,6 +5,29 @@
 **/__pycache__
 .DS_Store
 
+{{- if eq .chezmoi.os "darwin" }}
+.config/fontconfig
+.config/gtk-3.0
+.config/gtk-4.0
+.config/hypr
+.config/hyprshade
+.config/fcitx5
+.config/shikane
+.config/swaync
+.config/waybar
+.config/wofi
+.config/Trolltech.conf
+.config/k9s
+.icons
+.local/share
+.mozilla
+.thunderbird
+.zen
+{{- else }}
+.chezmoiscripts/darwin/**
+Library
+.hammerspoon
+.config/karabiner
 {{- if .isHeadless }}
 .config/kitty
 .config/thunderbird
@@ -33,30 +56,7 @@
 .config/update_browser_profiles.sh
 .wayland_init.fish
 Wallpapers
-{{- else }}
-{{- if eq .chezmoi.os "darwin" }}
-.config/fontconfig
-.config/gtk-3.0
-.config/gtk-4.0
-.config/hypr
-.config/hyprshade
-.config/fcitx5
-.config/shikane
-.config/swaync
-.config/waybar
-.config/wofi
-.config/Trolltech.conf
-.config/k9s
-.icons
-.local/share
-.mozilla
-.thunderbird
-.zen
-{{- else }}
-.chezmoiscripts/darwin/**
-Library
-.hammerspoon
-.config/karabiner
+{{- end }}
 {{- end }}
 {{- if eq .browser "ZEN" }}
 .mozilla
@@ -66,5 +66,4 @@ Library/Application\ Support/Firefox
 .zen
 .config/zen
 Library/Application\ Support/zen
-{{- end }}
 {{- end }}
