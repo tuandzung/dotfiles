@@ -139,9 +139,7 @@ blacklistadd atlassian.net
 " Super ignore sites
 seturl https://console.cloud.google.com/bigquery.* superignore true
 seturl https://.*cloudworkstations.dev.* superignore true
-
-" New reddit is bad
-autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", "old")
+seturl https://kafka.* superignore true
 
 " Comment toggler for Reddit, Hacker News and Lobste.rs
 bind ;c hint -Jc [class*="expand"],[class="togg"],[class="comment_folder"]
