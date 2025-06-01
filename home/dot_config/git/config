@@ -1,6 +1,6 @@
 # vim:expandtab:shiftwidth=8:tabstop=8:softtabstop=8:ft=gitconfig
 [user]
-        email = 22429563+tuandzung@users.noreply.github.com
+        email = mail@tuandzung.me
         name = Ngo Tuan Dzung
         signingkey = ~/.ssh/keys/personal_ed25519.pub
 
