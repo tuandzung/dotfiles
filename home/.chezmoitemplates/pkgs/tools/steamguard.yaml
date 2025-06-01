@@ -1,0 +1,7 @@
+name: steamguard
+is_essential: true
+method: shell
+dependencies:
+  - rust
+content: |-
+  cargo install steamguard-cli
