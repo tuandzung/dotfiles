@@ -10,7 +10,11 @@ _notice "Setup PAM"
 if [ -f /etc/pam.d/system-local-login ]; then
   if ! grep -q '^auth\s*include\s*u2f' /etc/pam.d/system-local-login; then
     _notice "Adding pam_u2f to system-local-login"
+    {{- if eq .place "HOME" }}
     sed -i '1 i\auth include u2f' /etc/pam.d/system-local-login
+    {{- else }}
+    echo "auth include u2f" >> /etc/pam.d/system-local-login
+    {{- end }}
   fi
 fi
 {{- if eq .chezmoi.osRelease.id "arch" "ubuntu" }}

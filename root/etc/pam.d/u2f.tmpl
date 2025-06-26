@@ -1,0 +1,1 @@
+auth {{- if eq .place "OFFICE" }} required{{- else }} sufficient{{- end }} pam_u2f.so cue [cue_prompt=Touch the key pls?]
