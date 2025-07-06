@@ -17,7 +17,7 @@ if command -v sw_vers &> /dev/null; then
   brew update && brew install bash coreutils findutils gnu-tar gnu-sed gawk gnutls gnu-indent gnu-getopt grep chezmoi age yq
   echo "export PATH=\"$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$HOMEBREW_PREFIX/opt/findutils/libexec/gnubin:$HOMEBREW_PREFIX/opt/gnu-tar/libexec/gnubin:$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$HOMEBREW_PREFIX/opt/gawk/libexec/gnubin:$HOMEBREW_PREFIX/opt/gnu-indent/libexec/gnubin:$HOMEBREW_PREFIX/opt/gnu-getopt/bin:$HOMEBREW_PREFIX/opt/grep/libexec/gnubin:$PATH\"" >> ~/.zprofile
 elif command -v apt &> /dev/null; then
-  sudo apt update && sudo apt install -y git curl gnupg openssh
+  sudo apt update && sudo apt install -y git curl gnupg openssh-server
 elif command -v pacman &> /dev/null; then
   sudo pacman -Sy && sudo pacman -Sy --noconfirm git curl openssh
   if ! command -v yay > /dev/null; then
