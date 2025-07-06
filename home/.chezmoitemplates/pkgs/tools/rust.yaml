@@ -10,3 +10,9 @@ arch:
 macos:
   packages:
     - name: rust
+ubuntu:
+  packages:
+    - name: rustup
+  hook:
+    after: |-
+      rustup default stable

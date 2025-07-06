@@ -11,8 +11,7 @@ ubuntu:
   packages:
     - name: fastfetch
       repo: https://ppa.launchpadcontent.net/zhangsongcui3371/fastfetch/ubuntu
-      repo_version: main
-      key: 7e2e5cb4d4865f21
+      repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
 macos:
   packages:
     - name: fastfetch

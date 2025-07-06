@@ -297,7 +297,7 @@ if __name__ == "__main__":
     {{- else if eq .chezmoi.osRelease.id "arch" }}
     {{- $shortCode = "arch" }}
     {{- $name = "Arch Linux" }}
-    {{- else if eq .chezmoi.osRelease.id "debian" "ubuntu" }}
+    {{- else if eq .chezmoi.osRelease.id "debian" "ubuntu" "linuxmint" }}
     {{- $shortCode = "ubuntu" }}
     {{- $name = "Debian-based Linux" }}
     {{- end }}

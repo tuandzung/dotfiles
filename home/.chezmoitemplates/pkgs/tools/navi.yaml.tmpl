@@ -1,5 +1,5 @@
 name: navi
-{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo" "ubuntu") }}
+{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
 method: binary
 is_essential: true
 github:

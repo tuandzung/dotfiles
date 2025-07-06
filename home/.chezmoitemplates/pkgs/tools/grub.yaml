@@ -7,6 +7,3 @@ gentoo:
 arch:
   packages:
     - name: grub
-ubuntu:
-  packages:
-    - name: grub
