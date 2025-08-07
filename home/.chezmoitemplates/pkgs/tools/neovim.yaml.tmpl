@@ -11,11 +11,13 @@ gentoo:
 arch:
   packages:
     - name: neovim
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "ubuntu" "debian" "linuxmint") }}
 ubuntu:
   packages:
     - name: neovim
       repo: http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu
       repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
+{{- end }}
 termux:
   packages:
     - name: neovim
