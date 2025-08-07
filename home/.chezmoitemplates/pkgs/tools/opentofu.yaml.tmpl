@@ -1,0 +1,20 @@
+name: opentofu
+{{- if eq .chezmoi.os "linux" }}
+method: binary
+is_essential: true
+github:
+  repo: opentofu/opentofu
+  {{- if eq .chezmoi.arch "amd64" }}
+  release_asset: tofu_%s_linux_amd64.tar.gz
+  {{- else if eq .chezmoi.arch "arm64" }}
+  release_asset: tofu_%s_linux_arm64.tar.gz
+  {{- end }}
+archive:
+  paths:
+    - tofu
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: opentofu
+{{- end }}
