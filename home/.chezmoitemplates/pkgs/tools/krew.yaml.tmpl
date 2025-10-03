@@ -1,0 +1,18 @@
+name: kubectl-krew
+method: binary
+dependencies:
+  - kubectl
+github:
+  repo: kubernetes-sigs/krew
+  release_asset: krew-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz
+archive:
+  paths:
+    - ./krew-{{ .chezmoi.os }}_{{ .chezmoi.arch }}
+  strip_components: 1
+hook:
+  after: |
+    KREW="~/.local/bin/krew"
+    mv ~/.local/bin/krew{-{{ .chezmoi.os }}_{{ .chezmoi.arch }},}
+    kubectl krew install access-matrix cert-manager deprecations \
+      ingress-nginx pv-migrate tree ktop advise-policy df-pv explore \
+      pv-mounter sniff stern
