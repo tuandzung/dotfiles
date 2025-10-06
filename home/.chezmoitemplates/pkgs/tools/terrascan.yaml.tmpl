@@ -1,0 +1,20 @@
+name: terrascan
+method: binary
+github:
+  repo: tenable/terrascan
+  {{- $os := "" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{- $os = "Darwin" }}
+  {{- else if eq .chezmoi.os "linux" "android" }}
+  {{- $os = "Linux" }}
+  {{- end }}
+  {{- $arch := "" }}
+  {{- if eq .chezmoi.arch "amd64" }}
+  {{- $arch = "x86_64" }}
+  {{- else if eq .chezmoi.arch "arm64" }}
+  {{- $arch = "arm64" }}
+  {{- end }}
+  release_asset: terrascan_%s_{{ $os }}_{{ $arch }}.tar.gz
+archive:
+  paths:
+    - terrascan
