@@ -1,0 +1,27 @@
+name: glow
+method: binary
+github:
+  repo: charmbracelet/glow
+  {{- $os := "" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{-   $os = "Darwin" }}
+  {{- else if eq .chezmoi.os "linux" "android" }}
+  {{-   $os = "Linux" }}
+  {{- end }}
+  {{- $arch := "" }}
+  {{- if eq .chezmoi.arch "amd64" }}
+  {{-   $arch = "x86_64" }}
+  {{- else if eq .chezmoi.arch "arm64" }}
+  {{-   $arch = "arm64" }}
+  {{- end }}
+  release_asset: glow_%s_{{ $os }}_{{ $arch }}.tar.gz
+archive:
+  paths:
+    - glow_%s_{{ $os }}_{{ $arch }}/glow
+hook:
+  after: |
+    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
+    subfix="{{ $os }}_{{ $arch }}"
+    if [ -d ~/.config/fish/completions ]; then
+      tar $param --strip=2 -C ~/.config/fish/completions glow_%s_$subfix/completions/glow.fish
+    fi
