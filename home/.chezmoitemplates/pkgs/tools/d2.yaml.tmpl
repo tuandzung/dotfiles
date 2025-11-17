@@ -1,0 +1,20 @@
+name: d2
+method: binary
+github:
+  repo: terrastruct/d2
+  {{- $os := "" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{- $os = "macos" }}
+  {{- else if eq .chezmoi.os "linux" "android" }}
+  {{- $os = "linux" }}
+  {{- end }}
+  release_asset:  d2-%1s-{{ $os }}-{{ .chezmoi.arch }}.tar.gz
+archive:
+  paths:
+    - d2-%1s/bin/d2
+  strip_components: 2
+hook:
+  after: |
+    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
+    mkdir -p "$MAN_DIR/man1"
+    tar $param --strip=2 -C "$MAN_DIR/man1" d2-%1s/man/d2.1
