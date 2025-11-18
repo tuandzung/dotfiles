@@ -1,0 +1,20 @@
+name: parqeye
+method: binary
+github:
+  repo: kaushiksrini/parqeye
+  {{- $os := "" }}
+  {{- $arch := "" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{- $os = "apple-darwin" }}
+  {{- else if eq .chezmoi.os "linux" }}
+  {{- $os = "unknown-linux-musl" }}
+  {{- end }}
+  {{- if eq .chezmoi.arch "amd64" }}
+  {{- $arch = "x86_64" }}
+  {{- else if eq .chezmoi.arch "arm64" }}
+  {{- $arch = "aaarch64" }}
+  {{- end }}
+  release_asset: parqeye-{{ $arch }}-{{ $os }}.tar.xz
+archive:
+  paths:
+    - parqeye-{{ $arch }}-{{ $os }}/parqeye
