@@ -100,7 +100,6 @@ if status is-interactive
     fd --gen-completions fish | source
   end
 
-
   # Starship
   function starship_transient_rprompt_func
     starship module time
@@ -111,6 +110,8 @@ if status is-interactive
   type -q zoxide; and zoxide init --cmd cd fish | source
   # Navi
   type -q navi; and navi widget fish | source
+  # pay-respects
+  type -q pay-respects; and pay-respects fish | source
   # ov
   if type -q ov
     set -gx PAGER "ov"

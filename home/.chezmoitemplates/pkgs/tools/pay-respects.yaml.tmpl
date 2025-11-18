@@ -1,0 +1,22 @@
+name: pay-respects
+method: binary
+github:
+  repo: iffse/pay-respects
+  {{- $os := "" }}
+  {{- $arch := "" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{- $os = "apple-darwin" }}
+  {{- else if eq .chezmoi.os "linux" }}
+  {{- $os = "unknown-linux-musl" }}
+  {{- end }}
+  {{- if eq .chezmoi.arch "amd64" }}
+  {{- $arch = "x86_64" }}
+  {{- else if eq .chezmoi.arch "arm64" }}
+  {{- $arch = "aaarch64" }}
+  {{- end }}
+  release_asset: pay-respects-%s-{{ $arch }}-{{ $os }}.tar.zst
+archive:
+  paths:
+    - pay-respects
+    - _pay-respects-fallback-100-request-ai
+    - _pay-respects-module-100-runtime-rules
