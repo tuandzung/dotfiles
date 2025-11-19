@@ -1,0 +1,36 @@
+name: hyperfine
+{{- if eq .chezmoi.os "android" "darwin" }}
+# Use package manager for Android, macOS
+method: os
+# https://repology.org/project/hyperfine/versions
+termux:
+  packages:
+    - name: hyperfine
+macos:
+  packages:
+    - name: hyperfine
+{{- else }}
+method: binary
+github:
+  repo: sharkdp/hyperfine
+  {{- $arch := "" }}
+  {{- if eq .chezmoi.arch "amd64" }}
+  {{- $arch = "x86_64" }}
+  {{- else if eq .chezmoi.arch "arm64" }}
+  {{- $arch = "aarch64" }}
+  {{- end }}
+  release_asset: hyperfine-%1s-{{ $arch }}-unknown-linux-musl.tar.gz
+archive:
+  strip_components: 1
+  paths:
+    - hyperfine-%1s-{{ $arch }}-unknown-linux-musl/hyperfine
+hook:
+  after: |
+    extract_dir=hyperfine-%1s-{{ $arch }}-unknown-linux-musl
+    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
+    mkdir -p "$MAN_DIR/man1"
+    tar $param --strip=1 -C "$MAN_DIR/man1" "$extract_dir/hyperfine.1"
+    if [ -d ~/.config/fish/completions ]; then
+      tar $param --strip=2 -C "$HOME/.config/fish/completions" "$extract_dir/autocomplete/hyperfine.fish"
+    fi
+{{- end }}
