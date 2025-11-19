@@ -1,28 +1,27 @@
 name: dust
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
+{{- if eq .chezmoi.os "android" "darwin" }}
+# Use package manager for Android, macOS
+method: os
+termux:
+  packages:
+    - name: dust
+macos:
+  packages:
+    - name: dust
+{{- else }}
 method: binary
 github:
   repo: bootandy/dust
   version: latest
+  {{- $arch := "" }}
   {{- if eq .chezmoi.arch "amd64" }}
-  release_asset: dust-%1s-x86_64-unknown-linux-gnu.tar.gz
+  {{- $arch = "x86_64" }}
   {{- else if eq .chezmoi.arch "arm64" }}
-  release_asset: dust-%1s-aarch64-unknown-linux-gnu.tar.gz
+  {{- $arch = "aarch64" }}
   {{- end }}
+  release_asset: dust-%1s-{{ $arch }}-unknown-linux-musl.tar.gz
 archive:
   strip_components: 1
   paths:
-    {{- if eq .chezmoi.arch "amd64" }}
-    - dust-%1s-x86_64-unknown-linux-gnu/dust
-    {{- else if eq .chezmoi.arch "arm64" }}
-    - dust-%1s-aarch64-unknown-linux-gnu/dust
-    {{- end }}
-{{- else }}
-method: os
-macos:
-  packages:
-    - name: dust
-arch:
-  packages:
-    - name: dust
+    - dust-%1s-{{ $arch }}-unknown-linux-musl/dust
 {{- end }}
