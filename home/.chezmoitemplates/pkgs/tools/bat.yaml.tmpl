@@ -1,36 +1,37 @@
 name: bat
 is_essential: true
-{{- if eq .chezmoi.os "linux" }}
+{{- if eq .chezmoi.os "android" "darwin" }}
+# Use package manager for Android, macOS
+method: os
+termux:
+  packages:
+    - name: bat
+macos:
+  packages:
+    - name: bat
+{{- else }}
 method: binary
 github:
   repo: sharkdp/bat
   version: latest
+  {{- $arch := "" }}
   {{- if eq .chezmoi.arch "amd64" }}
-  release_asset: bat-%1s-x86_64-unknown-linux-gnu.tar.gz
+  {{- $arch = "x86_64" }}
   {{- else if eq .chezmoi.arch "arm64" }}
-  release_asset: bat-%1s-aarch64-unknown-linux-gnu.tar.gz
+  {{- $arch = "aarch64" }}
   {{- end }}
+  release_asset: bat-%1s-{{ $arch }}-unknown-linux-musl.tar.gz
 archive:
   strip_components: 1
   paths:
-  {{- if eq .chezmoi.arch "amd64" }}
-    - bat-%1s-x86_64-unknown-linux-gnu/bat
-  {{- else if eq .chezmoi.arch "arm64" }}
-    - bat-%1s-aarch64-unknown-linux-gnu/bat
-  {{- end }}
+    - bat-%1s-{{ $arch }}-unknown-linux-musl/bat
 hook:
   after: |
-    {{- if eq .chezmoi.arch "amd64" }}
-    arch=x86_64
-    {{- else if eq .chezmoi.arch "arm64" }}
-    arch=aarch64
-    {{- end }}
-    param="-xz --strip=1 -f $TEMP_DIR/$RELEASE_ASSET"
+    extract_dir=bat-%1s-{{ $arch }}-unknown-linux-musl
+    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
     mkdir -p "$MAN_DIR/man1"
-    tar $param -C "$MAN_DIR/man1" "bat-%1s-$arch-unknown-linux-gnu/bat.1"
-{{- else if eq .chezmoi.os "darwin" }}
-method: os
-macos:
-  packages:
-    - name: bat
+    tar $param -C "$MAN_DIR/man1" "$extract_dir/bat.1"
+    if [ -d ~/.config/fish/completions ]; then
+      tar $param --strip=2 -C "$HOME/.config/fish/completions" "$extract_dir/autocomplete/bat.fish"
+    fi
 {{- end }}
