@@ -1,38 +1,37 @@
 name: fd
 is_essential: true
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
+{{- if eq .chezmoi.os "android" "darwin" }}
+# Use package manager for Android, macOS
+method: os
+termux:
+  packages:
+    - name: fd
+macos:
+  packages:
+    - name: fd
+{{- else }}
 method: binary
 github:
   repo: sharkdp/fd
   version: latest
+  {{- $arch := "" }}
   {{- if eq .chezmoi.arch "amd64" }}
-  release_asset: fd-%1s-x86_64-unknown-linux-gnu.tar.gz
+  {{- $arch = "x86_64" }}
   {{- else if eq .chezmoi.arch "arm64" }}
-  release_asset: fd-%1s-aarch64-unknown-linux-gnu.tar.gz
+  {{- $arch = "aarch64" }}
   {{- end }}
+  release_asset: fd-%1s-{{ $arch }}-unknown-linux-musl.tar.gz
 archive:
   strip_components: 1
   paths:
-  {{- if eq .chezmoi.arch "amd64" }}
-    - fd-%1s-x86_64-unknown-linux-gnu/fd
-  {{- else if eq .chezmoi.arch "arm64" }}
-    - fd-%1s-aarch64-unknown-linux-gnu/fd
-  {{- end }}
+    - fd-%1s-{{ $arch }}-unknown-linux-musl/fd
 hook:
   after: |
-    {{- if eq .chezmoi.arch "amd64" }}
-    arch=x86_64
-    {{- else if eq .chezmoi.arch "arm64" }}
-    arch=aarch64
-    {{- end }}
-    param="-xz --strip=1 -f $TEMP_DIR/$RELEASE_ASSET"
+    extract_dir=fd-%1s-{{ $arch }}-unknown-linux-musl
+    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
     mkdir -p "$MAN_DIR/man1"
-    tar $param -C "$MAN_DIR/man1" "fd-%1s-$arch-unknown-linux-gnu/fd.1"{{- else }}
-method: os
-macos:
-  packages:
-    - name: fd
-arch:
-  packages:
-    - name: fd
+    tar $param -C "$MAN_DIR/man1" "$extract_dir/fd.1"
+    if [ -d ~/.config/fish/completions ]; then
+      tar $param --strip=2 -C "$HOME/.config/fish/completions" "$extract_dir/autocomplete/fd.fish"
+    fi
 {{- end }}
