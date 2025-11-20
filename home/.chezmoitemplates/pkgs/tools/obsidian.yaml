@@ -1,0 +1,15 @@
+name: obsidian
+method: os
+# https://repology.org/project/obsidian/versions
+is_essential: true
+gentoo:
+  packages:
+    - name: app-office/obsidian
+arch:
+  packages:
+    - name: obsidian
+    - name: electron
+macos:
+  packages:
+    - name: obsidian
+      cask: true
