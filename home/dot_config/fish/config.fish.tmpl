@@ -171,3 +171,9 @@ function fish_greeting
   cat --style=plain $CONFIG_PATH/art
   fastfetch -l none
 end
+
+## Load secret config {
+if test -e $HOME/.config/fish/secret.fish
+    source $HOME/.config/fish/secret.fish
+end
+## }
