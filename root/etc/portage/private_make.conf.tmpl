@@ -2,7 +2,11 @@
 # built this stage.
 # Please consult /usr/share/portage/config/make.conf.example for a more
 # detailed example.
-COMMON_FLAGS="-march=native -O2 -pipe"
+## These warnings indicate likely runtime problems with LTO, so promote them
+# to errors. If a package fails to build with these, LTO should not be used there.
+WARNING_FLAGS="-Werror=odr -Werror=lto-type-mismatch -Werror=strict-aliasing"
+
+COMMON_FLAGS="-O2 -pipe -march=native -flto ${WARNING_FLAGS}"
 
 CFLAGS="${COMMON_FLAGS}"
 CXXFLAGS="${COMMON_FLAGS}"
