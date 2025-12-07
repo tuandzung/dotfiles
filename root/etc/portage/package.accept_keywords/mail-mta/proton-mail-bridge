@@ -1,0 +1,5 @@
+mail-mta/proton-mail-bridge ~amd64
+dev-libs/sentry-native ~amd64
+dev-util/breakpad ~amd64
+dev-libs/linux-syscall-support ~amd64
+dev-embedded/libdisasm ~amd64

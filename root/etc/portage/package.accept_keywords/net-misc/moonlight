@@ -1,0 +1,3 @@
+net-misc/moonlight ~amd64
+dev-util/spirv-tools ~amd64
+dev-util/spirv-headers ~amd64

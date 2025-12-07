@@ -1,0 +1,8 @@
+{{- if eq .graphicsDriver "AMD" }}
+dev-util/rocm-smi ~amd64
+dev-util/rocminfo ~amd64
+dev-libs/rocr-runtime ~amd64
+dev-libs/roct-thunk-interface ~amd64
+dev-libs/rocm-device-libs ~amd64
+dev-build/rocm-cmake ~amd64
+{{- end }}
