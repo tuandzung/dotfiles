@@ -1,0 +1,13 @@
+name: glab
+method: binary
+gitlab:
+  repo: gitlab-org/cli
+  {{- $os := .chezmoi.os }}
+  {{- if eq .chezmoi.os "android" }}
+  {{-   $os = "linux" }}
+  {{- end }}
+  release_asset: glab_%s_{{ $os }}_{{ .chezmoi.arch }}.tar.gz
+archive:
+  paths:
+    - bin/glab
+  strip_components: 1
