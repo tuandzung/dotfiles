@@ -1,70 +1,181 @@
 [project]
-  name = "install-binaries"
-  version = "0.1.0"
-  authors = [
-    { name = "Ngo Tuan Dung", email = "zun1903@gmail.com" }
-  ]
-  description = "A simple way to install binaries"
-  requires-python = ">=3.10"
-  dependencies = [
-    "requests",
-    "pyyaml",
-    "tqdm",
-    "patool",
-    "colorlog",
-    "ruff"
-  ]
+name = "install-binaries"
+version = "0.1.0"
+authors = [{ name = "Ngo Tuan Dung", email = "zun1903@gmail.com" }]
+description = "A simple way to install binaries"
+requires-python = ">=3.10"
+dependencies = ["requests", "pyyaml", "tqdm", "patool", "colorlog", "ruff"]
+
+[project.optional-dependencies]
+build = ["pyinstaller>=6"]
+
+[project.scripts]
+pkg-installer = "main:cli"
+binary-installer = "binary_installer:cli"
+os-installer = "os_installer:cli"
+shell-installer = "shell_installer:cli"
+
+[build-system]
+requires = ["hatchling>=1.26.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.hatch.envs.build]
+dependencies = ["pyinstaller>=6"]
+
+[tool.hatch.envs.build.scripts]
+# Builds a single-file executable from `main.py` (expects a rendered `main.py` next to this `pyproject.toml`).
+binary = "pyinstaller --clean --noconfirm --onefile --name pkg-installer main.py"
+
+## ruff settings ##
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".ipynb_checkpoints",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pyenv",
-    ".pytest_cache",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    ".vscode",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "site-packages",
-    "venv",
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".ipynb_checkpoints",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pyenv",
+  ".pytest_cache",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  ".vscode",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "site-packages",
+  "venv",
 ]
 
-# Same as Black.
-line-length = 88
+# Assume Python 3.13
+target-version = "py313"
+line-length = 110
 indent-width = 4
 
-# Assume Python 3.11
-target-version = "py311"
-
 [tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-select = ["E4", "E7", "E9", "F"]
-ignore = []
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+typing-modules = ["airflow.typing_compat"]
+extend-select = [
+  # Enable entire ruff rule section
+  "I",     # Missing required import (auto-fixable)
+  "UP",    # Pyupgrade
+  "ASYNC", # subset of flake8-async rules
+  "ISC",   # Checks for implicit literal string concatenation (auto-fixable)
+  "TC",    # Rules around TYPE_CHECKING blocks
+  "G",     # flake8-logging-format rules
+  "LOG",   # flake8-logging rules, most of them autofixable
+  "PT",    # flake8-pytest-style rules
+  "TID25", # flake8-tidy-imports rules
+  "E",     # pycodestyle rules
+  "W",     # pycodestyle rules
+  # Warning (PLW) re-implemented in ruff from Pylint
+  "PLW0120", # else clause on loop without a break statement; remove the else and dedent its contents
+  "PLW0127", # Self-assignment of variable
+  "PLW0128", # Redeclared variable {name} in assignment
+  "PLW0129", # Asserting on an empty string literal will never pass
+  "PLW0131", # Named expression used without context
+  "PLW0133", # Missing raise statement on exception
+  "PLW0177", # Comparing against a NaN value; use math.isnan instead
+  "PLW0211", # First argument of a static method should not be named {argument_name}
+  "PLW0245", # super call is missing parentheses
+  "PLW0406", # Module {name} imports itself
+  "PLW0602", # Using global for {name} but no assignment is done
+  "PLW0604", # global at module level is redundant
+  "PLW0642", # Reassigned {} variable in {method_type} method
+  "PLW0711", # Exception to catch is the result of a binary and operation
+  "PLW1501", # {mode} is not a valid mode for open
+  "PLW1507", # Shallow copy of os.environ via copy.copy(os.environ)
+  "PLW1508", # Invalid type for environment variable default; expected str or None
+  "PLW1509", # preexec_fn argument is unsafe when using threads
+  "PLW1510", # subprocess.run without explicit check argument
+  "PLW1641", # Object does not implement __hash__ method
+  "PLW2101", # Threading lock directly created in with statement has no effect
+  "PLW2901", # Outer {outer_kind} variable {name} overwritten by inner {inner_kind} target
+  "PLW3301", # Nested {func} calls can be flattened
+  # Per rule enables
+  "RUF006", # Checks for asyncio dangling task
+  "RUF015", # Checks for unnecessary iterable allocation for first element
+  "RUF019", # Checks for unnecessary key check
+  "RUF100", # Unused noqa (auto-fixable)
+  # We ignore more pydocstyle than we enable, so be more selective at what we enable
+  "D1",
+  "D2",
+  "D213",   # Conflicts with D212.  Both can not be enabled.
+  "D3",
+  "D400",
+  "D401",
+  "D402",
+  "D403",
+  "D412",
+  "D419",
+  "PGH004", # Use specific rule codes when using noqa
+  "PGH005", # Invalid unittest.mock.Mock methods/attributes/properties
+  "S101",   # Checks use `assert` outside the test cases, test cases should be added into the exclusions
+  "SIM300", # Checks for conditions that position a constant on the left-hand side of the comparison
+  # operator, rather than the right-hand side.
+  "B004",   # Checks for use of hasattr(x, "__call__") and replaces it with callable(x)
+  "B006",   # Checks for uses of mutable objects as function argument defaults.
+  "B007",   # Checks for unused variables in the loop
+  "B017",   # Checks for pytest.raises context managers that catch Exception or BaseException.
+  "B019",   # Use of functools.lru_cache or functools.cache on methods can lead to memory leaks
+  "B028",   # No explicit stacklevel keyword argument found
+  "TRY002", # Prohibit use of `raise Exception`, use specific exceptions instead.
+  "RET505", # Unnecessary {branch} after return statement
+  "RET506", # Unnecessary {branch} after raise statement
+  "RET507", # Unnecessary {branch} after continue statement
+  "RET508", # Unnecessary {branch} after break statement
+]
+ignore = [
+  "D100",  # Unwanted; Docstring at the top of every file.
+  "D102",  # Unwanted; Missing docstring in public method
+  "D103",  # Unwanted; Missing docstring in public function
+  "D104",  # Unwanted; Docstring at the top of every `__init__.py` file.
+  "D105",  # Unwanted; See https://lists.apache.org/thread/8jbg1dd2lr2cfydtqbjxsd6pb6q2wkc3
+  "D107",  # Unwanted; Docstring in every constructor is unnecessary if the class has a docstring.
+  "D203",  # Conflicts with D211.  Both can not be enabled.
+  "D212",  # Conflicts with D213.  Both can not be enabled.
+  "E731",  # Do not assign a lambda expression, use a def
+  "TC003", # Do not move imports from stdlib to TYPE_CHECKING block
+  "PT007", # Wrong type of values in @pytest.mark.parametrize
+  "PT013", # silly rule prohibiting e.g. `from pytest import param`
+  "PT019", # fixture without value is injected as parameter, use @pytest.mark.usefixtures instead
+  # Rules below explicitly set off which could overlap with Ruff's formatter
+  # as it recommended by https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  # Except ISC rules
+  "W191",
+  "E111",
+  "E114",
+  "E117",
+  "D206",
+  "D300",
+  "Q000",
+  "Q001",
+  "Q002",
+  "Q003",
+  "COM812",
+  "COM819",
+  "E501",     # Formatted code may exceed the line length, leading to line-too-long (E501) errors.
+  "ASYNC110", # TODO: Use `anyio.Event` instead of awaiting `anyio.sleep` in a `while` loop
+  "SIM105",   # Use contextlib.suppress({exception}) instead of try-except-pass
+]
+unfixable = [
+  # PT022 replace empty `yield` to empty `return`. Might be fixed with a combination of PLR1711
+  # In addition, it can't do anything with invalid typing annotations, protected by mypy.
+  "PT022",
+]
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.
@@ -84,7 +195,7 @@ line-ending = "auto"
 #
 # This is currently disabled by default, but it is planned for this
 # to be opt-out in the future.
-docstring-code-format = false
+docstring-code-format = true
 
 # Set the line length limit used when formatting code snippets in
 # docstrings.
@@ -92,3 +203,65 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+combine-as-imports = true
+
+section-order = [
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
+  "testing",
+]
+
+# Make sure we put the "dev" imports at the end, not as a third-party module
+[tool.ruff.lint.isort.sections]
+testing = [
+  "dev",
+  "providers.tests",
+  "tests_common",
+  "tests",
+  "system",
+  "unit",
+  "integration",
+]
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports.
+ban-relative-imports = "all"
+# Ban certain modules from being imported at module level, instead requiring
+# that they're imported lazily (e.g., within a function definition).
+banned-module-level-imports = ["numpy", "pandas", "polars"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+# Deprecated in Python 3.11, Pending Removal in Python 3.15: https://github.com/python/cpython/issues/90817
+# Deprecation warning in Python 3.11 also recommends using locale.getencoding but it available in Python 3.11
+"locale.getdefaultlocale".msg = "Use locale.setlocale() and locale.getlocale() instead."
+# Deprecated in Python 3.12: https://github.com/python/cpython/issues/103857
+"datetime.datetime.utcnow".msg = "Use airflow.sdk.timezone.utcnow or datetime.datetime.now(tz=datetime.timezone.utc)"
+"datetime.datetime.utcfromtimestamp".msg = "Use airflow.sdk.timezone.from_timestamp or datetime.datetime.fromtimestamp(tz=datetime.timezone.utc)"
+# Deprecated in Python 3.12: https://github.com/python/cpython/issues/94309
+"typing.Hashable".msg = "Use collections.abc.Hashable"
+"typing.Sized".msg = "Use collections.abc.Sized"
+# Uses deprecated in Python 3.12 `datetime.datetime.utcfromtimestamp`
+"pendulum.from_timestamp".msg = "Use airflow.utils.timezone.from_timestamp"
+# Use root logger by a mistake / IDE autosuggestion
+# If for some reason root logger required it could obtained by logging.getLogger("root")
+"logging.debug".msg = "Instantiate new `logger = logging.getLogger(__name__)` and use it instead of root logger"
+"logging.info".msg = "Instantiate new `logger = logging.getLogger(__name__)` and use it instead of root logger"
+"logging.warning".msg = "Instantiate new `logger = logging.getLogger(__name__)` and use it instead of root logger"
+"logging.error".msg = "Instantiate new `logger = logging.getLogger(__name__)` and use it instead of root logger"
+"logging.exception".msg = "Instantiate new `logger = logging.getLogger(__name__)` and use it instead of root logger"
+"logging.fatal".msg = "Instantiate new `logger = logging.getLogger(__name__)` and use it instead of root logger"
+"logging.critical".msg = "Instantiate new `logger = logging.getLogger(__name__)` and use it instead of root logger"
+"logging.log".msg = "Instantiate new `logger = logging.getLogger(__name__)` and use it instead of root logger"
+
+[tool.ruff.lint.flake8-type-checking]
+exempt-modules = ["typing", "typing_extensions"]
+
+[tool.ruff.lint.flake8-pytest-style]
+mark-parentheses = false
+fixture-parentheses = false
