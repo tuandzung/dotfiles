@@ -6,4 +6,4 @@ export XDG_RUNTIME_DIR=/tmp/user-$(id -u)
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 {{- end }}
 mkdir -p $XDG_RUNTIME_DIR && chmod 700 $XDG_RUNTIME_DIR
-dbus-run-session Hyprland
+dbus-run-session start-hyprland
