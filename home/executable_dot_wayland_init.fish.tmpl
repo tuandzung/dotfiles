@@ -6,4 +6,8 @@ export XDG_RUNTIME_DIR=/tmp/user-$(id -u)
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 {{- end }}
 mkdir -p $XDG_RUNTIME_DIR && chmod 700 $XDG_RUNTIME_DIR
-dbus-run-session start-hyprland
+{{- $cmd := "Hyprland" }}
+{{- if findExecutable "start-hyprland" (list "/usr/bin") | isExecutable }}
+{{- $cmd = "start-hyprland" }}
+{{- end }}
+dbus-run-session {{ $cmd }}
