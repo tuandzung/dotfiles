@@ -20,7 +20,7 @@ _progress "Install plugins"
 while IFS="\n" read -r plugin; do
   plugin_repo=${plugin%:*}
   _progress "Adding repo ${plugin_repo}"
-  hyprpm add -f https://github.com/${plugin_repo} || true
+  yes | hyprpm add -f https://github.com/${plugin_repo} || true
   IFS="," read -r -a plugin_names <<< ${plugin#*:}
   for plugin_name in "${plugin_names[@]}"; do
     _progress "Install plugin ${plugin_name}"
