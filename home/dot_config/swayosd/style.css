@@ -1,0 +1,41 @@
+@import "catppuccin.css";
+
+* {
+  font-size: 14px;
+  font-family: "Tepiosevka";
+  font-weight: bold;
+}
+
+window#osd {
+  border-radius: 10px;
+  border: 2px solid @sapphire;
+  background: alpha(@base, 0.4);
+}
+
+window#osd #container {
+  margin: 6px;
+  padding: 2px;
+}
+
+window#osd image {
+  -gtk-icon-transform: scale(0.7);
+}
+
+window#osd image,
+window#osd progressbar {
+  min-height: 6px;
+  border-radius: 999px;
+  border: none;
+}
+
+window#osd trough {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+}
+
+window#osd progress {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+}

@@ -1,0 +1,5 @@
+[server]
+top_margin = 0.04
+max_volume = 100
+show_percentage = true
+playerctl_format = "{artist} - {title}"

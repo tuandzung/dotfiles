@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 name: swaync
 method: os
 is_essential: true
@@ -8,3 +9,4 @@ gentoo:
 arch:
   packages:
     - name: swaync
+{{- end }}

@@ -1,0 +1,15 @@
+{{- if not .isHeadless }}
+name: swayosd
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-apps/swayosd
+      repo: guru
+arch:
+  packages:
+    - name: swayosd
+  hook:
+    after: |-
+      sudo systemctl enable --now swayosd-libinput-backend.service
+{{- end }}

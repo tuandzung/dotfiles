@@ -36,7 +36,12 @@ exec-once = mpvpaper DP-1 {{ .chezmoi.homeDir }}/Wallpapers/animated/{{ $wall }}
 
 # Bar & Panel & Widgets
 exec-once = ~/.config/hypr/hyprland/scripts/waybar.sh
+
+# Notification center
 exec-once = swaync
+
+# OSD
+exec-once = swayosd-server
 
 # Screen shader and changes detection
 {{- if ne .chezmoi.osRelease.id "gentoo" }}
