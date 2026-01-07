@@ -24,15 +24,15 @@
     "drawer": {
       "click-to-reveal": false,
       "transition-left-to-right": true,
-      "children-class": "not-audio",
-    },
+      "children-class": "not-audio"
+    }
   },
   "group/hardware": {
     "orientation": "inherit",
     "drawer": {
       "click-to-reveal": true,
       "transition-left-to-right": false,
-      "children-class": "not-hardware",
+      "children-class": "not-hardware"
     },
     "modules": [
       "custom/hw",
@@ -42,7 +42,7 @@
       "cpu",
       "temperature",
       "memory",
-      "disk",
+      "disk"
     ]
   },
   "custom/pulseaudio-cycle": {
@@ -50,12 +50,12 @@
     "exec-on-event": true,
     "interval": 5,
     "exec": "pactl --format=json list sinks | jq -cM --unbuffered \"map(select(.name == \\\"$(pactl get-default-sink)\\\"))[0].properties | [.\\\"node.nick\\\",.\\\"alsa.name\\\",.\\\"media.name\\\",.\\\"alsa.long_card_name\\\"] | map(select(length>0))[0] | {text:.}\"",
-    "exec-if": "sleep 0.1", // Give enough time for `pactl get-default-sink` to update
+    "exec-if": "sleep 0.1",
     "on-click": "pactl --format=json list sinks short | jq -cM --unbuffered \"[.[].name] | .[((index(\\\"$(pactl get-default-sink)\\\")+1)%length)]\" | xargs pactl set-default-sink"
   },
   "custom/hw": {
     "format": "",
-    "tooltip-format": "Hardware group",
+    "tooltip-format": "Hardware group"
   },
   "custom/notification": {
     "tooltip": false,
@@ -102,8 +102,8 @@
       "media": "",
       "games": "󰮃",
       "vm": "",
-      "others": "󰣆"
-    },
+      "others": "󰣆 "
+    }
   },
   "hyprland/window": {
     "format": "{title}",
@@ -117,7 +117,7 @@
       "Spotify (.*)": "󰓇  Spotify",
       "qBittorrent (.*)": "  qBittorrent",
       "Telegram (.*)": "  Telegram $1",
-      "(.*) - mpv": "  $1",
+      "(.*) - mpv": "  $1"
     },
     "separate-outputs": true,
     "max-length": 50
@@ -145,7 +145,7 @@
     "path": "/home"
   },
   "network": {
-    "format": " {bandwidthUpBits}  {bandwidthDownBits}",
+    "format": " {bandwidthUpBits}  {bandwidthDownBits}"
   },
   "tray": {
     "icon-size": 16,
@@ -233,7 +233,7 @@
     "return-type": "json",
     "exec": "waybar-module-pomodoro -o  -b   --no-icons",
     "on-click": "waybar-module-pomodoro toggle",
-    "on-click-right": "waybar-module-pomodoro reset",
+    "on-click-right": "waybar-module-pomodoro reset"
   },
   "custom/vpn": {
     "format": "VPN ",
