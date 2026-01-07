@@ -87,7 +87,7 @@ bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" $screenshotDir/$(date +"scree
 bind = $mainMod, Z, exec, hdrop kitty --class btop -e btop
 
 # Multimedia #
-bindle = $altMod SHIFT, P, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%+ && swayosd-client --output-volume raise
+bindle = , XF86AudioRaiseVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%+ && swayosd-client --output-volume raise
 bindle = , XF86AudioLowerVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%- && swayosd-client --output-volume lower
 bindl = , XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && swayosd-client --output-volume mute-toggle
 bindl = , XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle && swayosd-client --input-volume mute-toggle
