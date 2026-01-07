@@ -1,9 +1,15 @@
 {{- $id := printf "%s_%s" .place .kind }}
 {{- if eq $id "HOME_pc" }}
-preload   =   {{ .chezmoi.homeDir }}/Wallpapers/16:10/1729210197784.png
-wallpaper =   DP-2,contain:{{ .chezmoi.homeDir }}/Wallpapers/16:10/1729210197784.png
+wallpaper {
+  monitor = DP-2
+  path = {{ .chezmoi.homeDir }}/Wallpapers/16:10/1729210197784.png
+  fit_mode = contain
+}
 {{- else if eq $id "OFFICE_pc" }}
-preload   =   {{ .chezmoi.homeDir }}/Wallpapers/vertical/4.png
-wallpaper =   HDMI-A-1,contain:{{ .chezmoi.homeDir }}/Wallpapers/vertical/4.png
+wallpaper {
+  monitor = HDMI-A-1
+  path = {{ .chezmoi.homeDir }}/Wallpapers/vertical/4.png
+  fit_mode = contain
+}
 {{- end }}
-ipc       =   off
+ipc = off

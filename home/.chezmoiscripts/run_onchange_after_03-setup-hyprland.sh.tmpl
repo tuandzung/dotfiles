@@ -5,12 +5,30 @@ trap "_error \"Can't setup hyprland\"" ERR
 
 {{- if not .isHeadless }}
 _notice "Setup hyprland"
-# config hash: {{ joinPath .chezmoi.sourceDir "dot_config/hypr/hyprland/plugins.list" | include | sha256sum }}
+#{{- $configHash := joinPath .chezmoi.sourceDir "dot_config/hypr/hyprland/plugins.list" | include | sha256sum }}
+{{/* check list plugin is empty or not */}}
+{{- if ne $configHash "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }}
+# config hash: {{ $configHash }}
 
-_progress "Install hyprland's header"
-if [[ -v HYPRLAND_INSTANCE_SIGNATURE ]]; then
-  hyprpm update -v
-  hyprpm reload -n
+if ! [[ -v HYPRLAND_INSTANCE_SIGNATURE ]]; then
+  exit
 fi
+_progress "Install hyprland's header"
+hyprpm update -v
+
+_progress "Install plugins"
+while IFS="\n" read -r plugin; do
+  plugin_repo=${plugin%:*}
+  _progress "Adding repo ${plugin_repo}"
+  yes | hyprpm add -f https://github.com/${plugin_repo} || true
+  IFS="," read -r -a plugin_names <<< ${plugin#*:}
+  for plugin_name in "${plugin_names[@]}"; do
+    _progress "Install plugin ${plugin_name}"
+    hyprpm enable ${plugin_name}
+  done
+done < {{ joinPath .chezmoi.sourceDir "dot_config/hypr/hyprland/plugins.list" }}
+
+hyprpm reload -n
 _success "Setup hyprland"
+{{- end }}
 {{- end }}
