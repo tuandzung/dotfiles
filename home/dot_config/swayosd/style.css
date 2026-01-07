@@ -3,27 +3,30 @@
 * {
   font-size: 14px;
   font-family: "Tepiosevka";
-  font-weight: bold;
 }
 
 window#osd {
-  border-radius: 10px;
-  border: 2px solid @sapphire;
-  background: alpha(@base, 0.4);
+  border-radius: 20px;
+  border: 2px solid @lavender;
+  background: alpha(@base, 0.8);
 }
 
 window#osd #container {
   margin: 6px;
-  padding: 2px;
 }
 
 window#osd image {
-  -gtk-icon-transform: scale(0.7);
+  -gtk-icon-transform: scale(0.5);
+}
+
+window#osd image,
+window#osd label {
+  color: @rosewater;
 }
 
 window#osd image,
 window#osd progressbar {
-  min-height: 6px;
+  min-height: 10px;
   border-radius: 999px;
   border: none;
 }
@@ -38,4 +41,5 @@ window#osd progress {
   min-height: inherit;
   border-radius: inherit;
   border: none;
+  background: @sky;
 }
