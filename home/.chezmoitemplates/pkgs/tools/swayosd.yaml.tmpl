@@ -9,7 +9,4 @@ gentoo:
 arch:
   packages:
     - name: swayosd
-  hook:
-    after: |-
-      sudo systemctl enable --now swayosd-libinput-backend.service
 {{- end }}

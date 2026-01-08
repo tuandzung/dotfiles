@@ -88,6 +88,9 @@ bind = $mainMod, Z, exec, hdrop kitty --class btop -e btop
 
 $osd = swayosd-client --monitor "$(hyprctl monitors -j | jq -r '.[] | select(.focused == true).name')"
 
+# Capslock (I don't want capslock indicator to be displayed on both screens)
+bindr = CAPS, Caps_Lock, exec, $osd --caps-lock
+
 # Multimedia #
 bindle = , XF86AudioRaiseVolume, exec, $osd --output-volume raise
 bindle = , XF86AudioLowerVolume, exec, $osd --output-volume lower
