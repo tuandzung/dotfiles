@@ -1,0 +1,19 @@
+{{- if not .isHeadless }}
+name: walker
+method: os
+is_essential: true
+arch:
+  packages:
+    - name: walker-bin
+    - name: elephant
+    - name: elephant-desktopapplications
+    - name: elephant-calc
+    - name: elephant-files
+    - name: elephant-clipboard
+    - name: elephant-symbols
+    - name: elephant-menus
+  hook:
+    after: |-
+      elephant service enable
+      systemctl --user enable --now elephant
+{{- end }}
