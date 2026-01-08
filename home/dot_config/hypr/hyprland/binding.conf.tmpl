@@ -89,10 +89,10 @@ bind = $mainMod, Z, exec, hdrop kitty --class btop -e btop
 $osd = swayosd-client --monitor "$(hyprctl monitors -j | jq -r '.[] | select(.focused == true).name')"
 
 # Multimedia #
-bindle = , XF86AudioRaiseVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%+ && $osd --output-volume raise
-bindle = , XF86AudioLowerVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%- && $osd --output-volume lower
-bindl = , XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && $osd --output-volume mute-toggle
-bindl = , XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle && $osd --input-volume mute-toggle
+bindle = , XF86AudioRaiseVolume, exec, $osd --output-volume raise
+bindle = , XF86AudioLowerVolume, exec, $osd --output-volume lower
+bindl = , XF86AudioMute, exec, $osd --output-volume mute-toggle
+bindl = , XF86AudioMicMute, exec, $osd --input-volume mute-toggle
 bind = , XF86AudioPlay, exec, $osd --playerctl play-pause
 bind = , XF86AudioPause, exec, $osd --playerctl pause
 bind = , XF86AudioNext, exec, $osd --playerctl next
