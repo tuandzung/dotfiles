@@ -52,6 +52,7 @@ Library
 .config/shikane
 .config/swaync
 .config/waybar
+.config/walker
 .config/wofi
 .config/update_browser_profiles.sh
 .wayland_init.fish
@@ -66,4 +67,7 @@ Library/Application\ Support/Firefox
 .zen
 .config/zen
 Library/Application\ Support/zen
+{{- end }}
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo") }}
+.config/systemd
 {{- end }}

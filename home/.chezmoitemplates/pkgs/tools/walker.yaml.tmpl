@@ -15,8 +15,4 @@ arch:
     - name: elephant-providerlist
     - name: elephant-websearch
     - name: elephant-bitwarden
-  hook:
-    after: |-
-      elephant service enable
-      systemctl --user enable --now elephant
 {{- end }}

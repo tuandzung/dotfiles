@@ -1,0 +1,12 @@
+[Unit]
+Description=Elephant
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=elephant
+Environment="{{ if eq .place "OFFICE" }}RBW_PROFILE=work{{- end }}"
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
