@@ -1,0 +1,23 @@
+[[entries]]
+default = true
+name = "Google"
+icon = "google"
+url = "https://www.google.com/search?q=%TERM%"
+
+[[entries]]
+name = "DuckDuckGo"
+icon = "duckduckgo"
+url = "https://duckduckgo.com/?q=%TERM%"
+
+[[entries]]
+name = "Bing"
+url = "https://bing.com/search?q=%TERM%"
+
+[[entries]]
+name = "Wikipedia"
+icon = "wikipedia"
+url = "https://en.wikipedia.org/w/index.php?fulltext=1&search=%TERM%&ns0=1"
+
+[[entries]]
+name = "Perplexity"
+url = "https://www.perplexity.ai/search?q=%TERM%"
