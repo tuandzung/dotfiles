@@ -6,8 +6,7 @@ bind = CTRL ALT, DELETE, exec, ~/.config/hypr/hyprland/scripts/powermenu.sh
 bind = $mainMod SHIFT, R, exec, hyprctl reload
 
 # Prompt #
-bind = $altMod, SPACE, exec, wofi --show run
-bind = $mainMod, SPACE, exec, wofi --show drun
+bind = $mainMod, SPACE, exec, walker
 
 # Workspace #
 # Switch workspaces with mainMod + [0-9]
@@ -77,10 +76,8 @@ bind = $mainMod, Q, exec, kitty
 bind = $mainMod, E, exec, $browser -P
 bind = $mainMod, M, exec, $emailClient -P
 bind = $mainMod, N, exec, swaync-client -t -sw
-bind = $mainMod, X, exec, cliphist list | wofi --dmenu --allow-images --allow-markup | cliphist decode | wl-copy
-bind = $mainMod, U, exec, {{ if eq .place "OFFICE" }}RBW_PROFILE=work{{- end }} ~/.config/hypr/hyprland/scripts/rbw-menu.sh username | wtype -
-bind = $mainMod, P, exec, {{ if eq .place "OFFICE" }}RBW_PROFILE=work{{- end }} ~/.config/hypr/hyprland/scripts/rbw-menu.sh password | wtype -
-bind = $mainMod, T, exec, {{ if eq .place "OFFICE" }}RBW_PROFILE=work{{- end }} ~/.config/hypr/hyprland/scripts/rbw-menu.sh code | wtype -
+bind = $mainMod, X, exec, walker -m clipboard
+bind = $mainMod, P, exec, walker -m bitwarden
 bind = $mainMod, L, exec, hyprlock
 bind = $mainMod, S, exec, grim -g "$(slurp)" - | swappy -f -
 bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" $screenshotDir/$(date +"screenshot_%Y-%m-%d-%H%M%S.png")
