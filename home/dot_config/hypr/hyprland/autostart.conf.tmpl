@@ -25,6 +25,9 @@ exec-once = ~/.config/hypr/hyprland/scripts/gtk.sh
 
 # Launcher
 exec-once = walker --gapplication-service
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+exec-once = elephant
+{{- end }}
 
 # Wallpaper
 exec-once = hyprpaper
