@@ -60,7 +60,7 @@ or begin
 end
 ## }
 
-## Fish or shell miscelaneous config {
+## Fish or shell miscellaneous config {
 # Enable vi key bindings
 if test -n "$TERM"
   fish_vi_key_bindings
@@ -86,15 +86,35 @@ end
 type -q mise; and mise activate fish | source
 
 if status is-interactive
+  fish_config theme choose catppuccin
+
+  # Glamour integrated tools
+  set -gx GLAMOUR_STYLE "$HOME/.config/glamour/catppuccin.json"
+
+  # Bat theme
+  set -gx BAT_THEME "Catppuccin Macchiato"
+
+  # Plugins
+  set sponge_successful_exit_codes 0 127
+  set sponge_purge_only_on_exit true
+
   # Hooks
   # Fzf config
   type -q __fzf_setup; and __fzf_setup
-  set -U FZF_DEFAULT_OPTS "\
-  --color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796 \
-  --color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6 \
-  --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796 \
-  --cycle --layout=reverse --preview-window=wrap \
-  --marker=\"*\" --prompt=\" \" --pointer=\"=>\""
+  {{- $theme := .catppuccin.macchiato }}
+  {{- if not .darkMode }}
+  {{-   $theme = .catppuccin.latte }}
+  {{- end }}
+  set -Ux FZF_COLOR_OPTS "\
+      --color=bg+:{{ $theme.surface0 }},bg:{{ $theme.base }},spinner:{{ $theme.rosewater }},hl:{{ $theme.red}} \
+      --color=fg:{{ $theme.text }},header:{{ $theme.red }},info:{{ $theme.mauve }},pointer:{{ $theme.rosewater }} \
+      --color=marker:{{ $theme.lavender }},fg+:{{ $theme.text }},prompt:{{ $theme.mauve }},hl+:{{ $theme.red }} \
+      --color=selected-bg:{{ $theme.surface1 }} \
+      --color=border:{{ $theme.overlay0 }},label:{{ $theme.text }}"
+  set -gx FZF_DEFAULT_OPTS "\
+      $FZF_COLOR_OPTS \
+      --cycle --layout=reverse --preview-window=wrap \
+      --marker=\"*\" --prompt=\" \" --pointer=\"=>\""
   type -q tmux; and test -n "$TMUX"; and set -g FZF_TMUX 1
   if type -q fdfind
     alias fd fdfind
@@ -107,6 +127,7 @@ if status is-interactive
   end
 
   # Starship
+  set -gx STARSHIP_CONFIG "$HOME/.config/starship/config.toml"
   function starship_transient_rprompt_func
     starship module time
   end
@@ -153,10 +174,6 @@ if status is-interactive
   type -q k3d; and k3d completion fish | source
 end
 ## }
-
-# Glamour integrated tools
-set -gx GLAMOUR_STYLE "$HOME/.config/glamour/catppuccin.json"
-set -gx BAT_THEME "Catppuccin Macchiato"
 
 {{- if eq .chezmoi.os "darwin" }}
 fish_add_path -pPg /opt/homebrew/bin

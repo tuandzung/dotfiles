@@ -1,0 +1,170 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](mauve)\
+$os\
+$username\
+$hostname\
+[](bg:flamingo fg:mauve)\
+$directory\
+[](fg:flamingo bg:teal)\
+$git_branch\
+$git_status\
+[](fg:teal bg:blue)\
+$c\
+$rust\
+$golang\
+$nodejs\
+$rust\
+$java\
+$python\
+[](fg:blue bg:surface2)\
+$kubernetes\
+[](fg:surface2 bg:surface0)\
+$cmd_duration\
+[ ](fg:surface0)\
+$line_break$character"""
+
+palette = 'catppuccin'
+
+[palettes.catppuccin]
+{{- $theme := .catppuccin.macchiato }}
+{{- if not .darkMode }}
+{{-   $theme = .catppuccin.latte }}
+{{- end }}
+rosewater = "{{ $theme.rosewater }}"
+flamingo = "{{ $theme.flamingo }}"
+pink = "{{ $theme.pink }}"
+mauve = "{{ $theme.mauve }}"
+red = "{{ $theme.red }}"
+maroon = "{{ $theme.maroon }}"
+peach = "{{ $theme.peach }}"
+yellow = "{{ $theme.yellow }}"
+green = "{{ $theme.green }}"
+teal = "{{ $theme.teal }}"
+sky = "{{ $theme.sky }}"
+sapphire = "{{ $theme.sapphire }}"
+blue = "{{ $theme.blue }}"
+lavender = "{{ $theme.lavender }}"
+text = "{{ $theme.text }}"
+subtext1 = "{{ $theme.subtext1 }}"
+subtext0 = "{{ $theme.subtext0 }}"
+overlay2 = "{{ $theme.overlay2 }}"
+overlay1 = "{{ $theme.overlay1 }}"
+overlay0 = "{{ $theme.overlay0 }}"
+surface2 = "{{ $theme.surface2 }}"
+surface1 = "{{ $theme.surface1 }}"
+surface0 = "{{ $theme.surface0 }}"
+base = "{{ $theme.base }}"
+mantle = "{{ $theme.mantle }}"
+crust = "{{ $theme.crust }}"
+
+[os]
+disabled = false
+style = "bg:mauve fg:mantle"
+
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = ""
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+
+[username]
+show_always = true
+style_user = "bold bg:mauve fg:mantle"
+style_root = "bold bg:mauve fg:mantle"
+format = '[ $user]($style)'
+
+[hostname]
+ssh_only = false
+style = "bold bg:mauve fg:mantle"
+format = '[@]($style)[$hostname ]($style)'
+
+[directory]
+style = "fg:mantle bg:flamingo"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:teal"
+format = '[[ $symbol $branch ](fg:base bg:teal)]($style)'
+
+[git_status]
+style = "bg:teal"
+format = '[[($all_status$ahead_behind )](fg:base bg:teal)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:blue"
+format = '[[ $symbol( $version) ](fg:base bg:blue)]($style)'
+
+[c]
+symbol = " "
+style = "bg:blue"
+format = '[[ $symbol( $version) ](fg:base bg:blue)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:blue"
+format = '[[ $symbol( $version) ](fg:base bg:blue)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:blue"
+format = '[[ $symbol( $version) ](fg:base bg:blue)]($style)'
+
+[java]
+symbol = " "
+style = "bg:blue"
+format = '[[ $symbol( $version) ](fg:base bg:blue)]($style)'
+
+[python]
+symbol = ""
+style = "bg:blue"
+format = '[[ $symbol( $version) ](fg:base bg:blue)]($style)'
+
+[kubernetes]
+symbol = "☸ "
+style = "bg:surface2"
+format = '[[ $symbol( $cluster) ](fg:base bg:blue)]($style)'
+
+[cmd_duration]
+min_time = 500
+style = "bg:peach"
+format = '[[  $duration ](fg:text bg:surface0)]($style)'
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[](bold fg:green)'
+error_symbol = '[](bold fg:red)'
+vimcmd_symbol = '[](bold fg:green)'
+vimcmd_replace_one_symbol = '[](bold fg:purple)'
+vimcmd_replace_symbol = '[](bold fg:purple)'
+vimcmd_visual_symbol = '[](bold fg:lavender)'

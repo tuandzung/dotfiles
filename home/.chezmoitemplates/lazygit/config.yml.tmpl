@@ -1,0 +1,31 @@
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never
+gui:
+  theme:
+    {{- $theme := .catppuccin.macchiato }}
+    {{- if not .darkMode }}
+    {{-   $theme = .catppuccin.latte }}
+    {{- end }}
+    activeBorderColor:
+      - "{{ get $theme .catppuccin.variant }}"
+      - bold
+    inactiveBorderColor:
+      - "{{ $theme.subtext0 }}"
+    optionsTextColor:
+      - "{{ $theme.sapphire }}"
+    selectedLineBgColor:
+      - "{{ $theme.surface0 }}"
+    cherryPickedCommitBgColor:
+      - "{{ $theme.surface2 }}"
+    cherryPickedCommitFgColor:
+      - "{{ $theme.blue }}"
+    unstagedChangesColor:
+      - "{{ $theme.red }}"
+    defaultFgColor:
+      - "{{ $theme.text }}"
+    searchingActiveBorderColor:
+      - "{{ $theme.yellow }}"
+  authorColors:
+    '*': '{{ $theme.mauve }}'

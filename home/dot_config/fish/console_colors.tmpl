@@ -1,0 +1,20 @@
+{{- $theme := .catppuccin.macchiato }}
+{{- if not .darkMode }}
+{{-   $theme = .catppuccin.latte }}
+{{- end }}
+*color0 : {{ $theme.base }}
+*color8 : {{ $theme.surface2 }}
+*color1 : {{ $theme.red }}
+*color9 : {{ $theme.maroon }}
+*color2 : {{ $theme.green }}
+*color10: {{ $theme.teal }}
+*color3 : {{ $theme.peach }}
+*color11: {{ $theme.yellow }}
+*color4 : {{ $theme.blue }}
+*color12: {{ $theme.lavender }}
+*color5 : {{ $theme.pink }}
+*color13: {{ $theme.mauve }}
+*color6 : {{ $theme.sky }}
+*color14: {{ $theme.sapphire }}
+*color7 : {{ $theme.text }}
+*color15: {{ $theme.subtext0 }}

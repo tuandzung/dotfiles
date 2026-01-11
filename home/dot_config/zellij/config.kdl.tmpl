@@ -241,32 +241,36 @@ plugins {
 
     nvim-navigator location="https://github.com/dynamotn/zellij-nvim-navigator/releases/latest/download/zellij-nvim-navigator.wasm"
     zjstatus location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
-        color_rosewater "#f5e0dc"
-        color_flamingo "#f2cdcd"
-        color_pink "#f5c2e7"
-        color_mauve "#cba6f7"
-        color_red "#f38ba8"
-        color_maroon "#eba0ac"
-        color_peach "#fab387"
-        color_yellow "#f9e2af"
-        color_green "#a6e3a1"
-        color_teal "#94e2d5"
-        color_sky "#89dceb"
-        color_sapphire "#74c7ec"
-        color_blue "#89b4fa"
-        color_lavender "#b4befe"
-        color_text "#cdd6f4"
-        color_subtext1 "#bac2de"
-        color_subtext0 "#a6adc8"
-        color_overlay2 "#9399b2"
-        color_overlay1 "#7f849c"
-        color_overlay0 "#6c7086"
-        color_surface2 "#585b70"
-        color_surface1 "#45475a"
-        color_surface0 "#313244"
-        color_base "#1e1e2e"
-        color_mantle "#181825"
-        color_crust "#11111b"
+        {{- $theme := .catppuccin.macchiato }}
+        {{- if not .darkMode }}
+        {{-   $theme = .catppuccin.latte }}
+        {{- end }}
+        color_rosewater "{{ $theme.rosewater }}"
+        color_flamingo "{{ $theme.flamingo }}"
+        color_pink "{{ $theme.pink }}"
+        color_mauve "{{ $theme.mauve }}"
+        color_red "{{ $theme.red }}"
+        color_maroon "{{ $theme.maroon }}"
+        color_peach "{{ $theme.peach }}"
+        color_yellow "{{ $theme.yellow }}"
+        color_green "{{ $theme.green }}"
+        color_teal "{{ $theme.teal }}"
+        color_sky "{{ $theme.sky }}"
+        color_sapphire "{{ $theme.sapphire }}"
+        color_blue "{{ $theme.blue }}"
+        color_lavender "{{ $theme.lavender }}"
+        color_text "{{ $theme.text }}"
+        color_subtext1 "{{ $theme.subtext1 }}"
+        color_subtext0 "{{ $theme.subtext0 }}"
+        color_overlay2 "{{ $theme.overlay2 }}"
+        color_overlay1 "{{ $theme.overlay1 }}"
+        color_overlay0 "{{ $theme.overlay0 }}"
+        color_surface2 "{{ $theme.surface2 }}"
+        color_surface1 "{{ $theme.surface1 }}"
+        color_surface0 "{{ $theme.surface0 }}"
+        color_base "{{ $theme.base }}"
+        color_mantle "{{ $theme.mantle }}"
+        color_crust "{{ $theme.crust }}"
 
         format_left   "#[bg=$surface0,fg=$sapphire]#[bg=$sapphire,fg=$crust,bold]  {session} {mode}#[bg=$surface0] {tabs}"
         format_center "{notifications}"
@@ -347,7 +351,11 @@ load_plugins {
 // Default: default
 //
 // theme "dracula"
+{{- if .darkMode }}
 theme "catppuccin-macchiato"
+{{- else }}
+theme "catppuccin-latte"
+{{- end }}
 
 ui {
     pane_frames {

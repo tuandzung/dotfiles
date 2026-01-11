@@ -1,58 +1,94 @@
-.config/bat/themes/catppuccin.tmTheme:
+{{- $theme := "macchiato" }}
+{{- $variant := .catppuccin.variant }}
+{{- if not .darkMode }}
+{{-   $theme = "latte" }}
+{{- end }}
+.config/btop/themes/catppuccin.theme:
   type: file
-  url: https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Macchiato.tmTheme
+  url: https://raw.githubusercontent.com/catppuccin/btop/main/themes/catppuccin_{{ $theme }}.theme
   refreshPeriod: 168h
 
-{{ if and (ne .chezmoi.os "darwin") (not .isHeadless) }}
-.local/share/fcitx5/themes/catppuccin:
-  type: archive
-  url: https://github.com/catppuccin/fcitx5/archive/refs/heads/main.zip
-  refreshPeriod: 168h
-  stripComponents: 3
-  include:
-    - fcitx5-main/src/catppuccin-macchiato-sapphire/*
-
-.local/share/themes/Tep:
-  type: archive
-  url: https://raw.githubusercontent.com/tuandzung/icons-and-themes/refs/heads/main/Catppuccin-Dark-Macchiato-BL-MB.zip
-  exact: true
-  refreshPeriod: 168h
-  stripComponents: 1
-  include:
-    - Catppuccin-Dark-Macchiato/gtk-*/*
-    - Catppuccin-Dark-Macchiato/gtk-*/assets/**
-
-.local/share/icons/Tep-Cursor:
-  type: archive
-  url: https://github.com/catppuccin/cursors/releases/latest/download/catppuccin-macchiato-sapphire-cursors.zip
-  exact: true
-  refreshPeriod: 168h
-  stripComponents: 1
-  exclude:
-    - catppuccin-macchiato-sapphire-cursors/index.theme
-{{ end }}
-
-.config/zellij/themes/catppuccin.kdl:
+.config/fish/themes/catppuccin.theme:
   type: file
-  url: https://raw.githubusercontent.com/catppuccin/zellij/refs/heads/main/catppuccin.kdl
-  refreshPeriod: 168h
-
-.config/qt5ct/colors/catppuccin.conf:
-  type: file
-  url: https://raw.githubusercontent.com/catppuccin/qt5ct/refs/heads/main/themes/catppuccin-macchiato-sapphire.conf
-  refreshPeriod: 168h
-
-.config/qt6ct/colors/catppuccin.conf:
-  type: file
-  url: https://raw.githubusercontent.com/catppuccin/qt5ct/refs/heads/main/themes/catppuccin-macchiato-sapphire.conf
+  url: https://raw.githubusercontent.com/catppuccin/fish/refs/heads/main/themes/Catppuccin%20{{ camelcase $theme }}.theme
   refreshPeriod: 168h
 
 .config/glamour/catppuccin.json:
   type: file
-  url: https://raw.githubusercontent.com/catppuccin/glamour/refs/heads/main/themes/catppuccin-macchiato.json
+  url: https://raw.githubusercontent.com/catppuccin/glamour/refs/heads/main/themes/catppuccin-{{ $theme }}.json
   refreshPeriod: 168h
 
 .config/git/delta:
   type: file
   url: https://raw.githubusercontent.com/catppuccin/delta/main/catppuccin.gitconfig
   refreshPeriod: 168h
+
+.config/hypr/hyprland/color.conf:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/hyprland/refs/heads/main/themes/{{ $theme }}.conf
+  refreshPeriod: 168h
+
+{{- if ne .chezmoi.os "darwin" }}
+.config/k9s/skins/catppuccin.yaml:
+{{- else }}
+Library/Application Support/k9s/skins/catppuccin.yaml:
+{{- end }}
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/k9s/main/dist/catppuccin-{{ $theme }}.yaml
+  refreshPeriod: 168h
+
+.config/kitty/diff/color.conf:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/kitty/main/themes/diff-{{ $theme }}.conf
+  refreshPeriod: 168h
+
+.config/swaync/style.css:
+  type: file
+  url: https://github.com/catppuccin/swaync/releases/latest/download/catppuccin-{{ $theme }}.css
+  refreshPeriod: 168h
+
+.config/zellij/themes/catppuccin.kdl:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/zellij/refs/heads/main/catppuccin.kdl
+  refreshPeriod: 168h
+
+{{- if and (ne .chezmoi.os "darwin") (not .isHeadless) }}
+.local/share/fcitx5/themes/catppuccin:
+  type: archive
+  url: https://github.com/catppuccin/fcitx5/archive/refs/heads/main.zip
+  refreshPeriod: 168h
+  stripComponents: 3
+  include:
+    - fcitx5-main/src/catppuccin-{{ $theme }}-{{ $variant }}/*
+
+.local/share/themes/Tep:
+  type: archive
+  url: https://raw.githubusercontent.com/tuandzung/icons-and-themes/refs/heads/main/Catppuccin-Dark-{{ camelcase $theme }}-BL-MB.zip
+  exact: true
+  refreshPeriod: 168h
+  stripComponents: 1
+  include:
+    - Catppuccin-Dark-{{ camelcase $theme }}/gtk-*/*
+    - Catppuccin-Dark-{{ camelcase $theme }}/gtk-*/assets/**
+
+.local/share/icons/Tep-Cursor:
+  type: archive
+  url: https://github.com/catppuccin/cursors/releases/latest/download/catppuccin-{{ $theme }}-{{ $variant }}-cursors.zip
+  exact: true
+  refreshPeriod: 168h
+  stripComponents: 1
+  exclude:
+    - catppuccin-{{ $theme }}-{{ $variant }}-cursors/index.theme
+{{- end }}
+
+{{- if not .isHeadless }}
+.config/qt5ct/colors/catppuccin.conf:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/qt5ct/refs/heads/main/themes/catppuccin-{{ $theme }}-{{ $variant }}.conf
+  refreshPeriod: 168h
+
+.config/qt6ct/colors/catppuccin.conf:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/qt5ct/refs/heads/main/themes/catppuccin-{{ $theme }}-{{ $variant }}.conf
+  refreshPeriod: 168h
+{{- end }}
