@@ -37,6 +37,7 @@ data:
   {{ $browserChoices := list "ZEN" "FIREFOX" }}
   {{ $browser := promptChoiceOnce . "browser" "Which browser do you wanna use" $browserChoices "ZEN" | quote }}
   browser: {{ $browser }}
+  darkMode: {{ promptBoolOnce . "darkMode" "Do you want to use dark mode? (y/n)" true }}
 
 hooks:
   diff:
