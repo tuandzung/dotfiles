@@ -1,0 +1,7 @@
+# vim:expandtab:shiftwidth=8:tabstop=8:softtabstop=8:ft=gitconfig
+[diff "sopsdiffer"]
+        # A differ for secret encoded
+        textconv = sops -d
+[diff "json"]
+        # A differ for json file
+        textconv = "jq ."

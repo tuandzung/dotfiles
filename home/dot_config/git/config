@@ -3,6 +3,9 @@
         email = mail@tuandzung.me
         name = Ngo Tuan Dzung
         signingkey = ~/.ssh/keys/personal_ed25519.pub
+[feature]
+        # Optimize for repos with many files in the working directory
+        manyFiles = true
 
 [gpg]
         format = ssh
@@ -12,8 +15,13 @@
 
 [commit]
         gpgsign = true
+        cleanup = scissors
 
 [tag]
+        # Sort tags by version
+        sort = version:refname
+        # Always sign tag
+        forceSignAnnotated = true
         gpgsign = true
 
 [core]
@@ -21,6 +29,10 @@
         pager = delta --pager='ov -F'
         autocrlf = false
         whitespace = trailing-space,space-before-tab,tab-in-indent,cr-at-eol
+        # Custom global ignore file
+        excludesfile = ~/.config/git/ignore
+        # Custom global attributes file
+        attributesfile = ~/.config/git/attributes
 
 [pager]
         show = delta --features ov-diff
@@ -31,34 +43,15 @@
         diffFilter = delta --color-only
 
 [delta]
-        navigate = true  # use n and N to move between diff sections
-        syntax-theme = "catppuccin"
-        features = decorations
+        # Use delta with catppuccin theme
+        features = "catppuccin-macchiato"
+        # Show navigate section
+        navigate = true
         # Show line number & Two side
         side-by-side = true
         line-numbers = true
         # Style of whitespace error
         whitespace-error-style = red reverse
-
-[delta "decorations"]
-        commit-decoration-style = bold blue box ul
-        file-style = bold blue ul
-        file-decoration-style = green ul
-        minus-style = syntax "#563f51"
-        minus-emph-style = syntax "#895768"
-        minus-empty-line-marker-style = syntax magenta
-        plus-style = syntax "#455450"
-        plus-emph-style = syntax "#658168"
-        plus-empty-line-marker-style = syntax cyan
-        hunk-header-decoration-style = box ul
-        hunk-header-file-style = bold
-        hunk-header-line-number-style = bold "#a5adcb"
-        hunk-header-style = file line-number syntax
-        line-numbers-left-style = "#6e738d"
-        line-numbers-minus-style = bold "#ed8796"
-        line-numbers-plus-style = bold "#a6da95"
-        line-numbers-right-style = "#6e738d"
-        line-numbers-zero-style = "#6e738d"
 
 [delta "ov-diff"]
         pager = ov -F --section-delimiter '^(commit|added:|removed:|renamed:|Δ)' --section-header --pattern '•'
@@ -68,31 +61,95 @@
 [merge]
         conflictstyle = zdiff3
 
+[rerere]
+        enabled = true
+        autoupdate = true
+
+[versionsort]
+        suffix = ""
+        suffix = "-rc"
+        suffix = "-pre"
+
 [diff]
         tool = nvimdiff
         colorMoved = default
         noprefix = true
         algorithm = histogram
 
-[diff "sopsdiffer"]
-        # A differ for secret encoded
-        textconv = sops -d
-[diff "json"]
-        # A differ for json file
-        textconv = "jq ."
+[mergetool]
+        prompt = false
+        keepBackup = false
+
+[difftool]
+        prompt = false
 
 [difftool "nvimdiff"]
         # Nvim diff 2 files
         cmd = "nvim -d $LOCAL $REMOTE"
 
+[difftool "kitty"]
+        # Use kitten of kitty/ to diff each hunk
+        cmd = "kitty +kitten diff $LOCAL $REMOTE"
+
 [mergetool "nvimdiff"]
         # Nvim diff 4 files
         cmd = "nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'"
 
+[color]
+        # Be careful with pipe when redirected output
+        ui = auto
+[color "status"]
+        added = green
+        changed = blue
+        untracked = magenta
+        deleted = red
+[color "diff"]
+        meta = cyan
+        frag = magenta bold
+        old = red
+        new = blue
+        commit = yellow bold
+        whitespace = red reverse
+[color "diff-highlight"]
+        oldNormal = red bold
+        oldHighLight = red bold 52
+        newNormal = blue bold
+        newHighLight = blue bold 45
+
+[status]
+        # Show summary of submodule
+        submoduleSummary = true
+
+[apply]
+        # Auto fix white space
+        whitespace = fix
+
+[rebase]
+        # More clear when rebase
+        instructionFormat = "[%an - %ar] %s"
+
+[stash]
+        # Show stash with diff
+        showPatch = true
+
+[transfer]
+        # Avoid paranoid
+        fsckobjects = true
+
+[fetch]
+        # Prune remote-tracking branches that no longer exist on the remote
+        prune = true
+        pruneTags = true
+
 [push]
         # Only push current branch to same name branch
         default = current
+        # Push follow tags
         followTags = true
+
+[submodule]
+        # Fetch submodules parallel
+        fetchJobs = 0
 
 [gc]
         # Don't auto git gc, with large project can slow when working
@@ -136,6 +193,10 @@
         submodule-clean = "!_() { git submodule update --init --recursive && git submodule foreach --recursive 'git reset --hard' && git submodule foreach --recursive 'git clean -fd' }; _"
         # Update main branch
         update-main = !bash ~/.config/git/helper.sh update_main
+
+[include]
+        path = ~/.config/git/diff-filter
+        path = ~/.config/git/delta
 
 [includeIf "gitdir/i:~/Working/**"]
         # Include config file from enterprise project
