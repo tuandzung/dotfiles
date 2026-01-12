@@ -6,8 +6,8 @@
 layout {
     background-color "{{ $theme.crust }}"
     focus-ring {
-        active-gradient from="{{ $theme.mauve }}" to="{{ $theme.sky }}" angle=45 relative-to="workspace-view"
-        inactive-gradient from="{{ $theme.crust }}" to="{{ $theme.base }}" angle=45 relative-to="workspace-view"
+        active-gradient from="{{ $theme.peach }}" to="{{ $theme.sky }}" angle=45 relative-to="workspace-view" in="oklch longer hue"
+        inactive-gradient from="{{ $theme.overlay2 }}" to="{{ $theme.crust }}" angle=45 relative-to="workspace-view"
     }
     shadow {
         color "{{ $theme.surface0 }}"
@@ -19,6 +19,6 @@ layout {
     }
 
     insert-hint {
-        gradient from="{{ $theme.flamingo }}" to="{{ $theme.red }}" angle=45 relative-to="workspace-view"
+        gradient from="{{ $theme.flamingo }}" to="{{ $theme.red }}" angle=45 relative-to="workspace-view" in="oklch longer hue"
     }
 }

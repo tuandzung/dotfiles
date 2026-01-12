@@ -4,3 +4,11 @@ screenshot-path "~/Pictures/Screenshots/screenshot_%Y-%m-%d-%H%M%S.png"
 hotkey-overlay {
     skip-at-startup
 }
+
+clipboard {
+    disable-primary
+}
+
+// Also ask windows to omit client-side decorations, so that
+// they don't draw their own window shadows.
+prefer-no-csd
