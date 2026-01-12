@@ -1,0 +1,83 @@
+{{- $emailClient := "betterbird" }}
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+{{- $emailClient = "betterbird-bin" }}
+{{- end }}
+
+binds {
+  Mod+Space { spawn "walker"; }
+  Ctrl+Alt+Delete { spawn "~/.config/hypr/hyprland/scripts/powermenu.sh"; }
+  Mod+Escape { toggle-keyboard-shortcuts-inhibit; }
+
+  Mod+1 { focus-workspace "term"; }
+  Mod+2 { focus-workspace "web"; }
+  Mod+3 { focus-workspace "mail"; }
+  Mod+4 { focus-workspace "chat"; }
+  Mod+5 { focus-workspace "media"; }
+  Mod+6 { focus-workspace "games"; }
+  Mod+7 { focus-workspace "office"; }
+  Mod+8 { focus-workspace "vm"; }
+  Mod+9 { focus-workspace "others"; }
+
+  Mod+Tab { toggle-overview; }
+
+  Mod+Shift+1 { move-window-to-workspace "term"; }
+  Mod+Shift+2 { move-window-to-workspace "web"; }
+  Mod+Shift+3 { move-window-to-workspace "mail"; }
+  Mod+Shift+4 { move-window-to-workspace "chat"; }
+  Mod+Shift+5 { move-window-to-workspace "media"; }
+  Mod+Shift+6 { move-window-to-workspace "games"; }
+  Mod+Shift+7 { move-window-to-workspace "office"; }
+  Mod+Shift+8 { move-window-to-workspace "vm"; }
+  Mod+Shift+9 { move-window-to-workspace "others"; }
+
+  Mod+Left { focus-column-left; }
+  Mod+Right { focus-column-right; }
+  Mod+Up { focus-window-up; }
+  Mod+Down { focus-window-down; }
+  Alt+Tab { focus-window-down; }
+
+  Mod+Shift+Left { set-column-width "-10%"; }
+  Mod+Shift+Right { set-column-width "+10%"; }
+  Mod+Shift+Up { set-window-height "-10%"; }
+  Mod+Shift+Down { set-window-height "+10%"; }
+
+  Mod+Shift+Ctrl+Left { move-workspace-to-monitor-left; }
+  Mod+Shift+Ctrl+Right { move-workspace-to-monitor-right; }
+  Mod+Shift+Ctrl+Up { move-workspace-to-monitor-up; }
+  Mod+Shift+Ctrl+Down { move-workspace-to-monitor-down; }
+
+  Mod+WheelScrollDown { focus-workspace-down; }
+  Mod+WheelScrollUp { focus-workspace-up; }
+
+  Alt+F4 { close-window; }
+  Mod+F { fullscreen-window; }
+  Mod+H { toggle-window-floating; }
+
+  Mod+Q { spawn "kitty"; }
+  Mod+M { spawn "{{ $emailClient }}"; }
+  Mod+N { spawn "swaync-client" "-t" "-sw"; }
+  Mod+X { spawn "walker" "-m" "clipboard"; }
+  Mod+P { spawn "walker" "-m" "bitwarden"; }
+  Mod+L { spawn "hyprlock"; }
+  Mod+S { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
+  Mod+Shift+S { spawn-sh "grim -g \"$(slurp)\" \"$HOME/Pictures/Screenshots/screenshot_$(date +%Y-%m-%d-%H%M%S).png\""; }
+
+  {{- if eq .browser "FIREFOX" }}
+  Mod+E { spawn "firefox" "-P"; }
+  {{- else if eq .browser "ZEN" }}
+  Mod+E { spawn "zen-browser" "-P"; }
+  {{- end }}
+
+  {{- $osd := "swayosd-client --monitor \\\"$(niri msg -j focused-output | jq -r .name)\\\"" }}
+
+  Caps_Lock allow-when-locked=true { spawn-sh "{{ $osd }} --caps-lock"; }
+
+  XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "{{ $osd }} --output-volume raise"; }
+  XF86AudioLowerVolume allow-when-locked=true { spawn-sh "{{ $osd }} --output-volume lower"; }
+  XF86AudioMute allow-when-locked=true { spawn-sh "{{ $osd }} --output-volume mute-toggle"; }
+  XF86AudioMicMute allow-when-locked=true { spawn-sh "{{ $osd }} --input-volume mute-toggle"; }
+  XF86AudioPlay allow-when-locked=true { spawn-sh "{{ $osd }} --playerctl play-pause"; }
+  XF86AudioPause allow-when-locked=true { spawn-sh "{{ $osd }} --playerctl pause"; }
+  XF86AudioNext allow-when-locked=true { spawn-sh "{{ $osd }} --playerctl next"; }
+  XF86AudioPrev allow-when-locked=true { spawn-sh "{{ $osd }} --playerctl previous"; }
+}

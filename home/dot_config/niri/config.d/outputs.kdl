@@ -1,0 +1,5 @@
+// Outputs
+// Declare DP-1 explicitly to keep workspace placement consistent with Hyprland.
+output "DP-1" {
+  focus-at-startup
+}

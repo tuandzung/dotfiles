@@ -1,0 +1,21 @@
+// Input configuration.
+input {
+  keyboard {
+    xkb {
+      layout "us"
+    }
+  }
+
+  touchpad {
+    natural-scroll
+  }
+
+  mouse {
+    accel-profile "flat"
+    middle-emulation
+  }
+
+  warp-mouse-to-focus
+
+  focus-follows-mouse max-scroll-amount="100%"
+}

@@ -1,0 +1,10 @@
+// Named workspaces.
+workspace "term" { open-on-output "DP-1"; }
+workspace "web" { open-on-output "DP-1"; }
+workspace "mail" { open-on-output "DP-1"; }
+workspace "chat" { open-on-output "DP-1"; }
+workspace "media" { open-on-output "DP-1"; }
+workspace "games" { open-on-output "DP-1"; }
+workspace "office" { open-on-output "DP-1"; }
+workspace "vm" { open-on-output "DP-1"; }
+workspace "others" { open-on-output "DP-1"; }

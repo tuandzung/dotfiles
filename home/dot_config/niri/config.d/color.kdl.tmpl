@@ -1,0 +1,8 @@
+{{- $theme := .catppuccin.macchiato }}
+{{- if not .darkMode }}
+{{-   $theme = .catppuccin.latte }}
+{{- end }}
+
+layout {
+  background-color "{{ $theme.crust }}"
+}
