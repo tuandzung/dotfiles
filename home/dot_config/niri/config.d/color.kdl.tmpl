@@ -4,5 +4,21 @@
 {{- end }}
 
 layout {
-  background-color "{{ $theme.crust }}"
+    background-color "{{ $theme.crust }}"
+    focus-ring {
+        active-gradient from="{{ $theme.mauve }}" to="{{ $theme.sky }}" angle=45 relative-to="workspace-view"
+        inactive-gradient from="{{ $theme.crust }}" to="{{ $theme.base }}" angle=45 relative-to="workspace-view"
+    }
+    shadow {
+        color "{{ $theme.surface0 }}"
+    }
+    tab-indicator {
+        active-color "{{ $theme.rosewater }}"
+        inactive-color "{{ $theme.overlay1 }}"
+        urgent-color "{{ $theme.blue }}"
+    }
+
+    insert-hint {
+        gradient from="{{ $theme.flamingo }}" to="{{ $theme.red }}" angle=45 relative-to="workspace-view"
+    }
 }

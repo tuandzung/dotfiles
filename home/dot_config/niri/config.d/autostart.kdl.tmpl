@@ -1,6 +1,11 @@
 // Autostart
-// NOTE: hyprpaper/hypridle/hyprlock and xdg-portal-hyprland may need replacements for niri.
+
+// polkit
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+spawn-at-startup "/usr/libexec/polkit-gnome-authentication-agent-1"
+{{- else }}
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+{{- end }}
 
 // Audio
 {{- if eq .chezmoi.osRelease.id "gentoo" }}
@@ -59,7 +64,7 @@ spawn-at-startup "shikane"
 
 // Idle
 {{- if ne .place "HOME" }}
-spawn-at-startup "hypridle"
+spawn-at-startup "hypridle -c ~/.config/niri/hypridle.conf"
 {{- end }}
 
 // Clipboard
