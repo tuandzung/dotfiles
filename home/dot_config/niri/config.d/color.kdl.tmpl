@@ -21,4 +21,48 @@ layout {
     insert-hint {
         gradient from="{{ $theme.flamingo }}" to="{{ $theme.red }}" angle=45 relative-to="workspace-view" in="oklch longer hue"
     }
+
+}
+
+recent-windows {
+    highlight {
+        active-color "{{ $theme.sapphire }}"
+        urgent-color "{{ $theme.maroon }}"
+    }
+}
+
+// Indicate screencasted windows with red colors.
+window-rule {
+    match is-window-cast-target=true
+
+    focus-ring {
+        active-gradient from="{{ $theme.red }}" to="{{ $theme.maroon }}" angle=45 relative-to="workspace-view"
+        inactive-color "{{ $theme.rosewater }}"
+    }
+
+    border {
+        inactive-color "{{ $theme.red }}"
+    }
+
+    shadow {
+        color "{{ $theme.pink }}"
+    }
+
+    tab-indicator {
+        active-color "{{ $theme.peach }}"
+        inactive-color "{{ $theme.red }}"
+    }
+}
+
+overview {
+    backdrop-color "{{ $theme.base }}"
+    workspace-shadow {
+        color "{{ $theme.crust }}"
+    }
+}
+
+layer-rule {
+    shadow {
+        color "{{ $theme.crust }}"
+    }
 }

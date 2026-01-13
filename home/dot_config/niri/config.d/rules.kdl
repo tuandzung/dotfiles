@@ -60,10 +60,6 @@ window-rule {
 
 // Media workspace rules
 window-rule {
-    match app-id=r#"^([Ss]potify)$"#
-    open-on-workspace "media"
-}
-window-rule {
     match app-id=r#"^(vlc|mpv|com.stremio.stremio)$"#
     open-on-workspace "media"
 }
@@ -151,6 +147,10 @@ window-rule {
 }
 window-rule {
     match app-id=r#"^(eog|org.gnome.Loupe)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^([Ss]potify)$"#
     open-floating true
 }
 window-rule {

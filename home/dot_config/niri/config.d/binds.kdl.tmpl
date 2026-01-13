@@ -34,7 +34,6 @@ binds {
     Mod+Right { focus-column-right; }
     Mod+Up { focus-window-up; }
     Mod+Down { focus-window-down; }
-    Alt+Tab { focus-window-down; }
 
     Mod+Shift+Left { set-column-width "-10%"; }
     Mod+Shift+Right { set-column-width "+10%"; }
@@ -61,6 +60,8 @@ binds {
     Mod+L { spawn "hyprlock"; }
     Mod+S { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
     Mod+Shift+S { spawn-sh "grim -g \"$(slurp)\" \"$HOME/Pictures/Screenshots/screenshot_$(date +%Y-%m-%d-%H%M%S).png\""; }
+    Mod+Z { spawn "ndrop" "kitty" "--class" "btop" "-e" "btop"; }
+    Mod+W { spawn "ndrop" "spotify"; }
 
     {{- if eq .browser "FIREFOX" }}
     Mod+E { spawn "firefox" "-P"; }

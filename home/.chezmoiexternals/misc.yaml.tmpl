@@ -6,3 +6,8 @@
   url: 'https://github.com/mikefarah/yq/releases/latest/download/yq_darwin_{{ .chezmoi.arch }}'
   {{- end }}
   executable: true
+
+.local/bin/ndrop:
+  type: file
+  url: 'https://raw.githubusercontent.com/Schweber/ndrop/refs/heads/main/ndrop'
+  executable: true
