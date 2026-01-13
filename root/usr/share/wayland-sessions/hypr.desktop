@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Hypr
-Comment=An intelligent dynamic tiling Wayland compositor
-Exec=~/.wayland_init.fish
-Type=Application
