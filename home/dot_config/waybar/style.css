@@ -48,7 +48,7 @@ window#waybar.empty #window {
   background-color: @red;
 }
 
-#cava,
+#custom-cava,
 #custom-music,
 #custom-pomodoro,
 #custom-notification,
@@ -201,13 +201,15 @@ window#waybar.empty #window {
   padding-right: 1rem;
 }
 
-#cava {
-  color: @mauve;
+#custom-cava {
+  color: @peach;
   border-radius: 1rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
+  font-family: bargraph;
+  font-size: 24px;
 }
 
 #custom-notification {
