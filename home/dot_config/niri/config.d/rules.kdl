@@ -102,10 +102,6 @@ window-rule {
     open-on-workspace "others"
 }
 window-rule {
-    match app-id=r#"^([Tt]hunar|org.gnome.Nautilus|[Pp]cmanfm-qt)$"#
-    open-on-workspace "others"
-}
-window-rule {
     match app-id=r#"^(app.drey.Warp)$"#
     open-on-workspace "others"
 }
@@ -147,6 +143,10 @@ window-rule {
 }
 window-rule {
     match app-id=r#"^(eog|org.gnome.Loupe)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^([Tt]hunar|org.gnome.Nautilus|[Pp]cmanfm-qt)$"#
     open-floating true
 }
 window-rule {
