@@ -1,0 +1,159 @@
+// Window rules -> workspace routing (app-id is Wayland app_id or XWayland class).
+window-rule {
+    match app-id=r#"^(kitty)$"#
+    open-on-workspace "term"
+}
+
+// Web workspace rules
+window-rule {
+    match app-id=r#"^([Ff]irefox(|-esr)|org.mozilla.firefox|[Ff]irefox)"#
+    open-on-workspace "web"
+}
+window-rule {
+    match app-id=r#"^([Gg]oogle-chrome(-beta|-dev|-unstable)?)$"#
+    open-on-workspace "web"
+}
+window-rule {
+    match app-id=r#"^(chromium)$"#
+    open-on-workspace "web"
+}
+window-rule {
+    match app-id=r#"^(chrome-.+-Default)$"#
+    open-on-workspace "web"
+}
+window-rule {
+    match app-id=r#"^(Vivaldi.+)$"#
+    open-on-workspace "web"
+}
+window-rule {
+    match app-id=r#"^([Zz]en)$"#
+    open-on-workspace "web"
+}
+
+// Mail workspace rules
+window-rule {
+    match app-id=r#"^(eu.betterbird.Betterbird)$"#
+    open-on-workspace "mail"
+}
+
+// Chat workspace rules
+window-rule {
+    match app-id=r#"^([Dd]iscord|[Ww]ebCord|[Vv]esktop)$"#
+    open-on-workspace "chat"
+}
+window-rule {
+    match app-id=r#"^([Ss]lack)$"#
+    open-on-workspace "chat"
+}
+window-rule {
+    match app-id=r#"^([Ff]erdium)$"#
+    open-on-workspace "chat"
+}
+window-rule {
+    match app-id=r#"^(org.telegram.desktop|io.github.tdesktop_x64.TDesktop)$"#
+    open-on-workspace "chat"
+}
+window-rule {
+    match app-id=r#"^(teams-for-linux)$"#
+    open-on-workspace "chat"
+}
+
+// Media workspace rules
+window-rule {
+    match app-id=r#"^(vlc|mpv|com.stremio.stremio)$"#
+    open-on-workspace "media"
+}
+
+// Games workspace rules
+window-rule {
+    match app-id=r#"^([Ss]team)$"#
+    open-on-workspace "games"
+}
+window-rule {
+    match app-id=r#"^(steam_app_\d+)$"#
+    open-on-workspace "games"
+}
+window-rule {
+    match app-id=r#"^(steam_proton)$"#
+    open-on-workspace "games"
+}
+window-rule {
+  match app-id=r#"^(net.lutris.Lutris)$"#
+  open-on-workspace "games"
+}
+
+// Office workspace rules
+window-rule {
+    match app-id=r#"^([Cc]odium)$"#
+    open-on-workspace "office"
+}
+window-rule {
+    match app-id=r#"^(libreoffice.*)$"#
+    open-on-workspace "office"
+}
+window-rule {
+    match app-id=r#"^(obsidian)$"#
+    open-on-workspace "office"
+}
+
+// Others workspace rules
+window-rule {
+    match app-id=r#"^(org.qbittorrent.qBittorrent)"#
+    open-on-workspace "others"
+}
+window-rule {
+    match app-id=r#"^(app.drey.Warp)$"#
+    open-on-workspace "others"
+}
+
+// Virtual machines workspace rules
+window-rule {
+    match app-id=r#"^(VirtualBox|virt-manager|qemu|remote-viewer)$"#
+    open-on-workspace "vm"
+}
+
+// Floating windows (settings, viewers, and PIP).
+window-rule {
+    match app-id=r#"^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^(nm-applet|nm-connection-editor|blueman-manager)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^(file-roller|org.gnome.FileRoller)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^(nwg-look|qt5ct|qt6ct|[Yy]ad)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^(xdg-desktop-portal-gnome)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^(btop)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^(evince)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^(eog|org.gnome.Loupe)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^([Tt]hunar|org.gnome.Nautilus|[Pp]cmanfm-qt)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^([Ss]potify)$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^firefox$"# title=r#"^Picture-in-Picture$"#
+    open-floating true
+}

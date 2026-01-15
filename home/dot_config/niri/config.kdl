@@ -1,0 +1,16 @@
+// Niri config translated from Hyprland settings in ~/.config/hypr/hyprland/*.
+// KDL syntax: https://kdl.dev
+
+include "config.d/env.kdl"
+include "config.d/input.kdl"
+include "config.d/layout.kdl"
+include "config.d/outputs.kdl"
+include "config.d/workspaces.kdl"
+include "config.d/layers.kdl"
+include "config.d/rules.kdl"
+include "config.d/autostart.kdl"
+include "config.d/misc.kdl"
+include "config.d/animations.kdl"
+include "config.d/binds.kdl"
+include "config.d/cursor.kdl"
+include "config.d/color.kdl"

@@ -1,0 +1,24 @@
+// Named workspaces.
+workspace "term" { open-on-output "DP-1"; }
+workspace "web" { open-on-output "DP-1"; }
+workspace "mail" { open-on-output "DP-1"; }
+workspace "chat" {
+    open-on-output "DP-1"
+    // Layout config overrides just for this named workspace.
+    layout {
+        gaps 32
+
+        struts {
+            left 64
+            right 64
+            bottom 64
+            top 64
+        }
+    }
+}
+workspace "media" { open-on-output "DP-1"; }
+workspace "games" { open-on-output "DP-1"; }
+workspace "office" { open-on-output "DP-1"; }
+workspace "vm" { open-on-output "DP-1"; }
+workspace "others" { open-on-output "DP-1"; }
+workspace "ndrop"

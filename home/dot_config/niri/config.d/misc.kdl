@@ -1,0 +1,42 @@
+// Misc settings.
+screenshot-path "~/Pictures/Screenshots/screenshot_%Y-%m-%d-%H%M%S.png"
+
+hotkey-overlay {
+    skip-at-startup
+    hide-not-bound
+}
+
+clipboard {
+    disable-primary
+}
+
+// Also ask windows to omit client-side decorations, so that
+// they don't draw their own window shadows.
+prefer-no-csd
+
+// recent windows (alt-tab)
+recent-windows {
+    on
+    debounce-ms 750
+
+    open-delay-ms 150
+
+    highlight {
+        padding 30
+        corner-radius 0
+    }
+
+    previews {
+        max-height 480
+        max-scale 0.5
+    }
+
+    binds {
+        Alt+Tab         { next-window     scope="output"; }
+        Alt+Shift+Tab   { previous-window scope="output"; }
+    }
+}
+
+xwayland-satellite {
+    path "xwayland-satellite"
+}

@@ -1,0 +1,44 @@
+// Layer rules
+
+layer-rule {
+    match namespace="^notifications$"
+    opacity 0.90
+    block-out-from "screencast"
+}
+
+layer-rule {
+    match namespace="swaync-control-center"
+    opacity 0.90
+    shadow {
+        on
+        softness 100
+        spread 5
+        offset x=0 y=5
+    }
+    geometry-corner-radius 12
+}
+
+layer-rule {
+    match namespace="gtk-layer-shell"
+    opacity 0.90
+}
+
+layer-rule {
+    match namespace="waybar"
+    opacity 0.90
+    shadow {
+        on
+        softness 150
+        spread 5
+        offset x=0 y=5
+        draw-behind-window true
+    }
+    geometry-corner-radius 12
+}
+
+layer-rule {
+    match namespace="^walker$"
+    opacity 0.95
+    block-out-from "screencast"
+}
+

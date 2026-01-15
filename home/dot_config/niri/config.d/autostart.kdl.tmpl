@@ -1,0 +1,122 @@
+// Autostart
+
+// ndrop
+spawn-at-startup "niri" "msg" "action" "focus-workspace-down"
+
+// polkit
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+spawn-at-startup "/usr/libexec/polkit-gnome-authentication-agent-1"
+{{- else }}
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+{{- end }}
+
+// Audio
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+spawn-at-startup "gentoo-pipewire-launcher" "restart"
+{{- else }}
+spawn-at-startup "systemctl" "--user" "start" "wireplumber"
+spawn-at-startup "systemctl" "--user" "start" "pipewire-pulse"
+{{- end }}
+
+// Screencast
+spawn-at-startup "xdg-desktop-portal-gnome"
+
+// Thunar
+spawn-at-startup "thunar" "--daemon"
+
+// GTK theme
+spawn-sh-at-startup "~/.config/hypr/hyprland/scripts/gtk.sh"
+
+// Launcher
+spawn-at-startup "walker" "--gapplication-service"
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+spawn-at-startup "elephant"
+{{- end }}
+
+// Wallpaper
+spawn-at-startup "hyprpaper"
+{{- $wall := "" }}
+{{- $id := printf "%s_%s" .place .kind }}
+{{- if eq $id "HOME_pc" }}
+{{- $wall = "1.mp4" }}
+{{- else }}
+{{- $wall = "3.mp4" }}
+{{- end }}
+spawn-at-startup "mpvpaper" "DP-1" "{{ .chezmoi.homeDir }}/Wallpapers/animated/{{ $wall }}" "--mpv-options" "loop-file=inf no-config hwdec=auto-safe gpu-context=auto gpu-api=vulkan no-audio" "--fork"
+
+// Bar & Panel & Widgets
+spawn-at-startup "~/.config/hypr/hyprland/scripts/waybar.sh"
+
+// Notification center
+spawn-at-startup "swaync"
+
+// OSD
+spawn-at-startup "swayosd-server"
+
+// Screen shader and changes detection
+{{- if ne .chezmoi.osRelease.id "gentoo" }}
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "NIRI_SOCKET"
+spawn-at-startup "systemctl" "--user" "start" "hyprsunset.service"
+spawn-at-startup "sunsetr"
+{{- else }}
+spawn-at-startup "sunsetr"
+{{- end }}
+
+// Monitor
+spawn-at-startup "shikane"
+
+// Idle
+{{- if ne .place "HOME" }}
+spawn-at-startup "hypridle" "-c" "~/.config/niri/hypridle.conf"
+{{- end }}
+
+// Clipboard
+spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
+spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
+
+// Network & Bluetooth
+spawn-at-startup "nm-applet" "--indicator"
+spawn-at-startup "blueman-applet"
+
+// IM
+spawn-at-startup "fcitx5" "-d" "--replace"
+
+// Terminal
+spawn-at-startup "kitty"
+
+// Browser
+{{- if eq .browser "FIREFOX" }}
+{{- if eq .place "HOME" }}
+spawn-at-startup "firefox" "-P" "Personal"
+{{- else if eq .place "OFFICE" }}
+spawn-at-startup "firefox" "-P" "Work"
+{{- end }}
+{{- else if eq .browser "ZEN" }}
+{{- if eq .place "HOME" }}
+spawn-at-startup "zen-browser" "-P" "Personal"
+{{- else if eq .place "OFFICE" }}
+spawn-at-startup "zen-browser" "-P" "Work"
+{{- end }}
+{{- end }}
+
+// Email
+{{- $emailClient := "betterbird" }}
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+{{- $emailClient = "betterbird-bin" }}
+{{- end }}
+{{- if eq .place "HOME" }}
+spawn-at-startup "{{ $emailClient }}" "-P" "Personal"
+{{- else if eq .place "OFFICE" }}
+spawn-at-startup "{{ $emailClient }}" "-P" "Work"
+{{- end }}
+
+{{- $ferdium := "ferdium" }}
+{{- if eq .chezmoi.osRelease.id "gentoo" }}
+{{- $ferdium = "ferdium-bin" }}
+{{- end }}
+
+// Ferdium
+spawn-at-startup "{{ $ferdium }}" "--enable-webrtc-pipewire-capturer" "--enable-features=UseOzonePlatform,WaylandWindowDecorations" "--ozone-platform=wayland" "--enable-wayland-ime" "--ozone-platform-hint=auto"
+
+// Torrent
+spawn-at-startup "qbittorrent"

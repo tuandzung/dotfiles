@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Hypr
+Comment=An intelligent dynamic tiling Wayland compositor
+Exec={{ splitList (splitList "/" .chezmoi.configFile | last) .chezmoi.configFile | join "/" }}../../.wayland_init.fish
+Type=Application

@@ -1,0 +1,6 @@
+{{- template "wm/hypridle.conf" . }}
+listener {
+  timeout = 300 # 5 mins
+  on-timeout = niri msg action power-off-monitors
+  on-resume = niri msg action power-on-monitors
+}
