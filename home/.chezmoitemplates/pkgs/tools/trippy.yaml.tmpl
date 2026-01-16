@@ -19,3 +19,6 @@ archive:
   strip_components: 1
   paths:
     - trippy-%s-{{ $arch }}-{{ $os }}/trip
+hook:
+  after: |
+    sudo setcap CAP_NET_RAW+p $(which trip)

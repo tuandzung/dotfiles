@@ -15,4 +15,4 @@ hook:
     mv ~/.local/bin/krew{-{{ .chezmoi.os }}_{{ .chezmoi.arch }},}
     kubectl krew install access-matrix cert-manager deprecations \
       ingress-nginx pv-migrate tree ktop advise-policy df-pv explore \
-      pv-mounter sniff stern
+      pv-mounter sniff stern || true
