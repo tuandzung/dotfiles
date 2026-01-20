@@ -48,6 +48,7 @@ window#waybar.empty #window {
   background-color: @red;
 }
 
+#mpris,
 #custom-cava,
 #custom-music,
 #custom-pomodoro,
@@ -192,15 +193,6 @@ window#waybar.empty #window {
   padding-right: 0.5rem;
 }
 
-#custom-music {
-  color: @mauve;
-  border-radius: 1rem;
-  margin-left: 1rem;
-  margin-right: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
 #custom-cava {
   color: @peach;
   border-radius: 1rem;
@@ -210,6 +202,38 @@ window#waybar.empty #window {
   padding-right: 1rem;
   font-family: bargraph;
   font-size: 24px;
+}
+
+#custom-music {
+  color: @peach;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+#mpris,
+#mpris.playing,
+#mpris.paused,
+#mpris.stopped {
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+#mpris.paused {
+  color: @yellow;
+}
+
+#mpris.playing {
+  color: @teal;
+}
+
+#mpris.stopped {
+  color: @maroon;
 }
 
 #custom-notification {
