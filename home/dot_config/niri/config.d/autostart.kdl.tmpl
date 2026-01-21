@@ -56,7 +56,6 @@ spawn-at-startup "swayosd-server"
 // Screen shader and changes detection
 {{- if ne .chezmoi.osRelease.id "gentoo" }}
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "NIRI_SOCKET"
-spawn-at-startup "systemctl" "--user" "start" "hyprsunset.service"
 spawn-at-startup "sunsetr"
 {{- else }}
 spawn-at-startup "sunsetr"
@@ -67,7 +66,7 @@ spawn-at-startup "shikane"
 
 // Idle
 {{- if ne .place "HOME" }}
-spawn-at-startup "stasis"
+spawn-at-startup "systemctl" "--user" "start" "stasis.service"
 {{- end }}
 
 // Clipboard
