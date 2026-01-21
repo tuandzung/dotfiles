@@ -38,3 +38,9 @@
 [submodule "mpv"]
 	path = home/dot_config/mpv
 	url = git@github.com:tuandzung/mpv.git
+[submodule "scripts/lib/expect-age"]
+	path = scripts/lib/expect-age
+	url = git@github.com:dynamotn/expect-age.git
+[submodule "scripts/lib/dybatpho"]
+	path = scripts/lib/dybatpho
+	url = git@github.com:dynamotn/dybatpho.git
