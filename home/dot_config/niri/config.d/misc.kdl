@@ -6,10 +6,6 @@ hotkey-overlay {
     hide-not-bound
 }
 
-clipboard {
-    disable-primary
-}
-
 // Also ask windows to omit client-side decorations, so that
 // they don't draw their own window shadows.
 prefer-no-csd
