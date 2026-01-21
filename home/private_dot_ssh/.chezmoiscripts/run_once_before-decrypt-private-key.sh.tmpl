@@ -1,17 +1,19 @@
 #!{{ lookPath "bash" }}
-set -eou pipefail
-source {{ .chezmoi.workingTree }}/scripts/logger.sh
+source {{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh
+dybatpho::register_common_handlers
 
-_notice "Decrypting private key into .config/chezmoi/key"
-if [ ! -f "${HOME}/.config/chezmoi/key" ]; then
+# key hash: {{ joinPath .chezmoi.sourceDir "../secrets/key_pq.age" | include | sha256sum }}
+
+dybatpho::header "Decrypting private key into .config/chezmoi"
+if ! dybatpho::is file "${HOME}/.config/chezmoi/key_pq"; then
     mkdir -p "${HOME}/.config/chezmoi"
-    chezmoi age decrypt --output "${HOME}/.config/chezmoi/key" --passphrase "{{ .chezmoi.workingTree }}/secrets/key.age"
+    age --decrypt --output "${HOME}/.config/chezmoi/key_pq" "{{ .chezmoi.workingTree }}/secrets/key_pq.age"
     if [ $? -eq 0 ]; then
-        chmod 400 "${HOME}/.config/chezmoi/key"
-        _success "Successfully decrypted key.age file"
+        chmod 400 "${HOME}/.config/chezmoi/key_pq"
+        dybatpho::success "Successfully decrypted key file"
     else
-        _error "Failed to decrypt key.age file"
+        dybatpho::error "Failed to decrypt key file"
     fi
 else
-  _info "Private key already decrypted, skipping..."
+  dybatpho::info "Private key already decrypted, skipping..."
 fi
