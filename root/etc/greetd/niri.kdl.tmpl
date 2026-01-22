@@ -1,0 +1,28 @@
+spawn-sh-at-startup "regreet; niri msg action quit"
+spawn-sh-at-startup = "{{ .chezmoi.sourceDir }}/../../.config/hypr/hyprland/scripts/gtk.sh"
+
+output "DP-1" { focus-at-startup; }
+{{- if eq .place "OFFICE" }}
+output "HDMI-A-1" { off; }
+{{- end }}
+
+environment {
+    {{- if eq .graphicsDriver "NVIDIA" }}
+    // NVIDIA setting
+    LIBVA_DRIVER_NAME = "nvidia"
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia"
+    GBM_BACKEND = "nvidia-drm"
+    {{- end }}
+
+    // XDG specification
+    XDG_CURRENT_DESKTOP = "niri"
+    XDG_SESSION_TYPE = "wayland"
+    XDG_SESSION_DESKTOP = "niri"
+
+    GTK_USE_PORTAL = "0"
+    GDK_DEBUG = "no-portals"
+}
+
+debug {
+    disable-cursor-plane
+}
