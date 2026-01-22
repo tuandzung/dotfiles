@@ -8,26 +8,32 @@ window-rule {
 window-rule {
     match app-id=r#"^([Ff]irefox(|-esr)|org.mozilla.firefox|[Ff]irefox)"#
     open-on-workspace "web"
+    open-maximized-to-edges true
 }
 window-rule {
     match app-id=r#"^([Gg]oogle-chrome(-beta|-dev|-unstable)?)$"#
     open-on-workspace "web"
+    open-maximized-to-edges true
 }
 window-rule {
     match app-id=r#"^(chromium)$"#
     open-on-workspace "web"
+    open-maximized-to-edges true
 }
 window-rule {
     match app-id=r#"^(chrome-.+-Default)$"#
     open-on-workspace "web"
+    open-maximized-to-edges true
 }
 window-rule {
     match app-id=r#"^(Vivaldi.+)$"#
     open-on-workspace "web"
+    open-maximized-to-edges true
 }
 window-rule {
     match app-id=r#"^([Zz]en)$"#
     open-on-workspace "web"
+    open-maximized-to-edges true
 }
 
 // Mail workspace rules
@@ -72,14 +78,17 @@ window-rule {
 window-rule {
     match app-id=r#"^(steam_app_\d+)$"#
     open-on-workspace "games"
+    open-maximized true
 }
 window-rule {
     match app-id=r#"^(steam_proton)$"#
     open-on-workspace "games"
+    open-maximized true
 }
 window-rule {
-  match app-id=r#"^(net.lutris.Lutris)$"#
-  open-on-workspace "games"
+    match app-id=r#"^(net.lutris.Lutris)$"#
+    open-on-workspace "games"
+    open-maximized true
 }
 
 // Office workspace rules
@@ -110,6 +119,7 @@ window-rule {
 window-rule {
     match app-id=r#"^(VirtualBox|virt-manager|qemu|remote-viewer)$"#
     open-on-workspace "vm"
+    open-maximized-to-edges true
 }
 
 // Floating windows (settings, viewers, and PIP).
@@ -151,9 +161,5 @@ window-rule {
 }
 window-rule {
     match app-id=r#"^([Ss]potify)$"#
-    open-floating true
-}
-window-rule {
-    match app-id=r#"^firefox$"# title=r#"^Picture-in-Picture$"#
     open-floating true
 }
