@@ -1,5 +1,13 @@
-spawn-sh-at-startup "regreet; niri msg action quit"
-spawn-sh-at-startup = "{{ .chezmoi.sourceDir }}/../../.config/hypr/hyprland/scripts/gtk.sh"
+spawn-sh-at-startup "regreet; niri msg action quit --skip-confirmation"
+spawn-sh-at-startup "{{ .chezmoi.sourceDir }}/../../.config/hypr/hyprland/scripts/gtk.sh"
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+}
 
 output "DP-1" { focus-at-startup; }
 {{- if eq .place "OFFICE" }}
@@ -9,20 +17,26 @@ output "HDMI-A-1" { off; }
 environment {
     {{- if eq .graphicsDriver "NVIDIA" }}
     // NVIDIA setting
-    LIBVA_DRIVER_NAME = "nvidia"
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia"
-    GBM_BACKEND = "nvidia-drm"
+    LIBVA_DRIVER_NAME "nvidia"
+    __GLX_VENDOR_LIBRARY_NAME "nvidia"
+    GBM_BACKEND "nvidia-drm"
     {{- end }}
 
     // XDG specification
-    XDG_CURRENT_DESKTOP = "niri"
-    XDG_SESSION_TYPE = "wayland"
-    XDG_SESSION_DESKTOP = "niri"
+    XDG_CURRENT_DESKTOP "niri"
+    XDG_SESSION_TYPE "wayland"
+    XDG_SESSION_DESKTOP "niri"
 
-    GTK_USE_PORTAL = "0"
-    GDK_DEBUG = "no-portals"
+    GTK_USE_PORTAL "0"
+    GDK_DEBUG "no-portals"
 }
 
 debug {
     disable-cursor-plane
 }
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+prefer-no-csd
