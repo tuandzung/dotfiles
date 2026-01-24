@@ -1,4 +1,5 @@
 theme = "macchiato"
+actions_as_menu = true
 
 [providers.actions]
 bitwarden = [
