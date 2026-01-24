@@ -7,11 +7,15 @@ logout="󰍂 | Logout"
 
 entries="$shutdown\n$reboot\n$logout\n$suspend"
 
-selected=$(echo -e $entries | wofi -c ~/.config/wofi/power/config --dmenu --cache-file /dev/null | awk '{print tolower($3)}')
+selected=$(echo -e $entries | walker -dn --width 4 --height 4 | awk '{print tolower($3)}')
 
 case $selected in
   logout)
-    hyprctl dispatch exit
+    {{- $logoutCmd := "niri msg action quit --skip-confirmation" }}
+    {{- if eq .windowManager "HYPRLAND" }}
+    {{-   $logoutCmd = "hyprctl dispatch exit" }}
+    {{- end }}
+    {{ $logoutCmd }}
     ;;
   suspend)
     {{- if eq .chezmoi.osRelease.id "gentoo" }}

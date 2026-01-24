@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Niri
 Comment=A scrollable-tiling Wayland compositor
-Exec={{ splitList (splitList "/" .chezmoi.configFile | last) .chezmoi.configFile | join "/" }}../../.niri_init.fish
+Exec={{ splitList (splitList "/" .chezmoi.configFile | last) .chezmoi.configFile | join "/" }}../../.scripts/wayland_init.fish
 Type=Application
 DesktopNames=niri

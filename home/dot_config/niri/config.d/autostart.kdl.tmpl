@@ -25,7 +25,7 @@ spawn-at-startup "xdg-desktop-portal-gnome"
 spawn-at-startup "thunar" "--daemon"
 
 // GTK theme
-spawn-sh-at-startup "~/.config/hypr/hyprland/scripts/gtk.sh"
+spawn-sh-at-startup "~/.scripts/gtk.sh"
 
 // Launcher
 spawn-at-startup "walker" "--gapplication-service"
@@ -45,7 +45,7 @@ spawn-at-startup "hyprpaper"
 spawn-at-startup "mpvpaper" "DP-1" "{{ .chezmoi.homeDir }}/Wallpapers/animated/{{ $wall }}" "--mpv-options" "loop-file=inf no-config hwdec=auto-safe gpu-context=auto gpu-api=vulkan no-audio" "--fork"
 
 // Bar & Panel & Widgets
-spawn-at-startup "~/.config/hypr/hyprland/scripts/waybar.sh"
+spawn-at-startup "~/.scripts/waybar.sh"
 
 // Notification center
 spawn-at-startup "swaync"

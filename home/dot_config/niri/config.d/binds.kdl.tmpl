@@ -1,6 +1,6 @@
 binds {
     Mod+Space { spawn "walker"; }
-    Ctrl+Alt+Delete { spawn "~/.config/hypr/hyprland/scripts/powermenu.sh"; }
+    Ctrl+Alt+Delete { spawn "~/.scripts/powermenu.sh"; }
     Mod+Escape { toggle-keyboard-shortcuts-inhibit; }
 
     Mod+1 { focus-workspace "term"; }
@@ -62,7 +62,7 @@ binds {
     Mod+Shift+S { spawn-sh "grim -g \"$(slurp)\" \"$HOME/Pictures/Screenshots/screenshot_$(date +%Y-%m-%d-%H%M%S).png\""; }
     Mod+Z { spawn "ndrop" "kitty" "--class" "btop" "-e" "btop"; }
     Mod+W { spawn "ndrop" "spotify"; }
-    Mod+T { spawn "ndrop" "thunar"; } 
+    Mod+T { spawn "ndrop" "thunar"; }
 
     {{- if eq .browser "FIREFOX" }}
     Mod+E { spawn "firefox" "-P"; }

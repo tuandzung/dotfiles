@@ -1,5 +1,5 @@
 spawn-sh-at-startup "regreet; niri msg action quit --skip-confirmation"
-spawn-sh-at-startup "{{ .chezmoi.sourceDir }}/../../.config/hypr/hyprland/scripts/gtk.sh"
+spawn-sh-at-startup "{{ .chezmoi.sourceDir }}/../../.scripts/gtk.sh"
 
 input {
     keyboard {
@@ -12,6 +12,9 @@ input {
 output "DP-1" { focus-at-startup; }
 {{- if eq .place "OFFICE" }}
 output "HDMI-A-1" { off; }
+{{- end }}
+{{- if eq .place "HOME" }}
+output "DP-2" { off; }
 {{- end }}
 
 environment {
@@ -31,6 +34,10 @@ environment {
     GDK_DEBUG "no-portals"
 }
 
+recent-windows {
+    off
+}
+
 debug {
     disable-cursor-plane
 }
@@ -38,5 +45,13 @@ debug {
 hotkey-overlay {
     skip-at-startup
 }
+
+gestures {
+    hot-corners {
+        off
+    }
+}
+
+binds {}
 
 prefer-no-csd

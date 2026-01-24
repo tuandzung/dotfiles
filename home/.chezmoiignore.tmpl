@@ -46,6 +46,10 @@ Library
 .zen
 .config/hypr
 .config/hyprshade
+.config/niri
+.config/stasis
+.config/elephant
+.config/walker
 .config/mpv
 .config/fcitx5
 .config/vesktop
@@ -70,4 +74,10 @@ Library/Application\ Support/zen
 {{- end }}
 {{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo") }}
 .config/systemd
+{{- end }}
+{{- if eq .windowManager "HYPRLAND" }}
+.config/niri
+{{- end }}
+{{- if eq .windowManager "NIRI" }}
+.config/hypr
 {{- end }}

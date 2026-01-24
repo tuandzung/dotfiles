@@ -66,3 +66,11 @@ etc/conf.d
 etc/init.d
 {{- end }}
 {{- end }}
+{{- if eq .windowManager "HYPRLAND" }}
+usr/share/wayland-sessions/niri.desktop
+/etc/greetd/niri.kdl
+{{- end }}
+{{- if eq .windowManager "NIRI" }}
+usr/share/wayland-sessions/hypr.desktop
+/etc/greetd/hyprland.conf
+{{- end }}

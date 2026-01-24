@@ -1,0 +1,11 @@
+#!/bin/env fish
+
+mkdir -p $XDG_RUNTIME_DIR && chmod 700 $XDG_RUNTIME_DIR
+{{- $cmd := "niri --session" }}
+{{- if eq .windowManager "HYPRLAND" }}
+{{-   $cmd := "Hyprland" }}
+{{-   if findExecutable "start-hyprland" (list "/usr/bin") | isExecutable }}
+{{-     $cmd = "start-hyprland" }}
+{{-   end }}
+{{- end }}
+dbus-run-session {{ $cmd }}
