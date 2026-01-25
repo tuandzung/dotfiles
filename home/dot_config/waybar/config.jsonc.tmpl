@@ -2,12 +2,18 @@
 {{- if not .darkMode }}
 {{-   $theme = .catppuccin.latte }}
 {{- end }}
+
+{{- $workspaceModule := "hyprland/workspaces" }}
+{{- if eq .windowManager "NIRI" }}
+{{-   $workspaceModule = "niri/workspaces" }}
+{{- end }}
 {
   "output": "DP-1",
   "layer": "top",
   "position": "top",
   "modules-left": [
-    "hyprland/workspaces",
+    {{ if eq .windowManager "HYPRLAND" }}{{ $workspaceModule | quote }},{{- end }}
+    {{ if eq .windowManager "NIRI" }}"niri/window",{{- end }}
     "mpris",
     "custom/cava"
   ],
@@ -100,7 +106,7 @@
     "on-click-right": "swaync-client -d -sw",
     "escape": true
   },
-  "hyprland/workspaces": {
+  {{ $workspaceModule | quote }}: {
     "persistent-workspaces": {
       "DP-1": [
         "term",
@@ -128,23 +134,14 @@
       "others": "󰣆"
     }
   },
-  "hyprland/window": {
+  {{- if eq .windowManager "NIRI" }}
+  "niri/window": {
     "format": "{title}",
-    "rewrite": {
-      "(.*) — Mozilla Firefox": "󰈹  $1",
-      "(.*) — Zen Browser": "󰈹  $1",
-      "Zellij (.*)": "  Zellij: $1",
-      "(.*) - Betterbird": "  $1",
-      "(.*) - Discord": "  $1",
-      "(.*) - Slack": "  $1",
-      "Spotify (.*)": "󰓇  Spotify",
-      "qBittorrent (.*)": "  qBittorrent",
-      "Telegram (.*)": "  Telegram $1",
-      "(.*) - mpv": "  $1"
-    },
-    "separate-outputs": true,
+    "separate-outputs": false,
+    "icon": true,
     "max-length": 50
   },
+  {{- end }}
   "cpu": {
     "format": " {usage:2}%",
     "tooltip": false,

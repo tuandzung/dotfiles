@@ -29,7 +29,7 @@ window#waybar.empty #window {
 #workspaces button {
   color: @lavender;
   border-radius: 1rem;
-  padding: 0.4rem;
+  padding: 0.1rem;
 }
 
 #workspaces button.active {
@@ -38,7 +38,7 @@ window#waybar.empty #window {
 }
 
 #workspaces button:hover {
-  color: @teal;
+  color: @maroon;
   border-radius: 1rem;
   box-shadow: inherit;
   text-shadow: inherit;
@@ -246,6 +246,7 @@ window#waybar.empty #window {
   color: @flamingo;
   border-radius: 1rem;
   margin-right: 0.5rem;
+  margin-left: 1rem;
 }
 
 #tray > .passive {
