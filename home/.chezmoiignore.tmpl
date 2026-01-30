@@ -29,6 +29,7 @@ Library
 .hammerspoon
 .config/karabiner
 {{-   if .isHeadless }}
+.icons
 .config/kitty
 .config/thunderbird
 .thunderbird
@@ -44,6 +45,8 @@ Library
 .mozilla
 .config/zen
 .zen
+.scripts
+.config/obsidian
 .config/hypr
 .config/hyprshade
 .config/niri
@@ -60,6 +63,10 @@ Library
 .config/wofi
 .config/update_browser_profiles.sh
 .wayland_init.fish
+.config/qt5ct
+.config/qt6ct
+.config/systemd
+.config/swayosd
 Wallpapers
 {{-   else }}
 {{-     if eq .browser "ZEN" }}
@@ -81,4 +88,16 @@ Library/Application\ Support/zen
 .config/hypr
 {{-     end }}
 {{-   end }}
+{{- end }}
+
+{{- if not .hasSound }}
+.config/spotify-player
+.config/ncspot
+.config/mpv
+{{- end }}
+
+{{- if eq .kind "vm" }}
+.config/rbw
+.config/rbw-work
+.config/steamguard-cli
 {{- end }}
