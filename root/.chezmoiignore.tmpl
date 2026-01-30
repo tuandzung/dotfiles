@@ -15,15 +15,15 @@ etc/ntp.conf
 etc/pacman.conf
 usr
 opt
-{{- if eq .browser "ZEN" }}
+{{-   if eq .browser "ZEN" }}
 Applications/Firefox.app
-{{- end }}
-{{- if eq .browser "FIREFOX" }}
+{{-   end }}
+{{-   if eq .browser "FIREFOX" }}
 Applications/Zen.app
-{{- end }}
+{{-   end }}
 {{- else }}
 Applications
-{{- if .isHeadless }}
+{{-   if .isHeadless }}
 etc/greetd
 opt/zen-browser
 opt/zen-browser-bin
@@ -34,43 +34,44 @@ usr/share/fonts
 usr/share/icons
 usr/share/themes
 usr/share/wayland-sessions
-{{- end }}
-{{- if ne .chezmoi.osRelease.id "gentoo" }}
+{{-   else }}
+{{-     if ne .chezmoi.osRelease.id "gentoo" }}
 usr/lib64
 opt/zen-browser
-{{- end }}
-{{- if ne .chezmoi.osRelease.id "arch" }}
+{{-     end }}
+{{-     if ne .chezmoi.osRelease.id "arch" }}
 usr/lib
 opt/zen-browser-bin
-{{- end }}
-{{- if eq .browser "ZEN" }}
+{{-     end }}
+{{-     if eq .browser "ZEN" }}
 usr/lib
 usr/lib64
-{{- end }}
-{{- if eq .browser "FIREFOX" }}
+{{-     end }}
+{{-     if eq .browser "FIREFOX" }}
 /opt/zen-browser
 /opt/zen-browser-bin
-{{- end }}
-{{- if not (eq .chezmoi.osRelease.id "arch" "ubuntu") }}
+{{-     end }}
+{{-     if not (eq .chezmoi.osRelease.id "arch" "ubuntu") }}
 etc/systemd
-{{- end }}
-{{- if ne .chezmoi.osRelease.id "arch" }}
+{{-     end }}
+{{-     if ne .chezmoi.osRelease.id "arch" }}
 etc/makepkg.conf
 etc/pacman.d
 etc/pacman.conf
-{{- end }}
-{{- if ne .chezmoi.osRelease.id "gentoo" }}
+{{-     end }}
+{{-     if ne .chezmoi.osRelease.id "gentoo" }}
 etc/ntp.conf
 etc/portage
 etc/conf.d
 etc/init.d
-{{- end }}
-{{- end }}
-{{- if eq .windowManager "HYPRLAND" }}
+{{-     end }}
+{{-     if eq .windowManager "HYPRLAND" }}
 usr/share/wayland-sessions/niri.desktop
 /etc/greetd/niri.kdl
-{{- end }}
-{{- if eq .windowManager "NIRI" }}
+{{-     end }}
+{{-     if eq .windowManager "NIRI" }}
 usr/share/wayland-sessions/hypr.desktop
 /etc/greetd/hyprland.conf
+{{-     end }}
+{{-   end }}
 {{- end }}
