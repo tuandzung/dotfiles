@@ -1,0 +1,22 @@
+name: fish
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: app-shells/fish
+arch:
+  packages:
+    - name: fish
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "ubuntu" "debian" "linuxmint") }}
+ubuntu:
+  packages:
+    - name: fish
+      repo: https://ppa.launchpadcontent.net/fish-shell/release-4/ubuntu
+      repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
+{{- end }}
+termux:
+  packages:
+    - name: fish
+macos:
+  packages:
+    - name: fish
