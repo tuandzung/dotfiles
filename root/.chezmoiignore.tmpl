@@ -51,20 +51,6 @@ usr/lib64
 /opt/zen-browser
 /opt/zen-browser-bin
 {{-     end }}
-{{-     if not (eq .chezmoi.osRelease.id "arch" "ubuntu") }}
-etc/systemd
-{{-     end }}
-{{-     if ne .chezmoi.osRelease.id "arch" }}
-etc/makepkg.conf
-etc/pacman.d
-etc/pacman.conf
-{{-     end }}
-{{-     if ne .chezmoi.osRelease.id "gentoo" }}
-etc/ntp.conf
-etc/portage
-etc/conf.d
-etc/init.d
-{{-     end }}
 {{-     if eq .windowManager "HYPRLAND" }}
 usr/share/wayland-sessions/niri.desktop
 /etc/greetd/niri.kdl
@@ -74,4 +60,19 @@ usr/share/wayland-sessions/hypr.desktop
 /etc/greetd/hyprland.conf
 {{-     end }}
 {{-   end }}
+{{- end }}
+
+{{- if not (eq .chezmoi.osRelease.id "arch" "ubuntu") }}
+etc/systemd
+{{- end }}
+{{- if ne .chezmoi.osRelease.id "arch" }}
+etc/makepkg.conf
+etc/pacman.d
+etc/pacman.conf
+{{- end }}
+{{- if ne .chezmoi.osRelease.id "gentoo" }}
+etc/ntp.conf
+etc/portage
+etc/conf.d
+etc/init.d
 {{- end }}
