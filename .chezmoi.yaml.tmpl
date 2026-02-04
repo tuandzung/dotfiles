@@ -34,11 +34,11 @@ data:
   {{ $graphicsChoices := list "NVIDIA" "AMD" "INTEL" }}
   {{ $graphicsDriver := promptChoiceOnce . "graphicsDriver" "Which graphics card this machine uses" $graphicsChoices "INTEL" | quote }}
   graphicsDriver: {{ $graphicsDriver }}
+  darkMode: {{ promptBoolOnce . "darkMode" "Do you want to use dark mode? (y/n)" true }}
+  {{- if not $isHeadless }}
   {{ $browserChoices := list "ZEN" "FIREFOX" }}
   {{ $browser := promptChoiceOnce . "browser" "Which browser do you wanna use" $browserChoices "ZEN" | quote }}
   browser: {{ $browser }}
-  darkMode: {{ promptBoolOnce . "darkMode" "Do you want to use dark mode? (y/n)" true }}
-  {{- if not .isHeadless }}
   {{ $wmChoices := list "NIRI" "HYPRLAND" }}
   {{ $windowManager := promptChoiceOnce . "windowManager" "Which window manager do you wanna use" $wmChoices "HYPRLAND" | quote }}
   windowManager: {{ $windowManager }}

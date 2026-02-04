@@ -28,7 +28,8 @@
 Library
 .hammerspoon
 .config/karabiner
-{{- if .isHeadless }}
+{{-   if .isHeadless }}
+.icons
 .config/kitty
 .config/thunderbird
 .thunderbird
@@ -44,6 +45,8 @@ Library
 .mozilla
 .config/zen
 .zen
+.scripts
+.config/obsidian
 .config/hypr
 .config/hyprshade
 .config/niri
@@ -60,24 +63,41 @@ Library
 .config/wofi
 .config/update_browser_profiles.sh
 .wayland_init.fish
+.config/qt5ct
+.config/qt6ct
+.config/systemd
+.config/swayosd
 Wallpapers
-{{- end }}
-{{- end }}
-{{- if eq .browser "ZEN" }}
+{{-   else }}
+{{-     if eq .browser "ZEN" }}
 .mozilla
 .config/firefox/profiles
 Library/Application\ Support/Firefox
-{{- else }}
+{{-     else }}
 .zen
 .config/zen
 Library/Application\ Support/zen
-{{- end }}
-{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo") }}
+{{-     end }}
+{{-     if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "gentoo") }}
 .config/systemd
-{{- end }}
-{{- if eq .windowManager "HYPRLAND" }}
+{{-     end }}
+{{-     if eq .windowManager "HYPRLAND" }}
 .config/niri
-{{- end }}
-{{- if eq .windowManager "NIRI" }}
+{{-     end }}
+{{-     if eq .windowManager "NIRI" }}
 .config/hypr
+{{-     end }}
+{{-   end }}
+{{- end }}
+
+{{- if not .hasSound }}
+.config/spotify-player
+.config/ncspot
+.config/mpv
+{{- end }}
+
+{{- if eq .kind "vm" }}
+.config/rbw
+.config/rbw-work
+.config/steamguard-cli
 {{- end }}
