@@ -31,6 +31,8 @@ spawn-sh-at-startup "~/.scripts/gtk.sh"
 spawn-at-startup "walker" "--gapplication-service"
 {{- if eq .chezmoi.osRelease.id "gentoo" }}
 spawn-at-startup "elephant"
+{{- else }}
+spawn-at-startup "systemctl" "--user" "start" "elephant.service"
 {{- end }}
 
 // Wallpaper
