@@ -1,0 +1,10 @@
+{{- if not .isHeadless }}
+name: hyprlax
+method: binary
+github:
+  repo: sandwichfarm/hyprlax
+  release_asset: hyprlax-x86_64
+hook:
+  after: |
+    mv ~/.local/bin/hyprlax{-x86_64,}
+{{- end }}

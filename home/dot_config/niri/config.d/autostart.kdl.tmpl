@@ -34,15 +34,7 @@ spawn-at-startup "elephant"
 {{- end }}
 
 // Wallpaper
-spawn-at-startup "hyprpaper"
-{{- $wall := "" }}
-{{- $id := printf "%s_%s" .place .kind }}
-{{- if eq $id "HOME_pc" }}
-{{- $wall = "1.mp4" }}
-{{- else }}
-{{- $wall = "3.mp4" }}
-{{- end }}
-spawn-at-startup "mpvpaper" "DP-1" "{{ .chezmoi.homeDir }}/Wallpapers/animated/{{ $wall }}" "--mpv-options" "loop-file=inf no-config hwdec=auto-safe gpu-context=auto gpu-api=vulkan no-audio" "--fork"
+spawn-at-startup "hyprlax" "{{ .chezmoi.homeDir }}/Wallpapers/4ll819g8qto91.png"
 
 // Bar & Panel & Widgets
 spawn-at-startup "~/.scripts/waybar.sh"
