@@ -4,7 +4,7 @@ Name=Spotify
 GenericName=Music Player
 Icon=spotify-client
 TryExec=spotify
-Exec=spotify --enable-features=UseOzonePlatform --ozone-platform=wayland --uri=%U
+Exec=spotify --enable-features=UseOzonePlatform --ozone-platform=wayland --wayland-text-input-version=3 --uri=%U
 Terminal=false
 MimeType=x-scheme-handler/spotify;
 Categories=Audio;Music;Player;AudioVideo;
