@@ -10,7 +10,7 @@ plugins:
     confirm: true
     args:
       - -c
-      - "kubectl --kubeconfig=$KUBECONFIG debug -it --context $CONTEXT -n=$NAMESPACE $POD --target=$NAME --image=${DEBUG_DOCKER_IMAGE:-nicolaka/netshoot} --share-processes -- bash"
+      - "kubectl --kubeconfig=$KUBECONFIG debug -it --context $CONTEXT -n=$NAMESPACE $POD --target=$NAME --image=${DEBUG_DOCKER_IMAGE:-nicolaka/netshoot} --custom=<(echo '{\"securityContext\":{\"runAsNonRoot\":false,\"runAsUser\":0}}') --share-processes -- bash"
   duplicate-pod:
     shortCut: Ctrl-T
     description: Duplicate Pod
