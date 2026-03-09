@@ -1,0 +1,10 @@
+name: kcl
+method: binary
+github:
+  repo: kcl-lang/kcl
+  version: latest
+  release_asset: kclvm-%1s-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
+archive:
+  strip_components: 2
+  paths:
+    - kclvm/bin/kclvm_cli

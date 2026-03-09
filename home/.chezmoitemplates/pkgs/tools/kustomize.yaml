@@ -1,0 +1,6 @@
+name: kustomize
+method: shell
+dependencies:
+  - go
+content: |-
+  go install sigs.k8s.io/kustomize/kustomize@latest

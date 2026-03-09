@@ -1,0 +1,12 @@
+name: flux
+method: binary
+github:
+  repo: fluxcd/flux2
+  {{- $os := .chezmoi.os }}
+  {{- if eq .chezmoi.os "android" }}
+  {{-   $os = "linux" }}
+  {{- end }}
+  release_asset: flux_%s_{{ $os }}_{{ .chezmoi.arch }}.tar.gz
+archive:
+  paths:
+    - flux
