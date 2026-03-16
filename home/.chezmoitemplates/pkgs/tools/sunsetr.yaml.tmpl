@@ -1,13 +1,14 @@
-
 {{- if eq .chezmoi.os "linux" }}
+  {{- if not .isHeadless }}
 name: sunsetr
 is_essential: true
 method: binary
 github:
   repo: psi4j/sunsetr
   version: latest
-  release_asset: sunsetr-%1s-x86_64-linux.tar.gz  
+  release_asset: sunsetr-%1s-x86_64-linux.tar.gz
 archive:
   paths:
     - sunsetr-%1s/sunsetr
+  {{- end }}
 {{- end }}

@@ -3,8 +3,10 @@ from __future__ import annotations
 import argparse
 import os
 import platform
+import re
 import subprocess
 import sys
+import tempfile
 from collections.abc import Iterable
 from pathlib import Path
 from typing import NotRequired, TypedDict
@@ -23,6 +25,8 @@ class PackageConfig(TypedDict, total=False):
 
     name: str
     repo: NotRequired[str]
+    repo_name: NotRequired[str]
+    repo_url: NotRequired[str]
     accept_keywords: NotRequired[str]
     use: NotRequired[str]
     cask: NotRequired[bool]
@@ -280,20 +284,64 @@ def install_packages_ubuntu(packages: Iterable[PackageConfig], hooks: HookConfig
         name = pkg.get("name")
         if not name:
             continue
-        repo = pkg.get("repo")
+        repo_name = pkg.get("repo_name")
+        repo_url = pkg.get("repo_url")
         repo_version = pkg.get("repo_version")
         key = pkg.get("key")
 
-        if repo and repo_version:
-            subprocess.run(
-                ["sudo", "add-apt-repository", f"deb {repo} {repo_version}", "-y"],
-                check=True,
-            )
-
+        keyring_path = None
         if key:
+            if not repo_name:
+                raise ValueError(f"repo_name is required when key is provided for package: {name}")
+
+            keyring_path = f"/etc/apt/trusted.gpg.d/{repo_name}.gpg"
+            key_path = Path(keyring_path)
+
+            if re.fullmatch(r"(?:0x)?[A-Fa-f0-9]{8,40}", key):
+                normalized_key = key[2:] if key.lower().startswith("0x") else key
+                key_url = (
+                    "https://keyserver.ubuntu.com/pks/lookup"
+                    f"?op=get&options=mr&search=0x{normalized_key}"
+                )
+                with tempfile.NamedTemporaryFile(delete=False) as tmp:
+                    tmp_path = tmp.name
+                try:
+                    subprocess.run(["curl", "-fsSL", key_url, "-o", tmp_path], check=True)
+                    subprocess.run(["sudo", "cp", tmp_path, str(key_path)], check=True)
+                finally:
+                    Path(tmp_path).unlink(missing_ok=True)
+            elif re.match(r"^https://.*", key):
+                gpg_proc = subprocess.run(
+                    ["gpg", "--dearmor"],
+                    input=subprocess.run(
+                        ["curl", "-fsSL", key],
+                        check=True,
+                        stdout=subprocess.PIPE,
+                    ).stdout,
+                    check=True,
+                    stdout=subprocess.PIPE,
+                )
+                subprocess.run(["sudo", "tee", str(key_path)], input=gpg_proc.stdout, check=True)
+            else:
+                raise ValueError(
+                    f"Unsupported Ubuntu repo key format for package {name}: {key}"
+                )
+
+        if repo_url and repo_version:
+            if not repo_name:
+                raise ValueError(f"repo_name is required when repo_url is provided for package: {name}")
+            if not keyring_path:
+                raise ValueError(
+                    f"key is required when adding Ubuntu repo for package: {name}"
+                )
             subprocess.run(
-                ["sudo", "apt-key", "adv", "--keyserver", "keyserver.ubuntu.com", "--recv-keys", key],
+                ["sudo", "tee", f"/etc/apt/sources.list.d/{repo_name}.list"],
                 check=True,
+                input=subprocess.run(
+                    ["echo", f"deb [signed-by={keyring_path}] {repo_url} {repo_version}"],
+                    capture_output=True,
+                    check=True,
+                ).stdout,
             )
 
         logger.info(f"Installing {name}...")

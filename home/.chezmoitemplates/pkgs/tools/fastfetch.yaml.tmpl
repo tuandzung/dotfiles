@@ -7,11 +7,12 @@ gentoo:
 arch:
   packages:
     - name: fastfetch
-{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "ubuntu" "debian" "linuxmint") }}
 ubuntu:
   packages:
     - name: fastfetch
-      repo: https://ppa.launchpadcontent.net/zhangsongcui3371/fastfetch/ubuntu
+{{- if eq .chezmoi.osRelease.id "ubuntu" "linuxmint" }}
+      repo_name: fastfetch
+      repo_url: https://ppa.launchpadcontent.net/zhangsongcui3371/fastfetch/ubuntu
       repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
 {{- end }}
 macos:

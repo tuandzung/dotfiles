@@ -7,12 +7,22 @@ gentoo:
 arch:
   packages:
     - name: fish
-{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "ubuntu" "debian" "linuxmint") }}
+{{- if eq .chezmoi.osRelease.id "ubuntu" "linuxmint" }}
 ubuntu:
   packages:
     - name: fish
-      repo: https://ppa.launchpadcontent.net/fish-shell/release-4/ubuntu
+      repo_name: fish-shell
+      repo_url: https://ppa.launchpadcontent.net/fish-shell/release-4/ubuntu
       repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
+{{- end }}
+{{- if eq .chezmoi.osRelease.id "debian" }}
+ubuntu:
+  packages:
+    - name: fish
+      repo_name: fish-shell
+      repo_url: http://download.opensuse.org/repositories/shells:/fish:/release:/4/Debian_{{ .chezmoi.osRelease.versionID }}/
+      repo_version: /
+      key: https://download.opensuse.org/repositories/shells:fish:release:4/Debian_{{ .chezmoi.osRelease.versionID }}/Release.key
 {{- end }}
 termux:
   packages:

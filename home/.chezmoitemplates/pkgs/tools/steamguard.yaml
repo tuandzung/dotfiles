@@ -1,5 +1,4 @@
 name: steamguard
-is_essential: false
 method: shell
 dependencies:
   - rust

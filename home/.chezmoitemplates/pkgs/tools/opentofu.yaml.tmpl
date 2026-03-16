@@ -1,7 +1,6 @@
 name: opentofu
 {{- if eq .chezmoi.os "linux" }}
 method: binary
-is_essential: true
 github:
   repo: opentofu/opentofu
   {{- if eq .chezmoi.arch "amd64" }}

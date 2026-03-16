@@ -1,3 +1,4 @@
+{{- if not .isHeadless }}
 name: screen_capture
 method: os
 is_essential: true
@@ -15,3 +16,4 @@ ubuntu:
   packages:
     - name: grim
     - name: slurp
+{{- end }}

@@ -10,11 +10,12 @@ arch:
 macos:
   packages:
     - name: go
-{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "ubuntu" "debian" "linuxmint") }}
+{{- if eq .chezmoi.osRelease.id "ubuntu" "linuxmint" }}
 ubuntu:
   packages:
     - name: golang-go
-      repo: https://ppa.launchpadcontent.net/longsleep/golang-backports/ubuntu
+      repo_name: golang-go
+      repo_url: https://ppa.launchpadcontent.net/longsleep/golang-backports/ubuntu
       repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
       key: 876B22BA887CA91614B5323FC631127F87FA12D1
 {{- end }}
