@@ -33,18 +33,25 @@ function __add_folder_to_manpath --description "Add folder to MANPATH"
   end
 end
 
-fish_add_path -pPg $HOME/.local/bin
-fish_add_path -pPg $HOME/.fzf/bin
-fish_add_path -pPg $HOME/.yarn/bin
-fish_add_path -pPg $HOME/.cargo/bin
-fish_add_path -pPg $HOME/.go/bin
-fish_add_path -pPg $HOME/.local/share/nvim/mason/bin
-fish_add_path -pPg $HOME/.krew/bin
-fish_add_path -pPg $HOME/.spicetify
+fish_add_path -mpPg $HOME/.local/bin
+fish_add_path -mpPg $HOME/.fzf/bin
+fish_add_path -mpPg $HOME/.yarn/bin
+fish_add_path -mpPg $HOME/.cargo/bin
+fish_add_path -mpPg $HOME/.go/bin
+fish_add_path -mpPg $HOME/.local/share/nvim/mason/bin
+fish_add_path -mpPg $HOME/.krew/bin
 {{- if eq .chezmoi.os "darwin" }}
 fish_add_path -pPg /opt/homebrew/bin
 fish_add_path -pPg /opt/homebrew/sbin
 {{- end }}
+
+# Package manager
+type -q brew; and brew shellenv | source
+if command -sq mise
+    set -gx MISE_PREFER_OFFLINE true
+    mise activate fish | source
+    command -sq usage; and mise completion fish | source
+end
 
 # Set default editor
 abbr -a v vim
@@ -82,9 +89,6 @@ end
 ## }
 
 ## Other tools {
-# mise
-type -q mise; and mise activate fish | source
-
 if status is-interactive
   fish_config theme choose catppuccin
 
@@ -153,6 +157,12 @@ if status is-interactive
     zellij setup --generate-completion fish | source
   end
 
+  # OV with other commands
+  if type -q ov
+    type -q psql; and set -gx PSQL_PAGER 'ov -F -C -d "|" -H1 --column-rainbow --align'
+    type -q tspin; and set -gx TAILSPIN_PAGER 'ov -f [FILE]'
+  end
+
   # Other completions generation
   # kubectl
   type -q kubectl; and kubectl completion fish | source
@@ -160,8 +170,6 @@ if status is-interactive
   type -q task; and task --completion fish | source
   # bat
   type -q bat; and bat --completion fish | source
-  # ltcc
-  type -q ltcc; and ltcc completion --shell fish | source
   # rg
   type -q rg; and rg --generate=complete-fish | source
   # chezmoi
@@ -172,6 +180,10 @@ if status is-interactive
   type -q k0sctl; and k0sctl completion fish | source
   # k3d
   type -q k3d; and k3d completion fish | source
+  # gh
+  type -q gh; and gh completion -s fish | source
+  # glab
+  type -q glab; and glab completion -s fish | source
 end
 ## }
 
