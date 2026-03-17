@@ -10,9 +10,11 @@ arch:
 macos:
   packages:
     - name: rust
+{{- if eq .chezmoi.osRelease.id "ubuntu" "linuxmint" }}
 ubuntu:
   packages:
     - name: rustup
   hook:
     after: |-
       rustup default stable
+{{- end }}
