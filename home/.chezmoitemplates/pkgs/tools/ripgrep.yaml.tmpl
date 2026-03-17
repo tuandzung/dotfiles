@@ -16,7 +16,7 @@ github:
   {{-   $arch = "x86_64" }}
   {{-   $suffix = "musl" }}
   {{- else if eq .chezmoi.arch "arm64" }}
-  {{-   $arch = "arm" }}
+  {{-   $arch = "aarch64" }}
   {{-   $suffix = "gnu" }}
   {{- end }}
   release_asset: ripgrep-%s-{{ $arch }}-unknown-linux-{{ $suffix }}.tar.gz
