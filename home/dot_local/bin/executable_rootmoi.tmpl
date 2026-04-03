@@ -10,7 +10,7 @@ dybatpho::register_common_handlers
 executable='{{ .chezmoi.executable }}'
 {{- if eq .chezmoi.os "darwin" }}
 if dybatpho::string_contains "$*" "/Applications"; then
-  sed -i '' '/umask:/s/^# //' "{{ $configFile }}"
+  sed -i "/umask:/s/^# //" "{{ $configFile }}"
 fi
 {{- end }}
 
@@ -31,6 +31,6 @@ sudo "${env_args[@]}" \
   --cache='{{ $cacheDir }}'
 {{- if eq .chezmoi.os "darwin" }}
 if dybatpho::string_contains "$*" "/Applications"; then
-  sed -i '' '/umask:/s/^/# /' "{{ $configFile }}"
+  sed -i "/umask:/s/^/# /" "{{ $configFile }}"
 fi
 {{- end }}
