@@ -3,8 +3,8 @@
 SCRIPT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 BIN_DIR="$HOME/.local/bin"
 
-# shellcheck source=lib/dybatpho/init.sh
-. "$SCRIPT_DIR/lib/dybatpho/init.sh"
+# shellcheck source=scripts/lib/dybatpho/init.sh
+. "$SCRIPT_DIR/scripts/lib/dybatpho/init.sh"
 SETUP_DIR=$(dirname "$(readlink -f "$0")")
 
 _install_chezmoi() {
