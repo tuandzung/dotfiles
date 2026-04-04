@@ -41,7 +41,7 @@ Library/Application Support/k9s/skins/catppuccin.yaml:
 
 .config/kitty/diff/color.conf:
   type: file
-  url: https://raw.githubusercontent.com/catppuccin/kitty/main/themes/diff-{{ $theme }}.conf
+  url: https://raw.githubusercontent.com/catppuccin/kitty/refs/heads/main/themes/diff-{{ $theme }}.conf
   refreshPeriod: 168h
 
 .config/zellij/themes/catppuccin.kdl:
@@ -76,9 +76,7 @@ Library/Application Support/k9s/skins/catppuccin.yaml:
   stripComponents: 1
   exclude:
     - catppuccin-{{ $theme }}-{{ $variant }}-cursors/index.theme
-{{- end }}
 
-{{- if not .isHeadless }}
 .config/qt5ct/colors/catppuccin.conf:
   type: file
   url: https://raw.githubusercontent.com/catppuccin/qt5ct/refs/heads/main/themes/catppuccin-{{ $theme }}-{{ $variant }}.conf
