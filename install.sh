@@ -80,6 +80,13 @@ _main() {
   dybatpho::header "Initialize system configurations"
   rootmoi init -S "$SETUP_DIR"/root
 
+  dybatpho::header "Apply dotfiles"
+  if [ -n "${DOTFILES_DEBUG-}" ]; then
+    ${chezmoi} apply --debug --verbose --dry-run
+  else
+    ${chezmoi} apply
+  fi
+
   if [ -n "${DOTFILES_DEBUG-}" ]; then
     rootmoi apply --debug --verbose --dry-run
   else
@@ -97,13 +104,6 @@ _main() {
           ;;
       esac
     fi
-  fi
-
-  dybatpho::header "Apply dotfiles"
-  if [ -n "${DOTFILES_DEBUG-}" ]; then
-    ${chezmoi} apply --debug --verbose --dry-run
-  else
-    ${chezmoi} apply
   fi
 
   # Modify remote url of dotfiles
