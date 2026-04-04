@@ -7,7 +7,7 @@ gentoo:
 arch:
   packages:
     - name: fish
-{{- if eq .chezmoi.osRelease.id "ubuntu" "linuxmint" }}
+{{- if eq .osid "linux-ubuntu" "linux-linuxmint" }}
 ubuntu:
   packages:
     - name: fish
@@ -15,7 +15,7 @@ ubuntu:
       repo_url: https://ppa.launchpadcontent.net/fish-shell/release-4/ubuntu
       repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
 {{- end }}
-{{- if eq .chezmoi.osRelease.id "debian" }}
+{{- if eq .osid "linux-debian" }}
 ubuntu:
   packages:
     - name: fish

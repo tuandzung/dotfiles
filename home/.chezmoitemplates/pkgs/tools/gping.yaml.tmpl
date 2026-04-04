@@ -1,6 +1,14 @@
 name: gping
 is_essential: true
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
+{{- if eq .osid "linux-arch" "darwin" }}
+method: os
+macos:
+  packages:
+    - name: gping
+arch:
+  packages:
+    - name: gping
+{{- else }}
 method: binary
 github:
   repo: orf/gping
@@ -13,12 +21,4 @@ github:
 archive:
   paths:
     - gping
-{{- else }}
-method: os
-macos:
-  packages:
-    - name: gping
-arch:
-  packages:
-    - name: gping
 {{- end }}

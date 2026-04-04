@@ -1,5 +1,13 @@
 name: duf
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
+{{- if eq .osid "linux-arch" "darwin" }}
+method: os
+macos:
+  packages:
+    - name: duf
+arch:
+  packages:
+    - name: duf
+{{- else }}
 method: binary
 github:
   repo: muesli/duf
@@ -12,12 +20,4 @@ github:
 archive:
   paths:
     - duf
-{{- else }}
-method: os
-macos:
-  packages:
-    - name: duf
-arch:
-  packages:
-    - name: duf
 {{- end }}

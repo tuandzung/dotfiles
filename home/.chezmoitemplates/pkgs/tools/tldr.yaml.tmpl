@@ -1,11 +1,4 @@
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
-name: tldr
-method: binary
-github:
-  repo: dbrgn/tealdeer
-  version: latest
-  release_asset: tealdeer-linux-x86_64-musl
-{{- else }}
+{{- if eq .osid "linux-arch" "darwin" }}
 name: tldr
 is_essential: true
 method: os
@@ -15,4 +8,11 @@ arch:
 macos:
   packages:
     - name: tealdeer
+{{- else }}
+name: tldr
+method: binary
+github:
+  repo: dbrgn/tealdeer
+  version: latest
+  release_asset: tealdeer-linux-x86_64-musl
 {{- end }}

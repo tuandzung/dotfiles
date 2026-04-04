@@ -1,6 +1,14 @@
 name: zoxide
 is_essential: true
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
+{{- if eq .osid "linux-arch" "darwin" }}
+method: os
+macos:
+  packages:
+    - name: zoxide
+arch:
+  packages:
+    - name: zoxide
+{{- else }}
 method: binary
 is_essential: true
 github:
@@ -21,12 +29,4 @@ hook:
     if [ -d ~/.config/fish/completions ]; then
       tar $param --strip=1 -C ~/.config/fish/completions completions/zoxide.fish
     fi
-{{- else }}
-method: os
-macos:
-  packages:
-    - name: zoxide
-arch:
-  packages:
-    - name: zoxide
 {{- end }}

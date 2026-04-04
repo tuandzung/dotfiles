@@ -11,7 +11,7 @@ gentoo:
 arch:
   packages:
     - name: neovim
-{{- if eq .chezmoi.osRelease.id "ubuntu" "linuxmint" }}
+{{- if eq .osid "linux-ubuntu" "linux-linuxmint" }}
 ubuntu:
   packages:
     - name: neovim

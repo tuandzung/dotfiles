@@ -1,7 +1,15 @@
 name: navi
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
-method: binary
 is_essential: true
+{{- if eq .osid "linux-arch" "darwin" }}
+method: os
+macos:
+  packages:
+    - name: navi
+arch:
+  packages:
+    - name: navi
+{{- else }}
+method: binary
 github:
   repo: denisidoro/navi
   version: latest
@@ -17,13 +25,4 @@ github:
 archive:
   paths:
     - ./navi
-{{- else }}
-method: os
-is_essential: true
-macos:
-  packages:
-    - name: navi
-arch:
-  packages:
-    - name: navi
 {{- end }}

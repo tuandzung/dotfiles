@@ -1,13 +1,7 @@
 {{- if .hasSound }}
 name: spotify_player
 is_essential: true
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
-method: shell
-dependencies:
-  - rust
-content: |-
-  cargo install spotify_player --no-default-features --locked --features pulseaudio-backend,streaming,notify
-{{- else }}
+{{- if eq .osid "linux-arch" "darwin" }}
 method: os
 macos:
   packages:
@@ -15,5 +9,11 @@ macos:
 arch:
   packages:
     - name: spotify-player-full
+{{- else }}
+method: shell
+dependencies:
+  - rust
+content: |-
+  cargo install spotify_player --no-default-features --locked --features pulseaudio-backend,streaming,notify
 {{- end }}
 {{- end }}

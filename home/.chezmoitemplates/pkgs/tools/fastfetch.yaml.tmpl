@@ -10,7 +10,7 @@ arch:
 ubuntu:
   packages:
     - name: fastfetch
-{{- if eq .chezmoi.osRelease.id "ubuntu" "linuxmint" }}
+{{- if eq .osid "linux-ubuntu" "linux-linuxmint" }}
       repo_name: fastfetch
       repo_url: https://ppa.launchpadcontent.net/zhangsongcui3371/fastfetch/ubuntu
       repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main

@@ -1,12 +1,6 @@
 name: jq
 is_essential: true
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
-method: binary
-github:
-  repo: jqlang/jq
-  version: latest
-  release_asset: jq-linux-{{ .chezmoi.arch }}
-{{- else }}
+{{- if eq .osid "linux-arch" "darwin" }}
 method: os
 macos:
   packages:
@@ -14,4 +8,10 @@ macos:
 arch:
   packages:
     - name: jq
+{{- else }}
+method: binary
+github:
+  repo: jqlang/jq
+  version: latest
+  release_asset: jq-linux-{{ .chezmoi.arch }}
 {{- end }}

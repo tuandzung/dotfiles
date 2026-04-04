@@ -1,6 +1,14 @@
 name: delta
 is_essential: true
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
+{{- if eq .osid "linux-arch" "darwin" }}
+method: os
+arch:
+  packages:
+    - name: git-delta
+macos:
+  packages:
+    - name: git-delta
+{{- else }}
 method: binary
 github:
   repo: dandavison/delta
@@ -18,12 +26,4 @@ archive:
   {{- else if eq .chezmoi.arch "arm64" }}
     - delta-%s-aarch64-unknown-linux-gnu/delta
   {{- end }}
-{{- else if eq .chezmoi.os "linux" "darwin" }}
-method: os
-arch:
-  packages:
-    - name: git-delta
-macos:
-  packages:
-    - name: git-delta
 {{- end }}

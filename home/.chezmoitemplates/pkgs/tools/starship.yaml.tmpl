@@ -1,6 +1,14 @@
 name: starship
 is_essential: true
-{{- if and (eq .chezmoi.os "linux") (ne .chezmoi.osRelease.id "arch") }}
+{{- if eq .osid "linux-arch" "darwin" }}
+method: os
+macos:
+  packages:
+    - name: starship
+arch:
+  packages:
+    - name: starship
+{{- else }}
 method: binary
 is_essential: true
 github:
@@ -13,12 +21,4 @@ github:
 archive:
   paths:
     - starship
-{{- else }}
-method: os
-macos:
-  packages:
-    - name: starship
-arch:
-  packages:
-    - name: starship
 {{- end }}

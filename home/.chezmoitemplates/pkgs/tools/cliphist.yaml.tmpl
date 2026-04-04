@@ -1,7 +1,7 @@
 {{- if eq .chezmoi.os "linux"}}
 name: cliphist
 is_essential: true
-{{- if eq .chezmoi.osRelease.id "gentoo" "arch" }}
+{{- if eq .osid "linux-gentoo" "linux-arch" }}
 method: os
 gentoo:
   packages:
