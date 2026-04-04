@@ -20,13 +20,15 @@
 
 .config/git/delta:
   type: file
-  url: https://raw.githubusercontent.com/catppuccin/delta/main/catppuccin.gitconfig
+  url: https://raw.githubusercontent.com/catppuccin/delta/refs/heads/main/catppuccin.gitconfig
   refreshPeriod: 168h
 
+{{- if ne .chezmoi.os "darwin" }}
 .config/hypr/hyprland/color.conf:
   type: file
   url: https://raw.githubusercontent.com/catppuccin/hyprland/refs/heads/main/themes/{{ $theme }}.conf
   refreshPeriod: 168h
+{{- end }}
 
 {{- if ne .chezmoi.os "darwin" }}
 .config/k9s/skins/catppuccin.yaml:
