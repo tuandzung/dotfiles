@@ -1,8 +1,8 @@
-minimumLimaVersion: 1.1.0
+minimumLimaVersion: 2.0.0
 
 base:
-  - template://_images/archlinux
-  - template://_default/mounts
+- template:_images/archlinux
+- template:_default/mounts
 
 additionalDisks:
 - docker
@@ -11,73 +11,66 @@ additionalDisks:
 containerd:
   system: false
   user: false
-{{- if eq .chezmoi.arch "arm64" }}
-# rosetta to run Intel containers on Archlinux ARM64 VM on MacOS ARM64
-vmType: "vz"
-rosetta:
-  enabled: true
-  binfmt: true
-{{- end }}
-
 provision:
-  - mode: system
-    # This script defines the host.docker.internal hostname when hostResolver is disabled.
-    # It is also needed for lima 0.8.2 and earlier, which does not support hostResolver.hosts.
-    # Names defined in /etc/hosts inside the VM are not resolved inside containers when
-    # using the hostResolver; use hostResolver.hosts instead (requires lima 0.8.3 or later).
-    script: |
-      #!/bin/sh
-      sed -i 's/host.lima.internal.*/host.lima.internal host.docker.internal/' /etc/hosts
-  - mode: system
-    script: |
-      #!/bin/bash
-      set -eux -o pipefail
+- mode: system
+  # This script defines the host.docker.internal hostname when hostResolver is disabled.
+  # It is also needed for lima 0.8.2 and earlier, which does not support hostResolver.hosts.
+  # Names defined in /etc/hosts inside the VM are not resolved inside containers when
+  # using the hostResolver; use hostResolver.hosts instead (requires lima 0.8.3 or later).
+  script: |
+    #!/bin/sh
+    sed -i 's/host.lima.internal.*/host.lima.internal host.docker.internal/' /etc/hosts
+- mode: system
+  script: |
+    #!/bin/bash
+    set -eux -o pipefail
 
-      MNT=/mnt/lima-docker
-      ROOT_DOCKER=/var/lib/docker
-      USER_DOCKER=/home/{{ "{{" }}.User{{ "}}" }}/.local/share/docker
+    MNT=/mnt/lima-docker
+    ROOT_DOCKER=/var/lib/docker
+    USER_DOCKER=/home/{{ "{{" }}.User{{ "}}" }}/.local/share/docker
 
-      mkdir -p $MNT/root $MNT/user $ROOT_DOCKER $USER_DOCKER
-      mount --bind /$MNT/root $ROOT_DOCKER
-      mount --bind /$MNT/user $USER_DOCKER
+    mkdir -p $MNT/root $MNT/user $ROOT_DOCKER $USER_DOCKER
+    mount --bind /$MNT/root $ROOT_DOCKER
+    mount --bind /$MNT/user $USER_DOCKER
 
-      chown -R {{ "{{" }}.User{{ "}}" }}:{{ "{{" }}.User{{ "}}" }} $USER
-  - mode: system
-    script: |
-      #!/bin/bash
-      set -eux -o pipefail
-      command -v docker >/dev/null 2>&1 && exit 0
-      if [ ! -e /etc/systemd/system/docker.socket.d/override.conf ]; then
-        mkdir -p /etc/systemd/system/docker.socket.d
-        # Alternatively we could just add the user to the "docker" group, but that requires restarting the user session
-        cat <<-EOF >/etc/systemd/system/docker.socket.d/override.conf
-      [Socket]
-      SocketUser={{ "{{" }}.User{{ "}}" }}
-      EOF
-      fi
-      pacman -Sy --noconfirm docker
-      systemctl enable --now docker.socket
+    chown -R {{ "{{" }}.User{{ "}}" }}:{{ "{{" }}.User{{ "}}" }} $USER
+- mode: yq
+  path: /etc/systemd/system/docker.socket.d/override.conf
+  format: ini
+  expression: .Socket.SocketUser="{{ "{{" }}.User{{ "}}" }}"
+- mode: yq
+  path: "/etc/docker/daemon.json"
+  expression: |
+    .features.cdi = true |
+    .features.containerd-snapshotter = {{ "{{" }}.Param.containerdSnapshotter{{ "}}" }}
+- mode: system
+  script: |
+    #!/bin/bash
+    set -eux -o pipefail
+    command -v docker >/dev/null 2>&1 && exit 0
+    pacman -Sy --noconfirm docker
+    systemctl enable --now docker.socket
 probes:
-  - script: |
-      #!/bin/bash
-      set -eux -o pipefail
-      if ! timeout 30s bash -c "until command -v docker >/dev/null 2>&1; do sleep 3; done"; then
-        echo >&2 "docker is not installed yet"
-        exit 1
-      fi
-      if ! timeout 30s bash -c "until pgrep dockerd; do sleep 3; done"; then
-        echo >&2 "dockerd is not running"
-        exit 1
-      fi
-    hint: See "/var/log/cloud-init-output.log" in the guest
+- script: |
+    #!/bin/bash
+    set -eux -o pipefail
+    if ! timeout 30s bash -c "until command -v docker >/dev/null 2>&1; do sleep 3; done"; then
+      echo >&2 "docker is not installed yet"
+      exit 1
+    fi
+    if ! timeout 30s bash -c "until pgrep dockerd; do sleep 3; done"; then
+      echo >&2 "dockerd is not running"
+      exit 1
+    fi
+  hint: See "/var/log/cloud-init-output.log" in the guest
 hostResolver:
   # hostResolver.hosts requires lima 0.8.3 or later. Names defined here will also
   # resolve inside containers, and not just inside the VM itself.
   hosts:
     host.docker.internal: host.lima.internal
 portForwards:
-  - guestSocket: "/var/run/docker.sock"
-    hostSocket: "{{ "{{" }}.Dir{{ "}}" }}/sock/docker.sock"
+- guestSocket: "/var/run/docker.sock"
+  hostSocket: "{{ "{{" }}.Dir{{ "}}" }}/sock/docker.sock"
 message: |
   To run `docker` on the host (assumes docker-cli is installed), run the following commands:
   ------
@@ -85,3 +78,22 @@ message: |
   docker context use lima-{{ "{{" }}.Name{{ "}}" }}
   docker run hello-world
   ------
+  {{ "{{-" }} if .Instance.Config.VMOpts.vz.rosetta.enabled {{ "}}" }}
+  Rosetta is enabled in this VM, so you can run x86_64 containers on Apple Silicon.
+  You can use Rosetta AOT Caching with the CDI spec:
+  - To run a container, add `--device=lima-vm.io/rosetta=cached` to your `docker run` command:
+    ------
+    docker run --platform=linux/amd64 --device=lima-vm.io/rosetta=cached ...
+    ------
+  - To build an image, add `# syntax=docker/dockerfile:1-labs` at the top of your Dockerfile,
+    and use `--device=lima-vm.io/rosetta=cached` in the `RUN` command:
+    ------
+    # syntax=docker/dockerfile:1-labs
+    FROM ...
+    ...
+    RUN --device=lima-vm.io/rosetta=cached <your amd64 command>
+    ------
+  See: https://lima-vm.io/docs/config/multi-arch/#rosetta-aot-caching
+  {{ "{{-" }} end {{ "}}" }}
+param:
+  containerdSnapshotter: true
