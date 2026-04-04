@@ -1,7 +1,7 @@
 {{- if not .isHeadless }}
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/.chezmoitemplates/firefox/prefs/00-arkenfox.js:
   type: file
-  url: 'https://raw.githubusercontent.com/arkenfox/user.js/master/user.js'
+  url: 'https://raw.githubusercontent.com/arkenfox/user.js/refs/heads/master/user.js'
   refreshPeriod: 168h
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/.chezmoitemplates/firefox/chrome/js/extensionOptionsPanel.uc.js:
   type: file
@@ -9,7 +9,7 @@
   refreshPeriod: 168h
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/.chezmoitemplates/thunderbird/prefs/00-arkenfox.js:
   type: file
-  url: https://raw.githubusercontent.com/HorlogeSkynet/thunderbird-user.js/master/user.js
+  url: https://raw.githubusercontent.com/HorlogeSkynet/thunderbird-user.js/refs/heads/master/user.js
   refreshPeriod: 168h
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/zen/profiles/personal/extensions/tridactyl.vim.betas@cmcaine.co.uk.xpi:
   type: file
