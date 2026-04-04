@@ -1,3 +1,4 @@
+{{- if ne .chezmoi.os "darwin" }}
 {{- if .hasBluetooth }}
 name: bluetui
 method: binary
@@ -9,4 +10,5 @@ github:
   {{- else if eq .chezmoi.arch "arm64" }}
   release_asset: bluetui-aarch64-linux-gnu
   {{- end }}
-{{- end}}
+{{- end }}
+{{- end }}
