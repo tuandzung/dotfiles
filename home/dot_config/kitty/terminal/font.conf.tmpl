@@ -7,20 +7,18 @@
 #: fonts manually, read the font specification syntax
 #: <https://sw.kovidgoyal.net/kitty/kittens/choose-fonts/#font-spec-
 #: syntax>.
-{{- if eq .chezmoi.os "darwin" }}
-font_family      TepiosevkaNF
-bold_font        TepiosevkaNF Bold
-italic_font      TepiosevkaNF Italic
-bold_italic_font TepiosevkaNF Bold Italic
-{{- else }}
+
 font_family      Tepiosevka
 bold_font        Tepiosevka Bold
 italic_font      Tepiosevka Italic
 bold_italic_font Tepiosevka Bold Italic
-{{- end }}
-
+{{- if eq .chezmoi.os "darwin" }}
+#: Font size (in pts)
+font_size 14.0
+{{- else }}
 #: Font size (in pts)
 font_size 11.0
+{{- end }}
 
 #: kitty does not support BIDI (bidirectional text), however, for RTL
 #: scripts, words are automatically displayed in RTL. That is to say,
