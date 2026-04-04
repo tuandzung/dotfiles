@@ -49,5 +49,17 @@ ubuntu:
       sudo systemctl enable --now docker containerd
 macos:
   packages:
+    - name: lima
     - name: docker
-      cask: true
+  hook:
+    {{- if eq .chezmoi.arch "arm64" }}
+    before: |-
+      softwareupdate --install-rosetta --agree-to-license
+    {{- end }}
+    after: |-
+      limactl disk create --size 100GB docker
+      limactl list docker || limactl start -y template://docker || :
+      limactl start-at-login docker
+      docker context create lima-docker --docker "host=unix://${HOME}/.lima/docker/sock/docker.sock" \
+        && docker context use lima-docker \
+        || :

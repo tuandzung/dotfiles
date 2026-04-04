@@ -1,0 +1,4 @@
+images:
+  - location: "https://github.com/SuperGregM/archlinux-arm-lima/releases/download/20260330-0/Arch-Linux-aarch64-cloudimg-20260330.0.qcow2.xz"
+    arch: "aarch64"
+    digest: "sha256:f625f94fc5f47931cb394dc9d0275fd10baf1b6eac776fe6df67b7045b45660a"
