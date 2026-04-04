@@ -25,4 +25,4 @@ macos:
     - name: fail2ban
   hook:
     after: |-
-      brew services start fail2ban
+      sudo brew services start fail2ban
