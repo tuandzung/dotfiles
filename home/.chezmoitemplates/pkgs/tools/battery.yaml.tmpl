@@ -1,0 +1,14 @@
+{{- if eq .chezmoi.os "darwin" }}
+{{-   if eq .kind "laptop" }}
+name: coconutbattery
+method: os
+is_essential: true
+macos:
+  packages:
+    - name: coconutbattery
+      cask: true
+  hook:
+    after: |-
+      /usr/bin/osascript -e "tell application \"System Events\" to make new login item at end with properties {name:\"CoconutBattery.app\", path:\"/Applications/CoconutBattery.app\", kind:\"Application\", hidden:true}"
+{{-   end }}
+{{- end }}

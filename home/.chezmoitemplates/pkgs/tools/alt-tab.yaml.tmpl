@@ -1,0 +1,12 @@
+{{- if eq .chezmoi.os "darwin" }}
+name: alt-tab
+is_essential: true
+method: os
+macos:
+  packages:
+    - name: alt-tab
+      cask: true
+  hook:
+    after: |-
+      /usr/bin/osascript -e "tell application \"System Events\" to make new login item at end with properties {name:\"AltTab.app\", path:\"/Applications/AltTab.app\", kind:\"Application\", hidden:true}"
+{{- end }}

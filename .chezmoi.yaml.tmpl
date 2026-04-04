@@ -19,6 +19,16 @@ diff:
   pager: delta --pager="ov -F --section-delimiter '^(added:|removed:|renamed:|Δ)' --section-header --pattern '•'"
 
 data:
+  {{- $osid := .chezmoi.os }}
+  {{- if hasKey .chezmoi.osRelease "id" }}
+  {{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id }}
+  {{- end }}
+  osid: {{ $osid | quote }}
+  {{- if eq .chezmoi.os "android" }}
+  bash: {{ lookPath "bash" | quote }}
+  {{- else }}
+  bash: "/usr/bin/env bash"
+  {{- end }}
   {{ $hostname := promptStringOnce . "hostname" "Name of the machine" "tuandzung" | quote }}
   hostname: {{ $hostname }}
   {{ $kind := promptStringOnce . "kind" "What kind of this machine is it (pc/vm/laptop/...)" "pc" | quote }}
@@ -34,7 +44,7 @@ data:
   hasBluetooth: {{ $hasBluetooth }}
   {{ $isHeadless := promptBoolOnce . "isHeadless" "Is this machine headless (y/n)" false }}
   isHeadless: {{ $isHeadless }}
-  {{ $graphicsChoices := list "NVIDIA" "AMD" "INTEL" }}
+  {{ $graphicsChoices := list "NVIDIA" "AMD" "INTEL" "MAC" }}
   {{ $graphicsDriver := promptChoiceOnce . "graphicsDriver" "Which graphics card this machine uses" $graphicsChoices "INTEL" | quote }}
   graphicsDriver: {{ $graphicsDriver }}
   darkMode: {{ promptBoolOnce . "darkMode" "Do you want to use dark mode? (y/n)" true }}
@@ -42,7 +52,7 @@ data:
   {{ $browserChoices := list "ZEN" "FIREFOX" }}
   {{ $browser := promptChoiceOnce . "browser" "Which browser do you wanna use" $browserChoices "ZEN" | quote }}
   browser: {{ $browser }}
-  {{ $wmChoices := list "NIRI" "HYPRLAND" }}
+  {{ $wmChoices := list "NIRI" "HYPRLAND" "MACOS" }}
   {{ $windowManager := promptChoiceOnce . "windowManager" "Which window manager do you wanna use" $wmChoices "HYPRLAND" | quote }}
   windowManager: {{ $windowManager }}
   {{- end }}

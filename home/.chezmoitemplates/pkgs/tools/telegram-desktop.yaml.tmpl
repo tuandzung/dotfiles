@@ -1,0 +1,18 @@
+{{- if not .isHeadless }}
+name: telegram-desktop
+method: os
+# https://repology.org/project/telegram-desktop/versions
+gentoo:
+  packages:
+    - name: net-im/telegram-desktop-bin
+arch:
+  packages:
+    - name: telegram-desktop
+ubuntu:
+  packages:
+    - name: telegram-desktop
+macos:
+  packages:
+    - name: telegram-desktop
+      type: cask
+{{- end }}

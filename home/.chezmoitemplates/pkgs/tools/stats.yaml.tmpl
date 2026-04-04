@@ -1,0 +1,12 @@
+{{- if eq .chezmoi.os "darwin" }}
+name: stats
+is_essential: true
+method: os
+macos:
+  packages:
+    - name: stats
+      cask: true
+  hook:
+    after: |-
+      /usr/bin/osascript -e "tell application \"System Events\" to make new login item at end with properties {name:\"Stats.app\", path:\"/Applications/Stats.app\", kind:\"Application\", hidden:true}"
+{{- end }}
