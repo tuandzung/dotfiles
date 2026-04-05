@@ -1,5 +1,5 @@
 {{- $configPath := joinPath .chezmoi.homeDir ".config/thunderbird/profiles" }}
-{{- $releaseId := mozillaInstallHash "/Applications/Thunderbird.app/Contents/MacOS" }}
+{{- $releaseId := mozillaInstallHash "/Applications/Betterbird.app/Contents/MacOS" }}
 [Install{{- $releaseId -}}]
 {{- if eq .place "OFFICE" }}
 Default={{- $configPath }}/work

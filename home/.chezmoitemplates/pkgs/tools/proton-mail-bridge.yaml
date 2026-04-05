@@ -1,0 +1,14 @@
+name: proton-mail-bridge
+is_essential: true
+method: os
+gentoo:
+  packages:
+    - name: mail-mta/proton-mail-bridge
+      repo: bentoo
+arch:
+  packages:
+    - name: protonmail-bridge
+macos:
+  packages:
+    - name: proton-mail-bridge
+      cask: true
