@@ -1,4 +1,10 @@
 name: parqeye
+{{- if eq .chezmoi.os "darwin" }}
+method: os
+macos:
+  packages:
+    - name: parqeye
+{{- else }}
 method: binary
 github:
   repo: kaushiksrini/parqeye
@@ -18,3 +24,4 @@ github:
 archive:
   paths:
     - parqeye-{{ $arch }}-{{ $os }}/parqeye
+{{- end }}

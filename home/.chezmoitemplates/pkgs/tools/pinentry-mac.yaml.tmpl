@@ -1,0 +1,13 @@
+{{- if eq .chezmoi.os "darwin" }}
+name: pinentry-mac
+method: os
+is_essential: true
+macos:
+  packages:
+    - name: pinentry-mac  # https://github.com/GPGTools/pinentry-mac
+  hook:
+    after: |
+      mkdir -p ~/.gnupg
+      touch ~/.gnupg/gpg-agent.conf
+      echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
+{{- end }}

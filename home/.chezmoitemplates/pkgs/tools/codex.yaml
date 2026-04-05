@@ -1,0 +1,5 @@
+name: codex
+method: shell
+dependencies:
+  - node
+content: npm install -g @openai/codex
