@@ -4,7 +4,7 @@ github:
   repo: bgreenwell/xleak
   {{- $os := "unknown-linux-musl" }}
   {{- if eq .chezmoi.os "darwin" }}
-  {{-   $os := "apple-darwin" }}
+  {{-   $os = "apple-darwin" }}
   {{- end }}
   {{- $arch := "" }}
   {{- if eq .chezmoi.arch "amd64" }}

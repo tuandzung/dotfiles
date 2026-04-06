@@ -21,4 +21,4 @@ archive:
     - trippy-%s-{{ $arch }}-{{ $os }}/trip
 hook:
   after: |
-    sudo setcap CAP_NET_RAW+p $(which trip)
+    sudo chown root $(which trip) && sudo chmod +s $(which trip)
