@@ -12,15 +12,15 @@ Applications/Zen.app
 {{-   end }}
 {{- else }}
 Applications
-{{- if ne .chezmoi.osRelease.id "arch" "ubuntu" }}
+{{- if or (ne .osid "linux-arch") (ne .osid "linux-ubuntu") }}
 etc/systemd
 {{- end }}
-{{- if ne .chezmoi.osRelease.id "arch" }}
+{{- if ne .osid "linux-arch" }}
 etc/makepkg.conf
 etc/pacman.d
 etc/pacman.conf
 {{- end }}
-{{- if ne .chezmoi.osRelease.id "gentoo" }}
+{{- if ne .osid "linux-gentoo" }}
 etc/ntp.conf
 etc/portage
 etc/conf.d
@@ -38,11 +38,11 @@ usr/share/icons
 usr/share/themes
 usr/share/wayland-sessions
 {{-   else }}
-{{-     if ne .chezmoi.osRelease.id "gentoo" }}
+{{-     if ne .osid "linux-gentoo" }}
 usr/lib64
 opt/zen-browser
 {{-     end }}
-{{-     if ne .chezmoi.osRelease.id "arch" }}
+{{-     if ne .osid "linux-arch" }}
 usr/lib
 opt/zen-browser-bin
 {{-     end }}
