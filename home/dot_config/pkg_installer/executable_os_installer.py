@@ -71,7 +71,7 @@ def update_repositories(os_type: str) -> None:
     if os_type == "gentoo":
         subprocess.run(["sudo", "emerge", "--sync"], check=True)
     elif os_type == "arch":
-        subprocess.run(["yay", "-Sy"], check=True)
+        subprocess.run(["paru", "-Sy"], check=True)
     elif os_type == "ubuntu":
         subprocess.run(["sudo", "apt", "update"], check=True)
     elif os_type == "macos":
@@ -188,7 +188,7 @@ def install_packages_gentoo(packages: Iterable[PackageConfig], hooks: HookConfig
     _run_os_hooks(hooks, "after")
 
 def install_packages_arch(packages: Iterable[PackageConfig], hooks: HookConfig | None) -> None:
-    """Install packages on Arch Linux using yay/pacman."""
+    """Install packages on Arch Linux using paru/pacman."""
     packages_to_install: list[PackageConfig] = []
     for pkg in packages:
         name = pkg.get("name")
@@ -213,14 +213,11 @@ def install_packages_arch(packages: Iterable[PackageConfig], hooks: HookConfig |
         logger.info(f"Installing {name}...")
         subprocess.run(
             [
-                "yay",
+                "paru",
                 "-S",
                 "--noconfirm",
                 "--needed",
-                "--answerclean",
-                "All",
-                "--answerdiff",
-                "None",
+                "--skipreview",
                 name,
             ],
             check=True,
@@ -300,8 +297,7 @@ def install_packages_ubuntu(packages: Iterable[PackageConfig], hooks: HookConfig
             if re.fullmatch(r"(?:0x)?[A-Fa-f0-9]{8,40}", key):
                 normalized_key = key[2:] if key.lower().startswith("0x") else key
                 key_url = (
-                    "https://keyserver.ubuntu.com/pks/lookup"
-                    f"?op=get&options=mr&search=0x{normalized_key}"
+                    f"https://keyserver.ubuntu.com/pks/lookup?op=get&options=mr&search=0x{normalized_key}"
                 )
                 with tempfile.NamedTemporaryFile(delete=False) as tmp:
                     tmp_path = tmp.name
@@ -323,17 +319,13 @@ def install_packages_ubuntu(packages: Iterable[PackageConfig], hooks: HookConfig
                 )
                 subprocess.run(["sudo", "tee", str(key_path)], input=gpg_proc.stdout, check=True)
             else:
-                raise ValueError(
-                    f"Unsupported Ubuntu repo key format for package {name}: {key}"
-                )
+                raise ValueError(f"Unsupported Ubuntu repo key format for package {name}: {key}")
 
         if repo_url and repo_version:
             if not repo_name:
                 raise ValueError(f"repo_name is required when repo_url is provided for package: {name}")
             if not keyring_path:
-                raise ValueError(
-                    f"key is required when adding Ubuntu repo for package: {name}"
-                )
+                raise ValueError(f"key is required when adding Ubuntu repo for package: {name}")
             subprocess.run(
                 ["sudo", "tee", f"/etc/apt/sources.list.d/{repo_name}.list"],
                 check=True,
