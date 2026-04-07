@@ -3,11 +3,10 @@ data:
   NSGlobalDomain:
     AKLastIDMSEnvironment: 0
     AKLastLocale: en_US
-    AppleAccentColor: 3
+    AppleAccentColor: nil
     AppleActionOnDoubleClick: Maximize
     AppleAntiAliasingThreshold: 4
     AppleAquaColorVariant: 1
-    AppleHighlightColor: 0.752941 0.964706 0.678431 Green
     AppleICUDateFormatStrings:
       "1": y-MM-dd
     AppleICUForce12HourTime: true
