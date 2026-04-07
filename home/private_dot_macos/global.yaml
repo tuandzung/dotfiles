@@ -1,0 +1,80 @@
+description: NSGlobalDomain
+data:
+  NSGlobalDomain:
+    AKLastIDMSEnvironment: 0
+    AKLastLocale: en_US
+    AppleAccentColor: 3
+    AppleActionOnDoubleClick: Maximize
+    AppleAntiAliasingThreshold: 4
+    AppleAquaColorVariant: 1
+    AppleHighlightColor: 0.752941 0.964706 0.678431 Green
+    AppleICUDateFormatStrings:
+      "1": y-MM-dd
+    AppleICUForce12HourTime: true
+    AppleICUNumberSymbols:
+      "10": ","
+      "1":  
+      "17":  
+      "0": ","
+    AppleInterfaceStyle: Dark
+    AppleKeyboardUIMode: 2
+    AppleLanguages:
+      - en-US
+      - vi-VN
+    AppleLanguagesSchemaVersion: 5400
+    AppleLiveTextEnabled: true
+    AppleLocale: en_US
+    AppleMiniaturizeOnDoubleClick: false
+    AppleReduceDesktopTinting: false
+    AppleScrollerPagingBehavior: false
+    AppleShowAllExtensions: true
+    AppleShowScrollBars: Always
+    AppleSpacesSwitchOnActivate: true
+    AppleWindowTabbingMode: fullscreen
+    KB_DoubleQuoteOption: “abc”
+    KB_SingleQuoteOption: ‘abc’
+    KB_SpellingLanguage:
+      KB_SpellingLanguageIsAutomatic: true
+    # Disable Capitalize words automatically
+    NSAutomaticCapitalizationEnabled: false
+    # Disable smart dashes as they’re annoying when typing code
+    NSAutomaticDashSubstitutionEnabled: false
+    # Disable automatic period substitution as it’s annoying when typing code
+    NSAutomaticPeriodSubstitutionEnabled: false
+    # Disable smart quotes as they’re annoying when typing code
+    NSAutomaticQuoteSubstitutionEnabled: false
+    # Disable auto-correct
+    NSAutomaticSpellingCorrectionEnabled: false
+    NSAutomaticInlinePredictionEnabled: false
+    NSAutomaticTextCorrectionEnabled: false
+    NSAutomaticWindowAnimationsEnabled: false
+    NSPreferredWebServices:
+      NSWebServicesProviderWebSearch:
+        NSDefaultDisplayName: Google
+        NSProviderIdentifier: com.google.www
+    NSSpellCheckerDictionaryContainerTransitionComplete: true
+    NSTableViewDefaultSizeMode: 2
+    NSUserQuotesArray:
+      - “
+      - ”
+      - ‘
+      - ’
+    NSWindowShouldDragOnGesture: true
+    PKOrderManagementDisabled: true
+    UIPreferredContentSizeCategoryName: UICTContentSizeCategoryL
+    _HIHideMenuBar: true
+    com.apple.finder.SyncExtensions:
+      collaborationMap: {}
+      dirMap: {}
+    com.apple.keyboard.fnState: true
+    com.apple.sound.beep.flash: 0
+    com.apple.springing.delay: 0.5
+    com.apple.springing.enabled: true
+    com.apple.swipescrolldirection: false
+    com.apple.trackpad.forceClick: true
+    shouldShowRSVPDataDetectors: false
+    # Save to disk, rather than iCloud, by default.
+    NSDocumentSaveNewDocumentsToCloud: false
+    NSTextShowsControlCharacters: true
+    # Adding a context menu item for showing the Web Inspector in web views
+    WebKitDeveloperExtras: true

@@ -1,0 +1,5 @@
+description: "com.apple.NetworkBrowser"
+data:
+  com.apple.NetworkBrowser:
+    # Enable AirDrop over Ethernet
+    BrowseAllInterfaces: true

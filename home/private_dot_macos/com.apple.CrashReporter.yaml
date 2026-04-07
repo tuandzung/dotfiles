@@ -1,0 +1,5 @@
+description: com.apple.CrashReporter
+data:
+  com.apple.CrashReporter:
+    # Disable the crash reporter
+    DialogType: none

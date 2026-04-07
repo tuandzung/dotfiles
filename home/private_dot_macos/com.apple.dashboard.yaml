@@ -1,0 +1,8 @@
+description: "com.apple.dashboard"
+data:
+  com.apple.dashboard:
+    # Completely Disable Dashboard
+    mcx-disabled: true
+
+    # Dashboard: "Off"
+    dashboard-enabled-state: 1

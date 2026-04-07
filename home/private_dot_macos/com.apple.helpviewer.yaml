@@ -1,0 +1,5 @@
+description: com.apple.helpviewer
+data:
+  com.apple.helpviewer:
+    # Set Help Viewer windows to non-floating mode
+    DevMode: true
