@@ -27,6 +27,24 @@
   type: file
   url: 'https://tridactyl.cmcaine.co.uk/betas/tridactyl-latest.xpi'
   refreshPeriod: 168h
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/zen/profiles/personal/extensions/FirefoxColor@mozilla.com.xpi:
+  type: file
+  url: "https://addons.mozilla.org/firefox/downloads/file/3643624/"
+  refreshPeriod: 168h
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/zen/profiles/personal/extensions/clipper@obsidian.md.xpi:
+  type: file
+  url: "https://addons.mozilla.org/firefox/downloads/file/4497129/"
+  refreshPeriod: 168h
+# Get tech stack GitHub
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/zen/profiles/personal/extensions/a778917369@gmail.com.xpi:
+  type: file
+  url: "https://addons.mozilla.org/firefox/downloads/file/4196975/"
+  refreshPeriod: 168h
+# Virus Total
+{{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/zen/profiles/personal/extensions/{06def8b7-bcc3-4f1e-add7-7d8222ca0efc}.xpi:
+  type: file
+  url: "https://addons.mozilla.org/firefox/downloads/file/3547900/"
+  refreshPeriod: 168h
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/thunderbird/profiles/personal/extensions/{2ab1b709-ba03-4361-abf9-c50b964ff75d}.xpi:
   type: file
   url: 'https://github.com/catppuccin/thunderbird/raw/refs/heads/main/themes/macchiato/macchiato-sapphire.xpi'
