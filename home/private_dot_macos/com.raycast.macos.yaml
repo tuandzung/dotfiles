@@ -16,7 +16,7 @@ data:
     onboarding_setupHotkey: true
     onboarding_showTasksProgress: true
     raycastAI_ollamaModelsList: 5b5d
-    raycastGlobalHotkey: Command-Space
+    raycastGlobalHotkey: Command-49
     raycastPreferredWindowMode: default
     raycastShouldFollowSystemAppearance: true
     raycastUI_preferredTextSize: large

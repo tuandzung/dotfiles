@@ -62,15 +62,15 @@ data:
     NSWindowShouldDragOnGesture: true
     PKOrderManagementDisabled: true
     UIPreferredContentSizeCategoryName: UICTContentSizeCategoryL
-    _HIHideMenuBar: true
+    _HIHideMenuBar: false
     com.apple.finder.SyncExtensions:
       collaborationMap: {}
       dirMap: {}
-    com.apple.keyboard.fnState: true
+    com.apple.keyboard.fnState: false
     com.apple.sound.beep.flash: 0
     com.apple.springing.delay: 0.5
     com.apple.springing.enabled: true
-    com.apple.swipescrolldirection: false
+    com.apple.swipescrolldirection: true
     com.apple.trackpad.forceClick: true
     shouldShowRSVPDataDetectors: false
     # Save to disk, rather than iCloud, by default.
