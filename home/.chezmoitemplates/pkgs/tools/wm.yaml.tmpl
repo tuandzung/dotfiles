@@ -1,4 +1,5 @@
 {{- if not .isHeadless }}
+{{- if eq .windowManager "HYPRLAND" }}
 name: hyprland
 method: os
 is_essential: true
@@ -41,4 +42,42 @@ arch:
     - name: meson
     - name: hyprpolkitagent
     - name: mpvpaper
+{{- else if eq .windowManager "NIRI" }}
+name: niri
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: gui-wm/niri
+    - name: gui-apps/hyprlock
+      repo: guru
+    - name: sys-apps/xdg-desktop-portal-gnome
+    - name: gui-apps/hypridle
+      repo: guru
+    - name: gui-apps/hyprpaper
+      repo: guru
+    - name: gnome-extra/polkit-gnome
+      repo: guru
+    - name: sys-auth/seatd
+    - name: gui-apps/mpvpaper
+      repo: guru
+    - name: gui-apps/xwayland-satellite
+      repo: guru
+  hook:
+    after: |-
+      sudo gpasswd -a $USER video
+      sudo gpasswd -a $USER seat
+      sudo rc-update add seatd default
+      sudo rc-service seatd restart
+arch:
+  packages:
+    - name: niri
+    - name: hyprlock
+    - name: hyprpaper
+    - name: xdg-desktop-portal-gnome
+    - name: polkit-gnome
+    - name: hypridle
+    - name: mpvpaper
+    - name: xwayland-satellite
+{{- end }}
 {{- end }}
