@@ -1,0 +1,8 @@
+{{- if eq .chezmoi.os "darwin" }}
+name: kb-remap
+is_essential: true
+method: os
+macos:
+  packages:
+    - name: rossmacarthur/tap/kb-remap
+{{- end }}
