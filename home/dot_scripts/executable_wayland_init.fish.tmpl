@@ -3,9 +3,9 @@
 mkdir -p $XDG_RUNTIME_DIR && chmod 700 $XDG_RUNTIME_DIR
 {{- $cmd := "niri-session" }}
 {{- if eq .windowManager "HYPRLAND" }}
-{{-   $cmd := "Hyprland" }}
+{{-   $cmd := "dbus-run-session Hyprland" }}
 {{-   if findExecutable "start-hyprland" (list "/usr/bin") | isExecutable }}
-{{-     $cmd = "start-hyprland" }}
+{{-     $cmd = "dbus-run-session start-hyprland" }}
 {{-   end }}
 {{- end }}
-dbus-run-session {{ $cmd }}
+{{ $cmd }}
