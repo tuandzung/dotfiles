@@ -27,6 +27,7 @@
   type: file
   url: 'https://tridactyl.cmcaine.co.uk/betas/tridactyl-latest.xpi'
   refreshPeriod: 168h
+{{ if ne .place "OFFICE" }}
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/zen/profiles/personal/extensions/FirefoxColor@mozilla.com.xpi:
   type: file
   url: "https://addons.mozilla.org/firefox/downloads/file/3643624/"
@@ -45,6 +46,7 @@
   type: file
   url: "https://addons.mozilla.org/firefox/downloads/file/3547900/"
   refreshPeriod: 168h
+{{- end }}
 {{ splitList (printf "%s/" .chezmoi.homeDir) .chezmoi.sourceDir | last }}/dot_config/thunderbird/profiles/personal/extensions/{2ab1b709-ba03-4361-abf9-c50b964ff75d}.xpi:
   type: file
   url: 'https://github.com/catppuccin/thunderbird/raw/refs/heads/main/themes/macchiato/macchiato-sapphire.xpi'
