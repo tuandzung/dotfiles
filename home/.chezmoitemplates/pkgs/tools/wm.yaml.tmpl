@@ -79,5 +79,15 @@ arch:
     - name: hypridle
     - name: mpvpaper
     - name: xwayland-satellite
+{{- else if eq .windowManager "OMNIWM" }}
+name: omniwm
+method: os
+is_essential: true
+macos:
+  packages:
+    - name: BarutSRB/tap/omniwm
+  hook:
+    after: |-
+      /usr/bin/osascript -e "tell application \"System Events\" to make new login item at end with properties {name:\"OmniWM.app\", path:\"/Applications/OmniWM.app\", kind:\"Application\", hidden:true}"
 {{- end }}
 {{- end }}

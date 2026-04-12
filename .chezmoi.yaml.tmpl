@@ -52,7 +52,7 @@ data:
   {{ $browserChoices := list "ZEN" "FIREFOX" }}
   {{ $browser := promptChoiceOnce . "browser" "Which browser do you wanna use" $browserChoices "ZEN" | quote }}
   browser: {{ $browser }}
-  {{ $wmChoices := list "NIRI" "HYPRLAND" "MACOS" }}
+  {{ $wmChoices := list "NIRI" "HYPRLAND" "MACOS" "OMNIWM" }}
   {{ $windowManager := promptChoiceOnce . "windowManager" "Which window manager do you wanna use" $wmChoices "HYPRLAND" | quote }}
   windowManager: {{ $windowManager }}
   {{- end }}
