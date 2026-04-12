@@ -14,12 +14,4 @@ ubuntu:
   packages:
     - name: fcitx-bamboo
 {{- end }}
-{{- else }}
-name: openkey
-method: os
-is_essential: true
-macos:
-  packages:
-    - name: openkey
-      cask: true
 {{- end }}
