@@ -101,7 +101,7 @@
   "dwindleSmartSplit" : false,
   "dwindleSplitWidthMultiplier" : 1,
   "dwindleUseGlobalGaps" : true,
-  "focusFollowsMouse" : true,
+  "focusFollowsMouse" : false,
   "focusFollowsWindowToMonitor" : true,
   "gapSize" : 32,
   "gestureFingerCount" : 4,
@@ -600,6 +600,22 @@
         "type" : "main"
       },
       "name" : "3"
+    },
+    {
+      "id" : "248AA883-2261-4D45-943C-79C0E46A232B",
+      "layoutType" : "niri",
+      "monitorAssignment" : {
+        "type" : "main"
+      },
+      "name" : "4"
+    },
+    {
+      "id" : "8B8C45D6-CE9E-41D9-BD50-BE4989D5E3DE",
+      "layoutType" : "niri",
+      "monitorAssignment" : {
+        "type" : "main"
+      },
+      "name" : "5"
     },
     {
       "displayName" : "❤️",
