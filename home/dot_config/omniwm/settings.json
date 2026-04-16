@@ -2,7 +2,6 @@
   "animationsEnabled" : true,
   "appRules" : [
     {
-      "assignToWorkspace" : "1",
       "bundleId" : "app.zen-browser.zen",
       "id" : "1CF39647-F30D-4E76-9686-79B551F1B094",
       "minHeight" : 495,
@@ -37,7 +36,6 @@
       "minWidth" : 1688
     },
     {
-      "assignToWorkspace" : "1",
       "bundleId" : "net.kovidgoyal.kitty",
       "id" : "4358CF5E-27F2-4247-8E29-60BB4C687B2F",
       "minHeight" : 1070,
@@ -84,6 +82,14 @@
       "id" : "644B9507-72F1-4A54-AE21-AEE961102E31",
       "minHeight" : 1070,
       "minWidth" : 1688
+    },
+    {
+      "assignToWorkspace" : "3",
+      "bundleId" : "com.apple.systempreferences",
+      "id" : "4BCDEB39-2A30-45A6-8D1E-8D8BE4BF0F26",
+      "layout" : "tile",
+      "minHeight" : 1089,
+      "minWidth" : 723
     }
   ],
   "appearanceMode" : "dark",
@@ -101,12 +107,12 @@
   "dwindleSmartSplit" : false,
   "dwindleSplitWidthMultiplier" : 1,
   "dwindleUseGlobalGaps" : true,
-  "focusFollowsMouse" : false,
+  "focusFollowsMouse" : true,
   "focusFollowsWindowToMonitor" : true,
   "gapSize" : 32,
   "gestureFingerCount" : 4,
   "gestureInvertDirection" : true,
-  "hiddenBarIsCollapsed" : true,
+  "hiddenBarIsCollapsed" : false,
   "hotkeyBindings" : [
     {
       "binding" : "Option+1",
@@ -515,10 +521,11 @@
   "monitorOrientationSettings" : [
 
   ],
-  "mouseWarpAxis" : "horizontal",
+  "mouseWarpAxis" : "vertical",
   "mouseWarpMargin" : 1,
   "mouseWarpMonitorOrder" : [
-
+    "CF791",
+    "Built-in Retina Display"
   ],
   "moveMouseToFocusedWindow" : false,
   "niriAlwaysCenterSingleColumn" : true,
