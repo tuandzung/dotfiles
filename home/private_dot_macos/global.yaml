@@ -5,6 +5,7 @@ data:
     AKLastLocale: en_US
     AppleAccentColor: 4
     AppleActionOnDoubleClick: Maximize
+    AppleFontSmoothing: 0
     AppleAntiAliasingThreshold: 4
     AppleAquaColorVariant: 1
     AppleHighlightColor: 0.752941 0.964706 0.678431
