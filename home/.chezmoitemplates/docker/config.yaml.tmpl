@@ -1,0 +1,10 @@
+{{- $dockerSecret := dict }}
+{{- $dockerSecret = join .chezmoi.sourceDir "../secrets/data/personal/docker.yaml.age" | include | decrypt | fromYaml }}
+auths:
+  {{- range $dockerSecret.auths }}
+  "{{ .repo }}":
+    auth: "{{ printf "%s:%s" .username .password | b64enc }}"
+  {{-   end }}
+{{- if eq .chezmoi.os "darwin" }}
+currentContext: lima-docker
+{{- end }}
