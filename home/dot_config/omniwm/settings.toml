@@ -1,7 +1,5 @@
-monitorBarOverrides = []
 monitorDwindleOverrides = []
 monitorOrientationOverrides = []
-version = 5
 
 [appearance]
 mode = "dark"
@@ -16,6 +14,12 @@ blue = 0.979300037944676
 green = 1.0
 red = 0.08458520228437894
 
+[clipboard]
+historyEnabled = false
+maxItemBytes = 8388608
+maxItems = 200
+maxTotalBytes = 67108864
+
 [dwindle]
 defaultSplitRatio = 1.0
 moveToRootStable = true
@@ -25,18 +29,18 @@ splitWidthMultiplier = 1.0
 useGlobalGaps = true
 
 [focus]
-followsMouse = true
+followsMouse = false
 followsWindowToMonitor = true
 moveMouseToFocusedWindow = false
 
 [gaps]
-size = 30.0
+size = 16.0
 
 [gaps.outer]
-bottom = 40.0
+bottom = 30.0
 left = 40.0
 right = 40.0
-top = 5.0
+top = 10.0
 
 [general]
 animationsEnabled = true
@@ -49,6 +53,7 @@ updateChecksEnabled = true
 [gestures]
 fingerCount = 3
 invertDirection = true
+mouseResizeModifierKey = "option"
 scrollEnabled = true
 scrollModifierKey = "optionShift"
 scrollSensitivity = 5.0
@@ -56,23 +61,17 @@ scrollSensitivity = 5.0
 [mouseWarp]
 axis = "vertical"
 margin = 1
-
-[[mouseWarp.monitorOrder]]
-displayId = 2
-name = "CF791"
-
-[[mouseWarp.monitorOrder]]
-displayId = 3
-name = ""
+monitorOrder = ["CF791", ""]
 
 [niri]
-alwaysCenterSingleColumn = true
+alwaysCenterSingleColumn = false
 centerFocusedColumn = "never"
-columnWidthPresets = [0.3333333333333333, 0.5, 0.66]
+columnWidthPresets = [0.3333333333333333, 0.5, 0.6666666666666666]
+defaultColumnWidth = 0.5
 infiniteLoop = true
-maxVisibleColumns = 1
-maxWindowsPerColumn = 3
-singleWindowAspectRatio = "21:9"
+maxVisibleColumns = 2
+maxWindowsPerColumn = 10
+singleWindowAspectRatio = "none"
 
 [quakeTerminal]
 animationDuration = 0.2
@@ -87,7 +86,6 @@ widthPercent = 50.0
 
 [state]
 commandPaletteLastMode = "windows"
-hiddenBarIsCollapsed = false
 
 [statusBar]
 showAppNames = false
@@ -95,32 +93,26 @@ showWorkspaceName = false
 useWorkspaceId = false
 
 [workspaceBar]
-backgroundOpacity = 0.05
+backgroundOpacity = 0.25
 deduplicateAppIcons = false
 enabled = true
-height = 30.0
+height = 32.0
 hideEmptyWorkspaces = false
 labelFontSize = 12.0
 notchAware = true
 position = "overlappingMenuBar"
-reserveLayoutSpace = true
-showFloatingWindows = false
+reserveLayoutSpace = false
+showFloatingWindows = true
 showLabels = true
 windowLevel = "popup"
 xOffset = 0.0
 yOffset = 0.0
 
-[workspaceBar.accentColor]
-alpha = 1.0
-blue = -1.0
-green = -1.0
-red = -1.0
-
-[workspaceBar.textColor]
-alpha = 1.0
-blue = -1.0
-green = -1.0
-red = -1.0
+[[appRules]]
+bundleId = "com.apple.Safari"
+id = "81426D13-C1A5-475E-AFBC-00BBA05042D0"
+minHeight = 220.0
+minWidth = 574.0
 
 [[appRules]]
 bundleId = "org.mozilla.firefox"
@@ -129,84 +121,52 @@ minHeight = 120.0
 minWidth = 500.0
 
 [[appRules]]
-bundleId = "com.spotify.client"
-id = "2DE9390B-0DB4-4D0C-9ABA-06F76F1D4EA9"
-layout = "float"
-minHeight = 600.0
-minWidth = 800.0
-
-[[appRules]]
 bundleId = "com.mitchellh.ghostty"
 id = "7876C9EF-437E-4D4F-9C27-B1B02F4AABCE"
 minHeight = 48.0
 minWidth = 90.0
 
 [[appRules]]
-assignToWorkspace = "6"
-bundleId = "org.mozilla.betterbird"
-id = "EE130B00-DCD6-40BB-A33A-8AF540841845"
-minHeight = 1125.0
-minWidth = 1810.0
+bundleId = "com.microsoft.Outlook"
+id = "8ECAB78B-BCDD-4245-BC25-1609A49B1C86"
+minHeight = 650.0
+minWidth = 930.0
 
 [[appRules]]
+bundleId = "com.apple.MobileSMS"
+id = "552FB77D-BF0E-4737-90A6-B5BC6986C579"
+minHeight = 320.0
+minWidth = 660.0
+
+[[appRules]]
+assignToWorkspace = "1"
 bundleId = "app.zen-browser.zen"
-id = "D5BC4A73-2805-44FC-8FBB-23EC428449A7"
-minHeight = 1125.0
-minWidth = 1810.0
+id = "EF37F83E-8A81-4ECF-A2C9-377836CCFECC"
 
 [[appRules]]
-assignToWorkspace = "7"
-bundleId = "org.ferdium.ferdium-app"
-id = "EB8B7F9D-B5C9-44AC-8243-7724A986EC60"
-minHeight = 1125.0
-minWidth = 1810.0
+assignToWorkspace = "6"
+bundleId = "com.apple.Music"
+id = "6C28834E-2E23-46D9-BA30-8A5345BA5B01"
 
 [[appRules]]
 assignToWorkspace = "1"
 bundleId = "net.kovidgoyal.kitty"
-id = "0D9613CC-65BA-4BE7-84E8-04A5AC66C8E7"
-minHeight = 1335.0
-minWidth = 3115.0
+id = "76B6278B-28D5-4392-A45D-E68E974E3985"
+
+[[appRules]]
+assignToWorkspace = "7"
+bundleId = "org.mozilla.betterbird"
+id = "2A1B46C9-5D89-42C9-A2BA-4901E75D314B"
 
 [[appRules]]
 assignToWorkspace = "7"
 bundleId = "com.tdesktop.Telegram"
-id = "9B4985E3-4A22-4A35-8FF8-57E842F1EEDF"
-minHeight = 1125.0
-minWidth = 1810.0
+id = "6402994E-1679-475C-B333-9730A862588E"
 
 [[appRules]]
-bundleId = "com.apple.finder"
-id = "52053E47-70BD-47DE-BFF1-F1C0B4BEFA6F"
-layout = "float"
-minHeight = 300.0
-minWidth = 400.0
-
-[[appRules]]
-bundleId = "com.apple.AppStore"
-id = "9237C0C0-0724-4D2C-9310-D03DEE80E0B0"
-layout = "float"
-minHeight = 804.0
-minWidth = 1151.0
-
-[[appRules]]
-bundleId = "md.obsidian"
-id = "242EEB38-EC01-449D-A3C1-746EEF591A91"
-minHeight = 1335.0
-minWidth = 3330.0
-
-[[appRules]]
-bundleId = "net.freemacsoft.AppCleaner"
-id = "36180998-B4D9-4FA7-8BFD-0480A1F446F9"
-layout = "float"
-minHeight = 300.0
-minWidth = 400.0
-
-[[appRules]]
-assignToWorkspace = "3"
-bundleId = "com.colliderli.iina"
-id = "2A0A28F6-3EF7-4374-AF58-AA212A398AC3"
-layout = "float"
+assignToWorkspace = "7"
+bundleId = "org.ferdium.ferdium-app"
+id = "FD02480D-8266-4CD3-84FE-BD54E68FFC88"
 
 [[hotkeys]]
 binding = "Option+1"
@@ -321,6 +281,38 @@ binding = "Unassigned"
 id = "focusUpOrRight"
 
 [[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowTop"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowBottom"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowDownOrTop"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowUpOrBottom"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowOrWorkspaceDown"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowOrWorkspaceUp"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "centerColumn"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "centerVisibleColumns"
+
+[[hotkeys]]
 binding = "Control+Option+Shift+Up Arrow"
 id = "moveWindowToWorkspaceUp"
 
@@ -389,6 +381,38 @@ binding = "Option+Shift+Right Arrow"
 id = "move.right"
 
 [[hotkeys]]
+binding = "Unassigned"
+id = "moveWindowDown"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWindowUp"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWindowDownOrToWorkspaceDown"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveWindowUpOrToWorkspaceUp"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "consumeOrExpelWindowLeft"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "consumeOrExpelWindowRight"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "consumeWindowIntoColumn"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "expelWindowFromColumn"
+
+[[hotkeys]]
 binding = "Control+Command+Tab"
 id = "focusMonitorNext"
 
@@ -415,6 +439,14 @@ id = "moveColumn.left"
 [[hotkeys]]
 binding = "Control+Option+Shift+Right Arrow"
 id = "moveColumn.right"
+
+[[hotkeys]]
+binding = "Control+Option+Home"
+id = "moveColumnToFirst"
+
+[[hotkeys]]
+binding = "Control+Option+End"
+id = "moveColumnToLast"
 
 [[hotkeys]]
 binding = "Option+T"
@@ -465,6 +497,78 @@ binding = "Control+Option+9"
 id = "focusColumn.8"
 
 [[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.1"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.2"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.3"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.4"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.5"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.6"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.7"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.8"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "focusWindowInColumn.9"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.1"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.2"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.3"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.4"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.5"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.6"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.7"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.8"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "moveColumnToIndex.9"
+
+[[hotkeys]]
 binding = "Option+."
 id = "cycleColumnWidthForward"
 
@@ -473,8 +577,56 @@ binding = "Option+,"
 id = "cycleColumnWidthBackward"
 
 [[hotkeys]]
+binding = "Unassigned"
+id = "cycleWindowWidthForward"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "cycleWindowWidthBackward"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "cycleWindowHeightForward"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "cycleWindowHeightBackward"
+
+[[hotkeys]]
 binding = "Option+Shift+F"
 id = "toggleColumnFullWidth"
+
+[[hotkeys]]
+binding = "Control+Option+F"
+id = "expandColumnToAvailableWidth"
+
+[[hotkeys]]
+binding = "Control+Option+R"
+id = "resetWindowHeight"
+
+[[hotkeys]]
+binding = "Option+-"
+id = "setColumnWidth.decrease10Percent"
+
+[[hotkeys]]
+binding = "Option+="
+id = "setColumnWidth.increase10Percent"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "setWindowWidth.decrease10Percent"
+
+[[hotkeys]]
+binding = "Unassigned"
+id = "setWindowWidth.increase10Percent"
+
+[[hotkeys]]
+binding = "Option+Shift+-"
+id = "setWindowHeight.decrease10Percent"
+
+[[hotkeys]]
+binding = "Option+Shift+="
+id = "setWindowHeight.increase10Percent"
 
 [[hotkeys]]
 binding = "Option+Shift+B"
@@ -592,21 +744,41 @@ id = "toggleWorkspaceLayout"
 binding = "Option+Shift+O"
 id = "toggleOverview"
 
-[[monitorNiriOverrides]]
-id = "99772382-66A1-4966-9F61-935BBB2E50BC"
-maxVisibleColumns = 1
-monitorDisplayId = 2
-monitorName = "CF791"
-singleWindowAspectRatio = "21:9"
-
-[[monitorNiriOverrides]]
-id = "2F205FBB-FB04-403D-B269-2FDC466094D3"
+[[monitorBarOverrides]]
+enabled = true
+height = 20.0
+id = "1F1AF1F9-1384-40BA-AA58-20966EA81601"
 monitorDisplayId = 3
 monitorName = ""
-singleWindowAspectRatio = "4:3"
+notchAware = false
+position = "belowMenuBar"
+reserveLayoutSpace = true
+windowLevel = "floating"
+yOffset = 0.0
+
+[[monitorBarOverrides]]
+height = 40.0
+id = "AB74146B-F4FE-4759-8012-676838FFBE13"
+monitorDisplayId = 2
+monitorName = "CF791"
+notchAware = false
+reserveLayoutSpace = false
+
+[[monitorNiriOverrides]]
+id = "AB2B6C43-17CC-44B8-9C33-667C81B90CA3"
+maxVisibleColumns = 3
+monitorDisplayId = 3
+monitorName = ""
+singleWindowAspectRatio = "none"
+
+[[monitorNiriOverrides]]
+id = "3188BD3A-C38F-4EBC-A26C-386A5FACA9B2"
+maxVisibleColumns = 2
+monitorDisplayId = 2
+monitorName = "CF791"
+singleWindowAspectRatio = "none"
 
 [[workspaces]]
-displayName = "🥇"
 id = "AD36F001-C57E-41A5-AC1D-DF5249D007F0"
 layoutType = "niri"
 name = "1"
@@ -615,7 +787,6 @@ name = "1"
 type = "main"
 
 [[workspaces]]
-displayName = "🥈"
 id = "454CECD4-5E9D-4ED1-95D7-979D48817F5F"
 layoutType = "niri"
 name = "2"
@@ -624,7 +795,6 @@ name = "2"
 type = "main"
 
 [[workspaces]]
-displayName = "🥉"
 id = "BEB842B5-E894-4791-9FD1-397C3CDD3538"
 layoutType = "niri"
 name = "3"
@@ -633,7 +803,7 @@ name = "3"
 type = "main"
 
 [[workspaces]]
-displayName = "💡"
+displayName = "❤️"
 id = "5953F2BF-A378-4266-91B2-287174C4FA4D"
 layoutType = "niri"
 name = "6"
@@ -642,7 +812,7 @@ name = "6"
 type = "secondary"
 
 [[workspaces]]
-displayName = "📮"
+displayName = "🚀"
 id = "A7D5E104-6985-4516-8ED5-07F144F2A33D"
 layoutType = "niri"
 name = "7"
