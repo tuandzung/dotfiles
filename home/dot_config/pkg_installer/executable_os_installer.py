@@ -14,6 +14,7 @@ from typing import NotRequired, TypedDict
 from logger import logger
 from utils import get_os_info, load_all_tools, run_hook
 
+
 class HookConfig(TypedDict, total=False):
     """Configuration for hooks to run before or after package installation."""
 
@@ -24,6 +25,7 @@ class PackageConfig(TypedDict, total=False):
     """Configuration for a package to be installed."""
 
     name: str
+    manager: NotRequired[str]
     repo: NotRequired[str]
     repo_name: NotRequired[str]
     repo_url: NotRequired[str]
@@ -32,6 +34,9 @@ class PackageConfig(TypedDict, total=False):
     cask: NotRequired[bool]
     repo_version: NotRequired[str]
     key: NotRequired[str]
+
+FLATHUB_REMOTE_NAME = "flathub"
+FLATHUB_REMOTE_URL = "https://dl.flathub.org/repo/flathub.flatpakrepo"
 
 class OsConfig(TypedDict, total=False):
     """Configuration for the operating system."""
@@ -86,8 +91,7 @@ def is_package_installed_gentoo(package_name: str) -> bool:
     """Check if a package is installed on Gentoo."""
     result = subprocess.run(
         ["qlist", "-I", package_name],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         check=False,
     )
     return result.returncode == 0
@@ -96,8 +100,7 @@ def is_package_installed_arch(package_name: str) -> bool:
     """Check if a package is installed on Arch Linux."""
     result = subprocess.run(
         ["pacman", "-Qi", package_name],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         check=False,
     )
     return result.returncode == 0
@@ -105,15 +108,23 @@ def is_package_installed_arch(package_name: str) -> bool:
 def is_package_installed_macos(package_name: str, cask: bool = False) -> bool:
     """Check if a package is installed on macOS."""
     cmd = ["brew", "list", "--cask", package_name] if cask else ["brew", "list", package_name]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    result = subprocess.run(cmd, capture_output=True, check=False)
     return result.returncode == 0
 
 def is_package_installed_ubuntu(package_name: str) -> bool:
     """Check if a package is installed on Ubuntu."""
     result = subprocess.run(
         ["dpkg", "-s", package_name],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
+        check=False,
+    )
+    return result.returncode == 0
+
+def is_flatpak_app_installed(app_id: str) -> bool:
+    """Check if a Flatpak app is installed system-wide."""
+    result = subprocess.run(
+        ["flatpak", "info", app_id],
+        capture_output=True,
         check=False,
     )
     return result.returncode == 0
@@ -122,8 +133,7 @@ def is_package_installed_termux(package_name: str) -> bool:
     """Check if a package is installed on Termux."""
     result = subprocess.run(
         ["pkg", "list-installed", package_name],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         check=False,
     )
     return result.returncode == 0
@@ -259,25 +269,8 @@ def install_packages_macos(packages: Iterable[PackageConfig], hooks: HookConfig 
 
     _run_os_hooks(hooks, "after")
 
-def install_packages_ubuntu(packages: Iterable[PackageConfig], hooks: HookConfig | None) -> None:
-    """Install packages on Ubuntu using apt."""
-    packages_to_install: list[PackageConfig] = []
+def _install_apt_packages_ubuntu(packages: Iterable[PackageConfig]) -> None:
     for pkg in packages:
-        name = pkg.get("name")
-        if not name:
-            continue
-        if is_package_installed_ubuntu(name):
-            logger.info(f"Package {name} is already installed. Skipping...")
-            continue
-        packages_to_install.append(pkg)
-
-    if not packages_to_install:
-        logger.info("All packages are already installed; skipping hooks.")
-        return
-
-    _run_os_hooks(hooks, "before")
-
-    for pkg in packages_to_install:
         name = pkg.get("name")
         if not name:
             continue
@@ -339,6 +332,59 @@ def install_packages_ubuntu(packages: Iterable[PackageConfig], hooks: HookConfig
         logger.info(f"Installing {name}...")
         subprocess.run(["sudo", "apt", "install", "-y", name], check=True)
 
+def _ensure_flatpak_ubuntu() -> None:
+    if is_package_installed_ubuntu("flatpak"):
+        logger.info("Package flatpak is already installed. Skipping...")
+    else:
+        logger.info("Installing flatpak...")
+        subprocess.run(["sudo", "apt", "install", "-y", "flatpak"], check=True)
+
+    subprocess.run(
+        ["sudo", "flatpak", "remote-add", "--if-not-exists", FLATHUB_REMOTE_NAME, FLATHUB_REMOTE_URL],
+        check=True,
+    )
+
+def _install_flatpak_apps_ubuntu(packages: Iterable[PackageConfig]) -> None:
+    _ensure_flatpak_ubuntu()
+    for pkg in packages:
+        app_id = pkg.get("name")
+        if not app_id:
+            continue
+        logger.info(f"Installing Flatpak app {app_id} from Flathub...")
+        subprocess.run(["sudo", "flatpak", "install", "-y", FLATHUB_REMOTE_NAME, app_id], check=True)
+
+def install_packages_ubuntu(packages: Iterable[PackageConfig], hooks: HookConfig | None) -> None:
+    """Install packages on Ubuntu using apt and Flatpak."""
+    apt_packages_to_install: list[PackageConfig] = []
+    flatpak_packages_to_install: list[PackageConfig] = []
+
+    for pkg in packages:
+        name = pkg.get("name")
+        if not name:
+            continue
+
+        manager = pkg.get("manager", "apt")
+        if manager == "apt":
+            if is_package_installed_ubuntu(name):
+                logger.info(f"Package {name} is already installed. Skipping...")
+                continue
+            apt_packages_to_install.append(pkg)
+        elif manager == "flatpak":
+            if is_flatpak_app_installed(name):
+                logger.info(f"Flatpak app {name} is already installed. Skipping...")
+                continue
+            flatpak_packages_to_install.append(pkg)
+        else:
+            raise ValueError(f"Unsupported Ubuntu package manager for package {name}: {manager}")
+
+    if not apt_packages_to_install and not flatpak_packages_to_install:
+        logger.info("All packages are already installed; skipping hooks.")
+        return
+
+    _run_os_hooks(hooks, "before")
+    _install_apt_packages_ubuntu(apt_packages_to_install)
+    if flatpak_packages_to_install:
+        _install_flatpak_apps_ubuntu(flatpak_packages_to_install)
     _run_os_hooks(hooks, "after")
 
 def install_packages_termux(packages: Iterable[PackageConfig], hooks: HookConfig | None) -> None:
