@@ -7,3 +7,6 @@ gentoo:
 arch:
   packages:
     - name: libnotify
+ubuntu:
+  packages:
+    - name: libnotify-bin
