@@ -11,6 +11,9 @@ arch:
     {{- if eq .graphicsDriver "AMD" }}
     - name: vulkan-radeon
     {{- end }}
+ubuntu:
+  packages:
+    - name: mpv
 {{- end }}
 macos:
   packages:
