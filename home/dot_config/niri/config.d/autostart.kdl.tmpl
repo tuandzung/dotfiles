@@ -82,18 +82,20 @@ spawn-at-startup "firefox" "-P" "Work"
 {{-   $browser := "zen-browser" }}
 {{-   if eq .osid "linux-ubuntu" "linux-linuxmint" }}
 {{-     $browser = "zen" }}
-{{- end }}
-{{- if eq .place "HOME" }}
+{{-   end }}
+{{-   if eq .place "HOME" }}
 spawn-at-startup "{{ $browser }}" "-P" "Personal"
-{{- else if eq .place "OFFICE" }}
+{{-   else if eq .place "OFFICE" }}
 spawn-at-startup "{{ $browser }}" "-P" "Work"
-{{- end }}
+{{-   end }}
 {{- end }}
 
 // Email
 {{- $emailClient := "betterbird" }}
-{{- if eq .chezmoi.osRelease.id "gentoo" }}
-{{- $emailClient = "betterbird-bin" }}
+{{- if eq .osid "linux-gentoo" }}
+{{-   $emailClient = "betterbird-bin" }}
+{{- else if eq .osid "linux-ubuntu" "linux-linuxmint" }}
+{{-   $emailClient = "/opt/betterbird/betterbird" }}
 {{- end }}
 {{- if eq .place "HOME" }}
 spawn-at-startup "{{ $emailClient }}" "-P" "Personal"
@@ -114,12 +116,9 @@ spawn-at-startup "flatpak" "run" "org.ferdium.Ferdium"
 {{- end }}
 
 {{- if eq .osid "linux-ubuntu" "linux-linuxmint" }}
-// Ferdium
+// Telegram
 spawn-at-startup "flatpak" "run" "org.telegram.desktop"
 {{- end }}
-
-// Torrent
-spawn-at-startup "qbittorrent"
 
 // Floating scripts for some specific windows
 spawn-at-startup "~/.config/niri/scripts/open_float.py"

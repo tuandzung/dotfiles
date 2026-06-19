@@ -50,8 +50,10 @@ binds {
 
     Mod+Q { spawn "kitty"; }
     {{- $emailClient := "betterbird" }}
-    {{- if eq .chezmoi.osRelease.id "gentoo" }}
+    {{- if eq .osid "linux-gentoo" }}
     {{-   $emailClient = "betterbird-bin" }}
+    {{- else if eq .osid "linux-ubuntu" "linux-linuxmint" }}
+    {{-   $emailClient = "/opt/betterbird/betterbird" }}
     {{- end }}
     Mod+M { spawn "{{ $emailClient }}" "-P"; }
     Mod+N { spawn "swaync-client" "-t" "-sw"; }
@@ -61,7 +63,6 @@ binds {
     Mod+S { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
     Mod+Shift+S { spawn-sh "grim -g \"$(slurp)\" \"$HOME/Pictures/Screenshots/screenshot_$(date +%Y-%m-%d-%H%M%S).png\""; }
     Mod+Z { spawn "ndrop" "kitty" "--class" "btop" "-e" "btop"; }
-    Mod+W { spawn "ndrop" "spotify"; }
     Mod+T { spawn "ndrop" "thunar"; }
 
     {{- if eq .browser "FIREFOX" }}
