@@ -53,7 +53,8 @@ spawn-at-startup "shikane"
 
 // Idle
 {{- if ne .place "HOME" }}
-spawn-at-startup "systemctl" "--user" "start" "stasis.service"
+spawn-at-startup "stasis"
+spawn-at-startup "stasis" "tray"
 {{- end }}
 
 // Clipboard

@@ -1,18 +1,25 @@
 @author "Dustin Pilgrim"
 @description "Stasis configuration file"
 
-# Global variable
-default_timeout 300  # 5 minutes
-
-stasis:
-  pre_suspend_command "loginctl lock-session"
+default:
+  # ----- Global knobs (these DO get overridden by profiles) -----
+  enable_loginctl false
+  enable_dbus_inhibit true
+  pre_suspend_command None
   monitor_media true
   ignore_remote_media true
+  debounce_seconds 5
 
   # Optional: ignore specific media players
   media_blacklist ["spotify"]
 
   respect_idle_inhibitors true
+
+  # When resuming from IPC pause timers (e.g. `stasis pause 1h`)
+  notify_on_unpause true
+
+  # Enables per-step notifications (only if the block sets `notification`)
+  notify_before_action true
 
   {{- if eq .kind "laptop" }}
   # Laptop lid behavior
@@ -32,13 +39,18 @@ stasis:
     r"steam_app_.*"
   ]
 
+  startup:
+    timeout 0
+    command "notify-send -a Stasis 'Stasis started!'"
+  end
+
   # Desktop-only idle actions (applies to all devices)
   lock_screen:
     timeout 180  # 3 minutes
-    command "loginctl lock-session"
+    command "hyprlock"
     resume-command "notify-send 'Welcome back $env.USER!'"
-    lock-command "hyprlock"
     notify_seconds_before 10
+    notification_icon "dialog-warning"
     notification "You are AFK, locking in 10s"
   end
 
