@@ -67,7 +67,11 @@ binds {
     {{- if eq .browser "FIREFOX" }}
     Mod+E { spawn "firefox" "-P"; }
     {{- else if eq .browser "ZEN" }}
-    Mod+E { spawn "zen-browser" "-P"; }
+    {{-   $browser := "zen-browser" }}
+    {{-   if eq .osid "linux-ubuntu" "linux-linuxmint" }}
+    {{-     $browser = "zen" }}
+    {{-   end }}
+    Mod+E { spawn "{{ $browser }}" "-P"; }
     {{- end }}
 
     {{- $osd := "swayosd-client --monitor \\\"$(niri msg -j focused-output | jq -r .name)\\\"" }}

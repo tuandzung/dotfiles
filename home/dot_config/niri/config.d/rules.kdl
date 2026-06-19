@@ -1,165 +1,168 @@
 // Window rules -> workspace routing (app-id is Wayland app_id or XWayland class).
 window-rule {
-    match app-id=r#"^(kitty)$"#
+    match app-id="^(kitty)$"
     open-on-workspace "term"
+    opacity 0.9
+    background-effect {
+        blur true
+    }
 }
-
 // Web workspace rules
 window-rule {
-    match app-id=r#"^([Ff]irefox(|-esr)|org.mozilla.firefox|[Ff]irefox)"#
+    match app-id="^([Ff]irefox(|-esr)|org.mozilla.firefox|[Ff]irefox)"
     open-on-workspace "web"
     open-maximized-to-edges true
 }
 window-rule {
-    match app-id=r#"^([Gg]oogle-chrome(-beta|-dev|-unstable)?)$"#
+    match app-id="^([Gg]oogle-chrome(-beta|-dev|-unstable)?)$"
     open-on-workspace "web"
     open-maximized-to-edges true
 }
 window-rule {
-    match app-id=r#"^(chromium)$"#
+    match app-id="^(chromium)$"
     open-on-workspace "web"
     open-maximized-to-edges true
 }
 window-rule {
-    match app-id=r#"^(chrome-.+-Default)$"#
+    match app-id="^(chrome-.+-Default)$"
     open-on-workspace "web"
     open-maximized-to-edges true
 }
 window-rule {
-    match app-id=r#"^(Vivaldi.+)$"#
+    match app-id="^(Vivaldi.+)$"
     open-on-workspace "web"
     open-maximized-to-edges true
 }
 window-rule {
-    match app-id=r#"^([Zz]en)$"#
+    match app-id="^([Zz]en)$"
     open-on-workspace "web"
     open-maximized-to-edges true
+    opacity 0.95
+    background-effect {
+        blur true
+    }
 }
-
 // Mail workspace rules
 window-rule {
-    match app-id=r#"^(eu.betterbird.Betterbird)$"#
+    match app-id="^(eu.betterbird.Betterbird)$"
     open-on-workspace "mail"
 }
-
 // Chat workspace rules
 window-rule {
-    match app-id=r#"^([Dd]iscord|[Ww]ebCord|[Vv]esktop)$"#
+    match app-id="^([Dd]iscord|[Ww]ebCord|[Vv]esktop)$"
     open-on-workspace "chat"
 }
 window-rule {
-    match app-id=r#"^([Ss]lack)$"#
+    match app-id="^([Ss]lack)$"
     open-on-workspace "chat"
 }
 window-rule {
-    match app-id=r#"^([Ff]erdium)$"#
+    match app-id="^([Ff]erdium)$"
     open-on-workspace "chat"
 }
 window-rule {
-    match app-id=r#"^(org.telegram.desktop|io.github.tdesktop_x64.TDesktop)$"#
+    match app-id="^(org.telegram.desktop|io.github.tdesktop_x64.TDesktop)$"
     open-on-workspace "chat"
 }
 window-rule {
-    match app-id=r#"^(teams-for-linux)$"#
+    match app-id="^(teams-for-linux)$"
     open-on-workspace "chat"
 }
-
 // Media workspace rules
 window-rule {
-    match app-id=r#"^(vlc|mpv|com.stremio.stremio)$"#
+    match app-id="^(vlc|mpv|com.stremio.stremio)$"
     open-on-workspace "media"
 }
-
 // Games workspace rules
 window-rule {
-    match app-id=r#"^([Ss]team)$"#
+    match app-id="^([Ss]team)$"
     open-on-workspace "games"
 }
 window-rule {
-    match app-id=r#"^(steam_app_\d+)$"#
+    match app-id="^(steam_app_\\d+)$"
     open-on-workspace "games"
     open-maximized true
 }
 window-rule {
-    match app-id=r#"^(steam_proton)$"#
+    match app-id="^(steam_proton)$"
     open-on-workspace "games"
     open-maximized true
 }
 window-rule {
-    match app-id=r#"^(net.lutris.Lutris)$"#
+    match app-id="^(net.lutris.Lutris)$"
     open-on-workspace "games"
     open-maximized true
 }
-
 // Office workspace rules
 window-rule {
-    match app-id=r#"^([Cc]odium)$"#
+    match app-id="^([Cc]odium)$"
     open-on-workspace "office"
 }
 window-rule {
-    match app-id=r#"^(libreoffice.*)$"#
+    match app-id="^(libreoffice.*)$"
     open-on-workspace "office"
 }
 window-rule {
-    match app-id=r#"^(obsidian)$"#
+    match app-id="^(obsidian)$"
     open-on-workspace "office"
 }
-
 // Others workspace rules
 window-rule {
-    match app-id=r#"^(org.qbittorrent.qBittorrent)"#
+    match app-id="^(org.qbittorrent.qBittorrent)"
     open-on-workspace "others"
 }
 window-rule {
-    match app-id=r#"^(app.drey.Warp)$"#
+    match app-id="^(app.drey.Warp)$"
     open-on-workspace "others"
 }
-
 // Virtual machines workspace rules
 window-rule {
-    match app-id=r#"^(VirtualBox|virt-manager|qemu|remote-viewer)$"#
+    match app-id="^(VirtualBox|virt-manager|qemu|remote-viewer)$"
     open-on-workspace "vm"
     open-maximized-to-edges true
 }
-
 // Floating windows (settings, viewers, and PIP).
 window-rule {
-    match app-id=r#"^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$"#
+    match app-id="^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$"
     open-floating true
 }
 window-rule {
-    match app-id=r#"^(nm-applet|nm-connection-editor|blueman-manager)$"#
+    match app-id="^(nm-applet|nm-connection-editor|blueman-manager)$"
     open-floating true
 }
 window-rule {
-    match app-id=r#"^(file-roller|org.gnome.FileRoller)$"#
+    match app-id="^(file-roller|org.gnome.FileRoller)$"
     open-floating true
 }
 window-rule {
-    match app-id=r#"^(nwg-look|qt5ct|qt6ct|[Yy]ad)$"#
+    match app-id="^(nwg-look|qt5ct|qt6ct|[Yy]ad)$"
     open-floating true
 }
 window-rule {
-    match app-id=r#"^(xdg-desktop-portal-gnome)$"#
+    match app-id="^(xdg-desktop-portal-gnome)$"
     open-floating true
 }
 window-rule {
-    match app-id=r#"^(btop)$"#
+    match app-id="^(btop)$"
     open-floating true
 }
 window-rule {
-    match app-id=r#"^(evince)$"#
+    match app-id="^(evince)$"
     open-floating true
 }
 window-rule {
-    match app-id=r#"^(eog|org.gnome.Loupe)$"#
+    match app-id="^(eog|org.gnome.Loupe)$"
     open-floating true
 }
 window-rule {
-    match app-id=r#"^([Tt]hunar|org.gnome.Nautilus|[Pp]cmanfm-qt)$"#
+    match app-id="^([Tt]hunar|org.gnome.Nautilus|[Pp]cmanfm-qt)$"
     open-floating true
+    opacity 0.9
+    background-effect {
+        blur true
+    }
 }
 window-rule {
-    match app-id=r#"^([Ss]potify)$"#
+    match app-id="^([Ss]potify)$"
     open-floating true
 }
