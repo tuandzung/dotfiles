@@ -3,10 +3,10 @@ name: curlie
 method: binary
 github:
   repo: rs/curlie
-  release_asset: curlie_%s_linux_{{ .chezmoi.arch }}.tar.gz
+  release_asset: curlie_%s_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz
+  sha256: curlie_%s_checksums.txt
 archive:
-  paths:
-    - curlie
+  - path: curlie
 {{- else }}
 method: os
 macos:

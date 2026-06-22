@@ -1,3 +1,4 @@
+{{- if ne .chezmoi.os "android" }}
 name: docker-compose
 method: binary
 github:
@@ -9,3 +10,9 @@ github:
   {{-   $arch = "aarch64" }}
   {{- end }}
   release_asset: docker-compose-{{ .chezmoi.os }}-{{ $arch }}
+  sha256: checksums.txt
+hook:
+  after: |-
+    curl -fSsL https://raw.githubusercontent.com/brgmnn/fish-docker-compose/refs/heads/master/completions/docker-compose.fish
+      -o {{ .chezmoi.homeDir }}/.config/fish/completions/docker-compose.fish
+{{- end }}
