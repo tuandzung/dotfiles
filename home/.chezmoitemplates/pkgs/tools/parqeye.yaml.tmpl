@@ -21,7 +21,7 @@ github:
   {{- $arch = "aarch64" }}
   {{- end }}
   release_asset: parqeye-{{ $arch }}-{{ $os }}.tar.xz
+  sha256: parqeye-{{ $arch }}-{{ $os }}.tar.xz.sha256
 archive:
-  paths:
-    - parqeye-{{ $arch }}-{{ $os }}/parqeye
+  - path: parqeye-{{ $arch }}-{{ $os }}/parqeye
 {{- end }}

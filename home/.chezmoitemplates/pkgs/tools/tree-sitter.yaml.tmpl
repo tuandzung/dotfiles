@@ -16,6 +16,4 @@ github:
   {{- end }}
   release_asset: tree-sitter-cli-{{ $os }}-{{ $arch }}.zip
 archive:
-  strip_components: 1
-  paths:
-    - ./tree-sitter
+  - path: tree-sitter

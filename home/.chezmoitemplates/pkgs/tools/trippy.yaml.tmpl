@@ -16,9 +16,8 @@ github:
   {{- end }}
   release_asset: trippy-%s-{{ $arch }}-{{ $os }}.tar.gz
 archive:
-  strip_components: 1
-  paths:
-    - trippy-%s-{{ $arch }}-{{ $os }}/trip
+  - path: trippy-%s-{{ $arch }}-{{ $os }}/trip
+    strip: 1
 hook:
-  after: |
-    sudo chown root $(which trip) && sudo chmod +s $(which trip)
+  after: |-
+    sudo setcap CAP_NET_RAW+p "{{ .chezmoi.homeDir }}/.local/bin/trip"

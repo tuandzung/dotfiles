@@ -15,7 +15,6 @@ github:
   {{- $arch = "aarch64" }}
   {{- end }}
   release_asset: rtk-{{ $arch }}-{{ $os }}.tar.gz
+  sha256: checksums.txt
 archive:
-  strip_components: 1
-  paths:
-    - rtk
+  - path: rtk

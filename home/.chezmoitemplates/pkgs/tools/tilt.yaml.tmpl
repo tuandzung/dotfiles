@@ -15,6 +15,6 @@ github:
   {{- $arch = "arm64" }}
   {{- end }}
   release_asset: tilt.%s.{{ $os }}.{{ $arch }}.tar.gz
+  sha256: checksums.txt
 archive:
-  paths:
-    - tilt
+  - path: tilt

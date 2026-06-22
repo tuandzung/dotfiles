@@ -11,14 +11,8 @@ method: binary
 is_essential: true
 github:
   repo: noborus/ov
-  {{- $os := "" }}
-  {{- if eq .chezmoi.os "linux" "android" }}
-  {{- $os = "linux" }}
-  {{- else }}
-  {{- $os = .chezmoi.os }}
-  {{- end }}
-  release_asset: ov_%s_{{ $os }}_{{ .chezmoi.arch }}.zip
+  release_asset: ov_%s_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.zip
+  sha256: ov_%s_checksums.txt
 archive:
-  paths:
-    - ov
+  - path: ov
 {{- end }}

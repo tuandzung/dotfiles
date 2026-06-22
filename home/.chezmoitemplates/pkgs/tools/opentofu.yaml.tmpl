@@ -9,8 +9,7 @@ github:
   release_asset: tofu_%s_linux_arm64.tar.gz
   {{- end }}
 archive:
-  paths:
-    - tofu
+  - path: tofu
 {{- else }}
 method: os
 macos:

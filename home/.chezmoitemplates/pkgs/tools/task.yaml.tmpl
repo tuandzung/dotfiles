@@ -5,15 +5,12 @@ github:
   repo: go-task/task
   version: latest
   release_asset: task_linux_{{ .chezmoi.arch }}.tar.gz
+  sha256: task_checksums.txt
 archive:
-  paths:
-    - task
-hook:
-  after: |
-    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
-    if [ -d ~/.config/fish/completions ]; then
-      tar $param --strip=2 -C ~/.config/fish/completions completion/fish/task.fish
-    fi
+  - path: task
+  - path: completion/fish/task.fish
+    strip: 1
+    location: {{ .chezmoi.homeDir }}/.config/fish/completions
 {{- else }}
 name: task
 is_essential: true

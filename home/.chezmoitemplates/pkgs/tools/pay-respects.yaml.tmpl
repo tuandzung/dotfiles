@@ -16,7 +16,12 @@ github:
   {{- end }}
   release_asset: pay-respects-%s-{{ $arch }}-{{ $os }}.tar.zst
 archive:
-  paths:
-    - pay-respects
-    - _pay-respects-fallback-100-request-ai
-    - _pay-respects-module-100-runtime-rules
+  - path: pay-respects
+  - path: _pay-respects-fallback-100-request-ai
+  - path: _pay-respects-module-100-runtime-rules
+  - path: man/*.1
+    strip: 1
+    location: {{ .chezmoi.homeDir }}/.local/man/man1
+  - path: man/*.5
+    strip: 1
+    location: {{ .chezmoi.homeDir }}/.local/man/man5

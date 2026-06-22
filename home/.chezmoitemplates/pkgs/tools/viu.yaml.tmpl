@@ -1,7 +1,14 @@
-name: tspin
+name: viu
+{{- if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}
+# Using Homebrew on Apple Silicon macos due to missing binary releases
+method: os
+macos:
+  packages:
+    - name: viu
+{{- else }}
 method: binary
 github:
-  repo: bensadeh/tailspin
+  repo: atanunq/viu
   {{- $os := "" }}
   {{- if eq .chezmoi.os "darwin" }}
   {{-   $os = "apple-darwin" }}
@@ -14,6 +21,5 @@ github:
   {{- else if eq .chezmoi.arch "arm64" }}
   {{-   $arch = "aarch64" }}
   {{- end }}
-  release_asset: tailspin-{{ $arch }}-{{ $os }}.tar.gz
-archive:
-  - path: tspin
+  release_asset: viu-{{ $arch }}-{{ $os }}
+{{- end }}

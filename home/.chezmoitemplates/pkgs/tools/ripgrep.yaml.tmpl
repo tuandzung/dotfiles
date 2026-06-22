@@ -20,15 +20,11 @@ github:
   {{-   $suffix = "gnu" }}
   {{- end }}
   release_asset: ripgrep-%s-{{ $arch }}-unknown-linux-{{ $suffix }}.tar.gz
+  sha256: ripgrep-%s-{{ $arch }}-unknown-linux-{{ $suffix }}.tar.gz.sha256
 archive:
-  strip_components: 1
-  paths:
-    - ripgrep-%s-{{ $arch }}-unknown-linux-{{ $suffix }}/rg
-hook:
-  after: |
-    arch={{ $arch }}
-    libc={{ $suffix }}
-    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
-    mkdir -p "$MAN_DIR/man1"
-    tar $param --strip=2 -C "$MAN_DIR/man1" "ripgrep-%s-$arch-unknown-linux-$libc/doc/rg.1"
+  - path: ripgrep-%s-{{ $arch }}-unknown-linux-{{ $suffix }}/rg
+    strip: 1
+  - path: ripgrep-%s-{{ $arch }}-unknown-linux-{{ $suffix }}/doc/rg.1
+    strip: 2
+    location: {{ .chezmoi.homeDir }}/.local/man/man1
 {{- end }}

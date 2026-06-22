@@ -16,6 +16,6 @@ github:
   {{- $arch = "arm64" }}
   {{- end }}
   release_asset: viddy-%1s-{{ $os }}-{{ $arch }}.tar.gz
+  sha256: viddy-%1s-{{ $os }}-{{ $arch }}.sha256
 archive:
-  paths:
-    - viddy
+  - path: viddy

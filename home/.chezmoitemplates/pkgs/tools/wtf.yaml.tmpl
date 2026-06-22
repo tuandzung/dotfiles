@@ -3,10 +3,9 @@ method: binary
 github:
   repo: wtfutil/wtf
   release_asset: wtf_%s_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz
+  sha256: wtf_%s_checksums.txt
 archive:
-  paths:
-    - wtfutil
-  strip_components: 1
+  - path: wtfutil
 hook:
   after: |
     mv ~/.local/bin/wtfutil ~/.local/bin/wtf
