@@ -1,0 +1,11 @@
+{{- if ne .chezmoi.os "android" }}
+# Can't use docker and container on non-rooted Android
+name: dive
+method: binary
+github:
+  repo: wagoodman/dive
+  release_asset:  dive_%s_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz
+  sha256: dive_%s_checksums.txt
+archive:
+  - path: dive
+{{- end }}
