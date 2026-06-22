@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -48,6 +50,7 @@ class GithubSource(TypedDict):
     repo: str
     release_asset: str
     version: NotRequired[str]
+    sha256: NotRequired[str]
 
 class GitlabSource(TypedDict):
     """GitLab repository information."""
@@ -56,6 +59,7 @@ class GitlabSource(TypedDict):
     release_asset: str
     version: NotRequired[str]
     host: NotRequired[str]
+    sha256: NotRequired[str]
 
 class Tool(TypedDict):
     """Tool information."""
@@ -209,6 +213,61 @@ def _download_asset(
     logger.info(f"Successfully downloaded {release_asset}")
     return asset_path
 
+def _build_release_download_url(
+    provider: Provider,
+    source: Mapping[str, Any],
+    release_tag: str,
+    filename: str,
+) -> str:
+    repo = source["repo"]
+    if provider == "github":
+        return f"https://github.com/{repo}/releases/download/{release_tag}/{filename}"
+
+    host = str(source.get("host", "https://gitlab.com")).rstrip("/")
+    return f"{host}/{repo}/-/releases/{release_tag}/downloads/{filename}"
+
+
+def _find_expected_sha256(checksum_path: Path, release_asset: str) -> str:
+    digest_pattern = re.compile(r"^[0-9a-fA-F]{64}$")
+    for line in checksum_path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+
+        parts = stripped.split(maxsplit=1)
+        if len(parts) != 2:
+            continue
+
+        digest, filename = parts
+        filename = filename.lstrip("*")
+        if Path(filename).name != release_asset:
+            continue
+
+        if not digest_pattern.fullmatch(digest):
+            raise RuntimeError(f"Malformed SHA256 digest for {release_asset}: {digest}")
+        return digest.lower()
+
+    raise RuntimeError(f"No SHA256 checksum found for {release_asset} in {checksum_path.name}")
+
+
+def _calculate_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as file_handle:
+        for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _verify_sha256(asset_path: Path, checksum_path: Path, release_asset: str) -> None:
+    expected_digest = _find_expected_sha256(checksum_path, release_asset)
+    actual_digest = _calculate_sha256(asset_path)
+    if actual_digest != expected_digest:
+        raise RuntimeError(
+            f"SHA256 mismatch for {release_asset}: expected {expected_digest}, got {actual_digest}"
+        )
+    logger.info(f"Verified SHA256 for {release_asset}")
+
+
 def _select_source(tool: Tool) -> tuple[Provider, Mapping[str, Any]]:
     if tool.get("github"):
         return "github", tool["github"]
@@ -258,15 +317,12 @@ def binaries_installer(tools: Iterable[Tool], *, ctx: InstallerContext | None = 
                     release_tag = str(download_version)
                 version = release_tag.removeprefix("v")
 
-                repo = source["repo"]
                 release_asset = handle_version_tags(source["release_asset"], version)
+                asset_url = _build_release_download_url(provider, source, release_tag, release_asset)
 
                 if provider == "github":
-                    asset_url = f"https://github.com/{repo}/releases/download/{release_tag}/{release_asset}"
                     download_headers = ctx.github_auth_header
                 else:
-                    host = str(source.get("host", "https://gitlab.com")).rstrip("/")
-                    asset_url = f"{host}/{repo}/-/releases/{release_tag}/downloads/{release_asset}"
                     download_headers = _gitlab_headers(ctx.gitlab_token)
 
                 asset_path = _download_asset(
@@ -276,6 +332,20 @@ def binaries_installer(tools: Iterable[Tool], *, ctx: InstallerContext | None = 
                     headers=download_headers,
                     destination_dir=ctx.temp_dir,
                 )
+
+                checksum_asset = source.get("sha256")
+                if checksum_asset:
+                    checksum_asset = handle_version_tags(str(checksum_asset), version)
+                    checksum_url = _build_release_download_url(provider, source, release_tag, checksum_asset)
+                    checksum_path = _download_asset(
+                        session,
+                        checksum_url,
+                        checksum_asset,
+                        headers=download_headers,
+                        destination_dir=ctx.temp_dir,
+                    )
+                    _verify_sha256(asset_path, checksum_path, release_asset)
+
                 os.environ["RELEASE_ASSET"] = release_asset
 
                 archive = tool.get("archive", {})
