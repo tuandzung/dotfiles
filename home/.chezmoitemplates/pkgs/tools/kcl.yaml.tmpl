@@ -5,6 +5,5 @@ github:
   version: latest
   release_asset: kclvm-%1s-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
 archive:
-  strip_components: 2
-  paths:
-    - kclvm/bin/kclvm_cli
+  - path: kclvm/bin/kclvm_cli
+    strip: 2

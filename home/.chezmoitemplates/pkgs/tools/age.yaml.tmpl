@@ -2,6 +2,7 @@ name: age
 is_essential: true
 {{- if eq .chezmoi.os "darwin" }}
 method: os
+# https://repology.org/project/age-encryption/versions
 macos:
   packages:
     - name: age
@@ -12,8 +13,6 @@ github:
   version: latest
   release_asset: age-%1s-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
 archive:
-  strip_components: 2
-  paths:
-    - age/age
-    - age/age-keygen
+  - path: age/age*
+    strip: 1
 {{- end }}

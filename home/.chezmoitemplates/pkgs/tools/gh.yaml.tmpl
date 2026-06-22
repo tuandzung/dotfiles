@@ -13,15 +13,13 @@ github:
   sha256: gh_%s_checksums.txt
   {{- end }}
 archive:
-  strip_components: 2
-  paths:
-    - gh_%s_{{ $os }}_{{ .chezmoi.arch }}/bin/gh
+  - path: gh_%s_{{ $os }}_{{ .chezmoi.arch }}/bin/gh
+    strip: 2
+  - path: gh_%s_{{ $os }}_{{ .chezmoi.arch }}/share/man/man1/*
+    strip: 4
+    location: {{ .chezmoi.homeDir }}/.local/man/man1
 hook:
   after: |
-    extract_dir=gh_%s_{{ $os }}_{{ .chezmoi.arch }}
-    param="-xz -f $TEMP_DIR/$RELEASE_ASSET --strip=4"
-    mkdir -p "$MAN_DIR/man1"
-    tar $param -C "$MAN_DIR/man1" --wildcards "$extract_dir/share/man/man1/*"
     if [ -z "$GITHUB_TOKEN" ]; then
       gh auth login
     fi

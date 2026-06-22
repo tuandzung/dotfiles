@@ -15,7 +15,7 @@ github:
   {{-   $arch = "aarch64" }}
   {{- end }}
   release_asset: llmfit-%1s-{{ $arch }}-{{ $os }}.tar.gz
+  sha256: llmfit-%1s-{{ $arch }}-{{ $os }}.tar.gz.sha256
 archive:
-  strip_components: 1
-  paths:
-    - llmfit-%1s-{{ $arch }}-{{ $os }}/llmfit
+  - path: llmfit-%1s-{{ $arch }}-{{ $os }}/llmfit
+    strip: 1

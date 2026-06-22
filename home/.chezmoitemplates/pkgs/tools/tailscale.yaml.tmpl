@@ -19,4 +19,15 @@ arch:
     after: |-
       sudo systemctl enable --now tailscaled
       sudo tailscale up
+ubuntu:
+  packages:
+    - name: tailscale
+      repo_name: tailscale
+      repo_url: https://pkgs.tailscale.com/stable/ubuntu
+      repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
+      key: https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg
+  hook:
+    after: |-
+      sudo systemctl enable --now tailscaled
+      sudo tailscale up
 {{- end }}

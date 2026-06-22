@@ -21,16 +21,12 @@ github:
   {{- end }}
   release_asset: hyperfine-%1s-{{ $arch }}-unknown-linux-musl.tar.gz
 archive:
-  strip_components: 1
-  paths:
-    - hyperfine-%1s-{{ $arch }}-unknown-linux-musl/hyperfine
-hook:
-  after: |
-    extract_dir=hyperfine-%1s-{{ $arch }}-unknown-linux-musl
-    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
-    mkdir -p "$MAN_DIR/man1"
-    tar $param --strip=1 -C "$MAN_DIR/man1" "$extract_dir/hyperfine.1"
-    if [ -d ~/.config/fish/completions ]; then
-      tar $param --strip=2 -C "$HOME/.config/fish/completions" "$extract_dir/autocomplete/hyperfine.fish"
-    fi
+  - path: hyperfine-%1s-{{ $arch }}-unknown-linux-musl/hyperfine
+    strip: 1
+  - path: hyperfine-%1s-{{ $arch }}-unknown-linux-musl/hyperfine.1
+    strip: 1
+    location: {{ .chezmoi.homeDir }}/.local/man/man1
+  - path: hyperfine-%1s-{{ $arch }}-unknown-linux-musl/autocomplete/hyperfine.fish
+    location: {{ .chezmoi.homeDir }}/.config/fish/completions
+    strip: 2
 {{- end }}

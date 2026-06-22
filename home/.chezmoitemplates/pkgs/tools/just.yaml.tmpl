@@ -3,22 +3,20 @@ name: just
 method: binary
 github:
   repo: casey/just
+  {{- $arch := "" }}
   {{- if eq .chezmoi.arch "amd64" }}
-  release_asset: just-%s-x86_64-unknown-linux-musl.tar.gz
+  {{- $arch = "x86_64" }}
   {{- else if eq .chezmoi.arch "arm64" }}
-  release_asset: just-%s-aarch64-unknown-linux-musl.tar.gz
+  {{- $arch = "aarch64" }}
   {{- end }}
+  release_asset: just-%s-{{ $arch }}-unknown-linux-musl.tar.gz
 archive:
-  paths:
-    - just
-hook:
-  after: |
-    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
-    mkdir -p "$MAN_DIR/man1"
-    tar $param -C "$MAN_DIR/man1" just.1
-    if [ -d ~/.config/fish/completions ]; then
-      tar $param --strip=1 -C ~/.config/fish/completions completions/just.fish
-    fi
+  - path: just
+  - path: just.1
+    location: {{ .chezmoi.homeDir }}/.local/man/man1
+  - path: completions/just.fish
+    location: {{ .chezmoi.homeDir }}/.config/fish/completions
+    strip: 1
 {{- else }}
 method: os
 macos:

@@ -22,16 +22,13 @@ github:
   {{- end }}
   release_asset: fd-%1s-{{ $arch }}-unknown-linux-musl.tar.gz
 archive:
-  strip_components: 1
-  paths:
-    - fd-%1s-{{ $arch }}-unknown-linux-musl/fd
-hook:
-  after: |
-    extract_dir=fd-%1s-{{ $arch }}-unknown-linux-musl
-    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
-    mkdir -p "$MAN_DIR/man1"
-    tar $param -C "$MAN_DIR/man1" "$extract_dir/fd.1"
-    if [ -d ~/.config/fish/completions ]; then
-      tar $param --strip=2 -C "$HOME/.config/fish/completions" "$extract_dir/autocomplete/fd.fish"
-    fi
+archive:
+  - path: fd-%1s-{{ $arch }}-unknown-linux-musl/fd
+    strip: 1
+  - path: fd-%1s-{{ $arch }}-unknown-linux-musl/fd.1
+    strip: 1
+    location: {{ .chezmoi.homeDir }}/.local/man/man1
+  - path: fd-%1s-{{ $arch }}-unknown-linux-musl/autocomplete/fd.fish
+    strip: 2
+    location: {{ .chezmoi.homeDir }}/.config/fish/completions
 {{- end }}

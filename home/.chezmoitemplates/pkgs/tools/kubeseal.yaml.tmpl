@@ -3,6 +3,6 @@ method: binary
 github:
   repo: bitnami-labs/sealed-secrets
   release_asset: kubeseal-%s-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
+  sha256: sealed-secrets_%s_checksums.txt
 archive:
-  paths:
-    - kubeseal
+  - path: kubeseal

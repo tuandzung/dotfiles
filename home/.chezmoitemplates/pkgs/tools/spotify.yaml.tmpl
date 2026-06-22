@@ -1,0 +1,19 @@
+name: spotify
+method: os
+{{- if not .isHeadless }}
+# https://repology.org/project/spotify/versions
+gentoo:
+  packages:
+    - name: media-sound/spotify
+arch:
+  packages:
+    - name: spotify
+ubuntu:
+  packages:
+    - name: com.spotify.Client
+      manager: flatpak
+{{- end }}
+macos:
+  packages:
+    - name: spotify
+      cask: true

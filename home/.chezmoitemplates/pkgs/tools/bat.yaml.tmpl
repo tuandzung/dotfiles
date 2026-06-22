@@ -2,6 +2,7 @@ name: bat
 is_essential: true
 {{- if eq .chezmoi.os "android" "darwin" }}
 # Use package manager for Android, macOS
+# https://repology.org/project/bat-cat/versions
 method: os
 termux:
   packages:
@@ -22,16 +23,12 @@ github:
   {{- end }}
   release_asset: bat-%1s-{{ $arch }}-unknown-linux-musl.tar.gz
 archive:
-  strip_components: 1
-  paths:
-    - bat-%1s-{{ $arch }}-unknown-linux-musl/bat
-hook:
-  after: |
-    extract_dir=bat-%1s-{{ $arch }}-unknown-linux-musl
-    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
-    mkdir -p "$MAN_DIR/man1"
-    tar $param -C "$MAN_DIR/man1" "$extract_dir/bat.1"
-    if [ -d ~/.config/fish/completions ]; then
-      tar $param --strip=2 -C "$HOME/.config/fish/completions" "$extract_dir/autocomplete/bat.fish"
-    fi
+  - path: bat-%1s-{{ $arch }}-unknown-linux-musl/bat
+    strip: 1
+  - path: bat-%1s-{{ $arch }}-unknown-linux-musl/bat.1
+    strip: 1
+    location: {{ .chezmoi.homeDir }}/.local/man/man1
+  - path: bat-%1s-{{ $arch }}-unknown-linux-musl/autocomplete/bat.fish
+    strip: 2
+    location: {{ .chezmoi.homeDir }}/.config/fish/completions
 {{- end }}

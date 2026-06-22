@@ -5,14 +5,22 @@ method: binary
 github:
   repo: jesseduffield/lazydocker
   version: latest
-  {{- if eq .chezmoi.arch "amd64" }}
-  release_asset: lazydocker_%s_Linux_x86_64.tar.gz
-  {{- else if eq .chezmoi.arch "arm64" }}
-  release_asset: lazydocker_%s_Linux_arm64.tar.gz
+  {{- $os := "" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{-   $os = "Darwin" }}
+  {{- else if eq .chezmoi.os "linux" }}
+  {{-   $os = "Linux" }}
   {{- end }}
+  {{- $arch := "" }}
+  {{- if eq .chezmoi.arch "amd64" }}
+  {{-   $arch = "x86_64" }}
+  {{- else if eq .chezmoi.arch "arm64" }}
+  {{-   $arch = "arm64" }}
+  {{- end }}
+  release_asset: lazydocker_%s_{{ $os }}_{{ $arch }}.tar.gz
+  sha256: checksums.txt
 archive:
-  paths:
-    - lazydocker
+  - path: lazydocker
 {{- else }}
 method: os
 macos:

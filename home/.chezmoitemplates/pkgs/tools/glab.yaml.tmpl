@@ -8,6 +8,5 @@ gitlab:
   {{- end }}
   release_asset: glab_%s_{{ $os }}_{{ .chezmoi.arch }}.tar.gz
 archive:
-  paths:
-    - bin/glab
-  strip_components: 1
+  - path: bin/glab
+    strip: 1

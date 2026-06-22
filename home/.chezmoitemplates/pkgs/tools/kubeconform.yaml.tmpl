@@ -7,6 +7,6 @@ github:
   {{-   $os = "linux" }}
   {{- end }}
   release_asset: kubeconform-{{ $os }}-{{ .chezmoi.arch }}.tar.gz
+  sha256: CHECKSUMS
 archive:
-  paths:
-    - kubeconform
+  - path: kubeconform

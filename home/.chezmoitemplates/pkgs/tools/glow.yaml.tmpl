@@ -16,12 +16,8 @@ github:
   {{- end }}
   release_asset: glow_%s_{{ $os }}_{{ $arch }}.tar.gz
 archive:
-  paths:
-    - glow_%s_{{ $os }}_{{ $arch }}/glow
-hook:
-  after: |
-    param="-xz -f $TEMP_DIR/$RELEASE_ASSET"
-    subfix="{{ $os }}_{{ $arch }}"
-    if [ -d ~/.config/fish/completions ]; then
-      tar $param --strip=2 -C ~/.config/fish/completions glow_%s_$subfix/completions/glow.fish
-    fi
+  - path: glow_%s_{{ $os }}_{{ $arch }}/glow
+    strip: 1
+  - path: glow_%s_{{ $os }}_{{ $arch }}/completions/glow.fish
+    strip: 2
+    location: {{ .chezmoi.homeDir }}/.config/fish/completions

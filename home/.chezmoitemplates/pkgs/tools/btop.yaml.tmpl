@@ -16,7 +16,6 @@ github:
   release_asset: btop-aarch64-unknown-linux-musl.tar.gz
   {{- end }}
 archive:
-  strip_components: 3
-  paths:
-    - ./btop/bin/btop
+  - path: btop/bin/btop
+    strip: 2
 {{- end }}

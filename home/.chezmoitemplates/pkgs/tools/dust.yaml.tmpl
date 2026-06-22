@@ -21,7 +21,6 @@ github:
   {{- end }}
   release_asset: dust-%1s-{{ $arch }}-unknown-linux-musl.tar.gz
 archive:
-  strip_components: 1
-  paths:
-    - dust-%1s-{{ $arch }}-unknown-linux-musl/dust
+  - path: dust-%1s-{{ $arch }}-unknown-linux-musl/dust
+    strip: 1
 {{- end }}
