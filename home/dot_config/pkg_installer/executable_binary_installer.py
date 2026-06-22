@@ -331,8 +331,13 @@ def _find_expected_sha256(checksum_path: Path, release_asset: str) -> str:
             continue
 
         parts = stripped.split(maxsplit=1)
-        if len(parts) != 2:
-            continue
+        if len(parts) == 1:
+            digest = parts[0]
+            if checksum_path.name != f"{release_asset}.sha256":
+                continue
+            if not digest_pattern.fullmatch(digest):
+                raise RuntimeError(f"Malformed SHA256 digest for {release_asset}: {digest}")
+            return digest.lower()
 
         digest, filename = parts
         filename = filename.lstrip("*")
