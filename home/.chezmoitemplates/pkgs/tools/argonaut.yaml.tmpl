@@ -1,0 +1,12 @@
+name: argonaut
+method: binary
+github:
+  repo: darksworm/argonaut
+  {{- $os := .chezmoi.os }}
+  {{- if eq .chezmoi.os "android" }}
+  {{-   $os = "linux" }}
+  {{- end }}
+  release_asset: argonaut-%s-{{ $os }}-{{ .chezmoi.arch }}.tar.gz
+  sha256: checksums.txt
+archive:
+  - path: argonaut
