@@ -79,6 +79,7 @@ class Tool(TypedDict):
     archive: ToolArchive | list[ToolArchiveEntry]
     github: GithubSource
     gitlab: GitlabSource
+    location: NotRequired[str]
 
 Provider = str  # "github" | "gitlab"
 
@@ -166,6 +167,16 @@ def _make_executable(path: Path) -> None:
     path.chmod(path.stat().st_mode | 0o111)
 
 def _resolve_archive_location(location: str | None, version: str, install_dir: Path) -> Path:
+    if not location:
+        return install_dir
+
+    resolved = handle_version_tags(location, version)
+    resolved = os.path.expandvars(resolved)
+    return Path(resolved).expanduser()
+
+
+def _resolve_tool_location(tool: Tool, version: str, install_dir: Path) -> Path:
+    location = tool.get("location")
     if not location:
         return install_dir
 
@@ -392,10 +403,6 @@ def binaries_installer(tools: Iterable[Tool], *, ctx: InstallerContext | None = 
             for tool in tools:
                 name = tool["name"]
                 is_essential = tool.get("is_essential", False)
-                if flag_install_not_exists_only and (ctx.install_dir / name).is_file():
-                    logger.info(f"{name} is already installed, skipping...")
-                    continue
-
                 if flag_install_is_essential_only and not is_essential:
                     logger.info(f"{name} is not an essential tool, skipping...")
                     continue
@@ -417,6 +424,13 @@ def binaries_installer(tools: Iterable[Tool], *, ctx: InstallerContext | None = 
                 else:
                     release_tag = str(download_version)
                 version = release_tag.removeprefix("v")
+
+                tool_location = _resolve_tool_location(tool, version, ctx.install_dir)
+                os.environ["INSTALL_LOCATION"] = str(tool_location)
+                dest_path = tool_location / name
+                if flag_install_not_exists_only and dest_path.is_file():
+                    logger.info(f"{name} is already installed, skipping...")
+                    continue
 
                 release_asset = handle_version_tags(source["release_asset"], version)
                 asset_url = _build_release_download_url(provider, source, release_tag, release_asset)
@@ -451,10 +465,8 @@ def binaries_installer(tools: Iterable[Tool], *, ctx: InstallerContext | None = 
 
                 archive = tool.get("archive", {})
                 if not archive:
-                    dest_path = ctx.install_dir / name
-                    shutil.move(str(asset_path), str(dest_path))
-                    _make_executable(dest_path)
-                    logger.info(f"Installed {name} to {dest_path}")
+                    _ensure_destination_under_location(dest_path, tool_location)
+                    _move_installed_file(asset_path, dest_path, make_executable=True)
                 else:
                     _with_hooks(_extract_and_install_archive, tool, version)(
                         tool,

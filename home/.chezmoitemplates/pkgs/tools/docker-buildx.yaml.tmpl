@@ -1,0 +1,10 @@
+{{- if ne .chezmoi.os "android" }}
+# Can't use docker and container on non-rooted Android
+name: docker-buildx
+method: binary
+github:
+  repo: docker/buildx
+  release_asset: buildx-%1s.{{ .chezmoi.os }}-{{ .chezmoi.arch }}
+  sha256: checksums.txt
+location: {{ .chezmoi.homeDir }}/.docker/cli-plugins
+{{- end }}
