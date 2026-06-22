@@ -40,9 +40,17 @@ class ToolHook(TypedDict):
     after: str
 
 class ToolArchive(TypedDict):
-    """Paths to include in the tool archive."""
+    """Legacy paths to include in the tool archive."""
 
     paths: list[str]
+    strip_components: NotRequired[int]
+
+class ToolArchiveEntry(TypedDict):
+    """One archive path install rule."""
+
+    path: str
+    strip: NotRequired[int]
+    location: NotRequired[str]
 
 class GithubSource(TypedDict):
     """GitHub repository information."""
@@ -68,7 +76,7 @@ class Tool(TypedDict):
     method: str
     is_essential: bool
     hook: ToolHook
-    archive: ToolArchive
+    archive: ToolArchive | list[ToolArchiveEntry]
     github: GithubSource
     gitlab: GitlabSource
 
@@ -157,6 +165,97 @@ def _with_hooks(func: Callable[..., None], tool: Tool, version: str) -> Callable
 def _make_executable(path: Path) -> None:
     path.chmod(path.stat().st_mode | 0o111)
 
+def _resolve_archive_location(location: str | None, version: str, install_dir: Path) -> Path:
+    if not location:
+        return install_dir
+
+    resolved = handle_version_tags(location, version)
+    resolved = os.path.expandvars(resolved)
+    return Path(resolved).expanduser()
+
+
+def _ensure_destination_under_location(dest_path: Path, location: Path) -> None:
+    resolved_dest = dest_path.resolve(strict=False)
+    resolved_location = location.resolve(strict=False)
+    if not resolved_dest.is_relative_to(resolved_location):
+        raise RuntimeError(f"Archive destination escapes location: {dest_path}")
+
+
+def _move_installed_file(src_path: Path, dest_path: Path, *, make_executable: bool) -> None:
+    if dest_path.exists():
+        if dest_path.is_dir():
+            raise RuntimeError(f"Archive destination is a directory: {dest_path}")
+        dest_path.unlink()
+
+    _ensure_dir(dest_path.parent)
+    shutil.move(str(src_path), str(dest_path))
+    if make_executable:
+        _make_executable(dest_path)
+    logger.info(f"Installed {src_path.name} to {dest_path}")
+
+
+def _install_legacy_archive_paths(
+    archive: ToolArchive,
+    version: str,
+    *,
+    temp_dir: Path,
+    install_dir: Path,
+) -> None:
+    for rel_path in archive["paths"]:
+        resolved = handle_version_tags(rel_path, version)
+        src_path = temp_dir / resolved
+        dest_path = install_dir / Path(resolved).name
+        _move_installed_file(src_path, dest_path, make_executable=True)
+
+
+def _install_archive_entry(
+    entry: ToolArchiveEntry,
+    version: str,
+    *,
+    temp_dir: Path,
+    install_dir: Path,
+) -> None:
+    path_pattern = handle_version_tags(entry["path"], version)
+    strip_components = int(entry.get("strip", 0))
+    if strip_components < 0:
+        raise RuntimeError(f"Archive strip must be non-negative for {path_pattern}")
+
+    location = _resolve_archive_location(entry.get("location"), version, install_dir)
+    make_executable = location.resolve(strict=False) == install_dir.resolve(strict=False)
+
+    matched_files = sorted(
+        path for path in temp_dir.glob(path_pattern)
+        if path.is_file() and path.resolve(strict=False).is_relative_to(temp_dir.resolve(strict=False))
+    )
+    if not matched_files:
+        raise RuntimeError(f"No archive files matched {path_pattern}")
+
+    for src_path in matched_files:
+        relative_parts = src_path.relative_to(temp_dir).parts
+        if strip_components >= len(relative_parts):
+            raise RuntimeError(f"Archive strip removes entire path for {path_pattern}")
+
+        relative_dest = Path(*relative_parts[strip_components:])
+        dest_path = location / relative_dest
+        _ensure_destination_under_location(dest_path, location)
+        _move_installed_file(src_path, dest_path, make_executable=make_executable)
+
+
+def _install_archive_paths(
+    archive: ToolArchive | list[ToolArchiveEntry],
+    version: str,
+    *,
+    temp_dir: Path,
+    install_dir: Path,
+) -> None:
+    if isinstance(archive, list):
+        for entry in archive:
+            _install_archive_entry(entry, version, temp_dir=temp_dir, install_dir=install_dir)
+        return
+
+    _install_legacy_archive_paths(archive, version, temp_dir=temp_dir, install_dir=install_dir)
+
+
 def _extract_and_install_archive(
     tool: Tool,
     release_tag: str,
@@ -172,16 +271,13 @@ def _extract_and_install_archive(
     logger.info(f"Extracting {asset_path}...")
     try:
         patoolib.extract_archive(str(asset_path), outdir=str(temp_dir))
-        tool_paths = tool["archive"]["paths"]
         version = release_tag.removeprefix("v")
-        for rel_path in tool_paths:
-            resolved = handle_version_tags(rel_path, version)
-            src_path = temp_dir / resolved
-            bin_file = Path(resolved).name
-            dest_path = install_dir / bin_file
-            shutil.move(str(src_path), str(dest_path))
-            _make_executable(dest_path)
-            logger.info(f"Installed {bin_file} to {dest_path}")
+        _install_archive_paths(
+            tool["archive"],
+            version,
+            temp_dir=temp_dir,
+            install_dir=install_dir,
+        )
     except patoolib.util.PatoolError as e:
         logger.error(f"Failed to extract {release_asset}: {e}")
 
