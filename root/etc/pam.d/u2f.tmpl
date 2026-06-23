@@ -1,0 +1,1 @@
+auth sufficient pam_u2f.so origin=pam://{{ .hostname }} appid=pam://{{ .hostname }} cue [cue_prompt=Touch the key pls?]
