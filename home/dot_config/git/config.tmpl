@@ -206,6 +206,13 @@
         # Include config file from enterprise project
         path = ~/Working/.gitconfig
 
+[credential "https://github.com"]
+	helper =
+	helper = !{{ .chezmoi.homeDir }}/.local/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !{{ .chezmoi.homeDir }}/.local/bin/gh auth git-credential
+
 {{- if .preferGitSSH }}
 # Enforce SSH
 [url "git@github.com:"]
