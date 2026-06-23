@@ -1,6 +1,6 @@
 # The current version of the config schema
 version: 1
-git_protocol: ssh
+git_protocol: {{ if .preferGitSSH }}ssh{{ else }}https{{ end }}
 editor: nvim
 prompt: disabled
 prefer_editor_prompt: enabled

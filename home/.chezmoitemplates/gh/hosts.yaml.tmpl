@@ -2,7 +2,7 @@
 {{- $ghUsers = join .chezmoi.sourceDir "../secrets/data/personal/gh.yaml.age" | include | decrypt | fromYaml }}
 
 {{- $protocol := "ssh" }}
-{{- if eq .place "OFFICE" }}
+{{- if not .preferGitSSH }}
 {{-   $protocol = "https" }}
 {{- end }}
 
