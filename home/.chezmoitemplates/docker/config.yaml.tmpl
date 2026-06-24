@@ -1,5 +1,11 @@
 {{- $dockerSecret := dict }}
-{{- $dockerSecret = join .chezmoi.sourceDir "../secrets/data/personal/docker.yaml.age" | include | decrypt | fromYaml }}
+{{- $scope := "global" }}
+{{- if index . "personal" }}
+{{-   $dockerSecret = join .chezmoi.sourceDir "../secrets/data/personal/docker.yaml.age" | include | decrypt | fromYaml }}
+{{- else if index . "enterprise" }}
+{{-   $dockerSecret = printf "../secrets/data/enterprise_%s/docker.yaml.age" .enterprise.name | join .chezmoi.sourceDir | include | decrypt | fromYaml }}
+{{-   $scope = .enterprise.scope }}
+{{- end }}
 auths:
   {{- range $dockerSecret.auths }}
   "{{ .repo }}":
