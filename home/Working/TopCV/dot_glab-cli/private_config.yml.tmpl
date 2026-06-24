@@ -1,5 +1,5 @@
 # What protocol to use when performing Git operations. Supported values: ssh, https.
-git_protocol: {{ if .preferGitSSH }}ssh{{ else }}https{{ end }}
+git_protocol: ssh
 # What editor glab should run when creating issues, merge requests, etc. This global config cannot be overridden by hostname.
 editor:
 # What browser glab should run when opening links. This global config cannot be overridden by hostname.
@@ -16,5 +16,13 @@ host: gitlab.com
 no_prompt: false
 # Configuration specific for GitLab instances.
 hosts:
-{{- $top := merge . (dict "personal" true) }}
+{{- if has "TCV" .decryptEnterprise }}
+{{-   $top := merge . (dict
+        "enterprise" (dict
+          "name" "TCV"
+          "scope" "global"
+        )
+      )
+}}
 {{- includeTemplate "glab-cli/config.yml.tmpl" $top }}
+{{- end }}
