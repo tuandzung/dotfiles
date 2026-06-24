@@ -1,0 +1,19 @@
+{{- $glabSecret := dict }}
+{{- $scope := "global" }}
+{{- if index . "personal" }}
+{{-   $glabSecret = join .chezmoi.sourceDir "../secrets/data/personal/glab.yaml.age" | include | decrypt | fromYaml | merge $glabSecret }}
+{{- end }}
+{{- if index . "enterprise" }}
+{{-   $glabSecret = printf "../secrets/data/enterprise_%s/glab.yaml.age" .enterprise.name | join .chezmoi.sourceDir | include | decrypt | fromYaml | merge $glabSecret }}
+{{-   $scope = .enterprise.scope }}
+{{- end }}
+{{ $glabSecret = get $glabSecret "hosts" }}
+{{- range $hostName, $hostConfig := $glabSecret }}
+    {{ $hostName }}:
+        token: {{ get $hostConfig "token" }}
+        container_registry_domains: {{ get $hostConfig "container_registry_domains" }}
+        api_host: {{ get $hostConfig "api_host" }}
+        api_protocol: {{ get $hostConfig "api_protocol" }}
+        git_protocol: {{ get $hostConfig "git_protocol" }}
+        user: {{ get $hostConfig "user" }}
+{{- end }}
