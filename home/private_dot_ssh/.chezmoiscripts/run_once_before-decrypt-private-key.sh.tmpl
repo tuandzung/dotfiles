@@ -1,19 +1,26 @@
-#!{{ lookPath "bash" }}
-source {{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh
+#!{{ .bash }}
+. {{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh
 dybatpho::register_common_handlers
 
-# key hash: {{ joinPath .chezmoi.sourceDir "../secrets/key_pq.age" | include | sha256sum }}
+{{- $types := list }}
+{{- $types = append $types "personal" }}
+# personal hash: {{ joinPath .chezmoi.sourceDir "../secrets/personal.age" | include | sha256sum }}
+{{- range .decryptEnterprise }}
+{{-   $types = printf "enterprise_%s" . | append $types }}
+# {{ . }} hash: {{ printf "../secrets/enterprise_%s.age" . | joinPath $.chezmoi.sourceDir | include | sha256sum }}
+{{- end }}
 
-dybatpho::header "Decrypting private key into .config/chezmoi"
-if ! dybatpho::is file "${HOME}/.config/chezmoi/key_pq"; then
-    mkdir -p "${HOME}/.config/chezmoi"
-    age --decrypt --output "${HOME}/.config/chezmoi/key_pq" "{{ .chezmoi.workingTree }}/secrets/key_pq.age"
-    if [ $? -eq 0 ]; then
-        chmod 400 "${HOME}/.config/chezmoi/key_pq"
-        dybatpho::success "Successfully decrypted key file"
+for type in {{ range $types }}{{ . | quote }} {{ end }}; do
+  dybatpho::header "Decrypting ${type}.age private key file into .config/chezmoi"
+  if ! dybatpho::is file "${HOME}/.config/chezmoi/${type}"; then
+    age_params=("--decrypt" "--output" "${HOME}/.config/chezmoi/${type}" "{{ .chezmoi.sourceDir }}/../secrets/${type}.age")
+    if age "${age_params[@]}"; then
+      chmod 400 "${HOME}/.config/chezmoi/${type}"
+      dybatpho::success "Successfully decrypted ${type}.age file"
     else
-        dybatpho::error "Failed to decrypt key file"
+      dybatpho::error "Failed to decrypt ${type}.age file"
     fi
-else
-  dybatpho::info "Private key already decrypted, skipping..."
-fi
+  else
+    dybatpho::info "${type}.age already decrypted, skipping..."
+  fi
+done
