@@ -29,7 +29,7 @@ data:
   hostname: {{ $hostname }}
   {{ $kind := promptStringOnce . "kind" "What kind of this machine is it (pc/vm/laptop/...)" "pc" | quote }}
   kind: {{ $kind }}
-  {{ $placeChoices := list "HOME" "OFFICE" }}
+  {{ $placeChoices := list "HOME" "OFFICE" "CLOUD" }}
   {{ $place := promptChoiceOnce . "place" "Where is this machine" $placeChoices "HOME" | quote }}
   place: {{ $place }}
   {{ $dualBoot := promptBoolOnce . "dualBoot" "Does this machine have dual boot (y/n)" false }}
@@ -61,6 +61,11 @@ data:
     {{ toYaml $decryptEnterprise | indent 4 | trim }}
   {{- else }}
   decryptEnterprise: []
+  {{- end }}
+  {{- if eq $.place "OFFICE" }}
+  company: {{ promptChoiceOnce . "company" "Which company does this machine belong to ?" $companies (first $companies) | quote }}
+  {{- else }}
+  company:
   {{- end }}
 
 age:

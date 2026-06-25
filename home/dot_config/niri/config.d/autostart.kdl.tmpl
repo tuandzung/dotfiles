@@ -29,7 +29,7 @@ spawn-sh-at-startup "~/.scripts/gtk.sh"
 
 // Launcher
 spawn-at-startup "walker" "--gapplication-service"
-spawn-sh-at-startup "{{ if eq .place "OFFICE" }}RBW_PROFILE=work{{- end }} elephant"
+spawn-sh-at-startup "{{ if eq .place "OFFICE" }}RBW_PROFILE=enterprise_{{ .company }}{{- end }} elephant"
 
 // Wallpaper
 spawn-at-startup "hyprlax" "{{ .chezmoi.homeDir }}/Wallpapers/4ll819g8qto91.png"
