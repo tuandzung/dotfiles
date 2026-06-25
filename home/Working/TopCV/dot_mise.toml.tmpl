@@ -8,6 +8,7 @@
       )
 }}
 {{-   template "mise/env_jira.toml.tmpl" $top }}
+{{-   template "mise/env_glab.toml.tmpl" $top }}
 {{- end }}
 DOCKER_CONFIG = "{{ "{{config_root}}" }}/.docker"
 JIRA_CONFIG_FILE = "{{ "{{config_root}}" }}/.jira/config.yaml"
