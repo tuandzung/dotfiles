@@ -20,7 +20,4 @@ archive:
     location: {{ .chezmoi.homeDir }}/.local/man/man1
 hook:
   after: |
-    if [ -z "$GITHUB_TOKEN" ]; then
-      gh auth login
-    fi
     gh extension install dlvhdr/gh-dash
