@@ -1,0 +1,2 @@
+{{- $ssh := includeTemplate "ssh/service.yaml.tmpl" . | fromYaml }}
+{{- merge $ssh . | includeTemplate "ssh/hosts.config.tmpl" -}}
