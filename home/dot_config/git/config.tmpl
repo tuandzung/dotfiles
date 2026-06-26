@@ -202,22 +202,30 @@
         path = ~/.config/git/diff-filter
         path = ~/.config/git/delta
 
-[includeIf "gitdir/i:~/Working/**"]
-        # Include config file from enterprise project
-        path = ~/Working/.gitconfig
+{{- range .decryptEnterprise }}
+[includeIf "gitdir/i:~/Working/Enterprise/{{ . }}/**"]
+        # Include config file from enterprise {{ . }} projects
+        path = ~/Working/Enterprise/{{ . }}/.gitconfig
+{{- end }}
 
+{{- if .preferGitSSH }}
+[url "git@github.com:"]
+        # Prefer SSH than HTTPS for github
+        insteadOf = https://github.com/
+[url "git@gitlab.com:"]
+        # Prefer SSH than HTTPS for gitlab
+        insteadOf = https://gitlab.com/
+{{- else }}
+[url "https://github.com/"]
+        # Prefer HTTPS than for github
+        insteadOf = git@github.com:
+[url "https://gitlab.com/"]
+        # Prefer HTTPS than for gitlab
+        insteadOf = git@gitlab.com:
 [credential "https://github.com"]
 	helper =
 	helper = !{{ .chezmoi.homeDir }}/.local/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
 	helper = !{{ .chezmoi.homeDir }}/.local/bin/gh auth git-credential
-
-{{- if .preferGitSSH }}
-# Enforce SSH
-[url "git@github.com:"]
-        insteadOf = https://github.com/
-
-[url "git@gitlab.com:"]
-        insteadOf = https://gitlab.com/
 {{- end }}

@@ -1,0 +1,9 @@
+{{- $gitSecret := printf "../secrets/data/enterprise_%s/git.yaml.age" .enterprise | join .chezmoi.sourceDir | include | decrypt | fromYaml }}
+{{- $algo := "ed25519" }}
+{{- if hasKey . "algo" }}
+{{-   $algo = .algo }}
+{{- end }}
+{{- $prefix := printf "%s namespaces=\"git\" " $gitSecret.email }}
+{{- range $gitSecret.allowedSigners }}
+{{-   $prefix }}{{- printf "ssh/pub/%s_%s.pub" . $algo | includeTemplate }}
+{{- end -}}

@@ -1,0 +1,33 @@
+[user]
+        {{- $gitSecret := printf "../secrets/data/enterprise_%s/git.yaml.age" .enterprise | join .chezmoi.sourceDir | include | decrypt | fromYaml }}
+        email = {{ $gitSecret.email }}
+        # Signing SSH key
+        signingkey = ~/.ssh/keys/enterprise-{{ .enterprise }}_ed25519.pub
+[core]
+        # Custom global ignore file
+        excludesfile = ~/Working/Enterprise/{{ .enterprise }}/.gitignore
+        {{- if index $gitSecret "useCustomSSHCommand" }}
+        # Custom SSH command with separated ssh config
+        sshCommand = ssh -F ~/Working/Enterprise/{{ .enterprise }}/.ssh/config
+        {{- end }}
+{{- if index $gitSecret "allowedSigners" }}
+[gpg "ssh"]
+        allowedSignersFile = ~/Working/Enterprise/{{ .enterprise }}/.allowed_signers
+{{- end }}
+{{- range $gitSecret.servers }}
+{{-   if .preferGitSSH }}
+[url {{ .ssh | quote }}]
+        # Prefer SSH than HTTPS
+        insteadOf = {{ .https }}
+{{-   else }}
+[url {{ .https | quote }}]
+        # Prefer HTTPS than SSH
+        insteadOf = {{ .ssh }}
+{{-   end }}
+{{- end }}
+{{- $device := printf "%s-%s" .place .kind }}
+{{- range $gitSecret.configs }}
+{{-   if and (regexMatch .regexDevices $device) (regexMatch .negativeRegexDevices $device | not) }}
+{{      .config }}
+{{-   end }}
+{{- end }}
