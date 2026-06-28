@@ -7,6 +7,9 @@
 {{-   $scope = .enterprise.scope }}
 {{- end }}
 {{- range $glabSecret.hosts }}
-{{ .name | indent 4 }}:
-{{ .config | toYaml | indent 8}}
+{{-   if $.preferGitSSH }}
+{{-     $_ := set .config "git_protocol" "ssh" }}
+{{-   end }}
+{{    .name | indent 4 }}:
+{{    .config | toYaml | indent 8 }}
 {{- end }}
