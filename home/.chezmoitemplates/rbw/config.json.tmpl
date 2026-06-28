@@ -5,6 +5,6 @@
 {{-   $rbwSecret = printf "../secrets/data/enterprise_%s/rbw.yaml.age" .enterprise | join .chezmoi.sourceDir | include | decrypt | fromYaml }}
 {{- end }}
 {{- if eq .chezmoi.os "darwin" }}
-{{-   set $rbwSecret "pinentry" "pinentry-mac" }}
+{{-   $_ := set $rbwSecret "pinentry" "pinentry-mac" }}
 {{- end }}
 {{- $rbwSecret | toPrettyJson }}

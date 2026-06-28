@@ -116,3 +116,17 @@ Library/Application\ Support/zen
 .config/rbw-work
 .config/steamguard-cli
 {{- end }}
+
+{{- if empty .decryptEnterprise }}
+.ssh/config.d/enterprise.config
+Library/Application Support/rbw-*
+.config/rbw-*
+{{- end }}
+{{- range .companies }}
+{{-   if not (has . $.decryptEnterprise) }}
+.ssh/keys/enterprise_{{ . }}_*
+Working/Enterprise/{{ . }}
+.config/rbw-enterprise_{{ . | lower }}
+Library/Application Support/rbw-enterprise_{{ . | lower }}
+{{-   end }}
+{{- end }}
