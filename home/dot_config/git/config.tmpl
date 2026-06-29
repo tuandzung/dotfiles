@@ -222,10 +222,4 @@
 [url "https://gitlab.com/"]
         # Prefer HTTPS than for gitlab
         insteadOf = git@gitlab.com:
-[credential "https://github.com"]
-	helper =
-	helper = !{{ .chezmoi.homeDir }}/.local/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper =
-	helper = !{{ .chezmoi.homeDir }}/.local/bin/gh auth git-credential
 {{- end }}

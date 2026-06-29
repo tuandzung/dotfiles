@@ -1,0 +1,11 @@
+{{- $gitSecret := joinPath $.chezmoi.sourceDir "../secrets/data/personal/git.yaml.age" | include | decrypt | fromYaml }}
+{{- $top := $ }}
+{{- range $gitSecret.servers }}
+{{-   $username := $gitSecret.email }}
+{{-   if index . "username" }}
+{{-     $username = .username }}
+{{-   end }}
+{{-   if index . "token" }}
+machine {{ .https | trimPrefix "https://" | trimSuffix "/" }} login {{ $username }} password {{ .token }}
+{{-   end }}
+{{- end }}
