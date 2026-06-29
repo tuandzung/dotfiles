@@ -3,13 +3,12 @@
 {{-   $top := merge . (dict
         "enterprise" (dict
           "name" "TCV"
-          "scope" "global"
+          "scope" "TCV"
         )
       )
 }}
 {{-   template "mise/env_jira.toml.tmpl" $top }}
-{{-   template "mise/env_glab.toml.tmpl" $top }}
+{{-   template "mise/env_git.toml.tmpl" $top }}
 {{- end }}
 DOCKER_CONFIG = "{{ "{{config_root}}" }}/.docker"
 JIRA_CONFIG_FILE = "{{ "{{config_root}}" }}/.jira/config.yaml"
-GLAB_CONFIG_DIR = "{{ "{{config_root}}" }}/.glab-cli"

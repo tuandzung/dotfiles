@@ -1,0 +1,22 @@
+{{- $gitSecret := dict }}
+{{- $scope := "" }}
+{{- if index . "personal" }}
+{{-   $gitSecret = join .chezmoi.sourceDir "../secrets/data/personal/git.yaml.age" | include | decrypt | fromYaml }}
+{{-   $scope = .personal.scope }}
+{{- else if index . "enterprise" }}
+{{-   $gitSecret = printf "../secrets/data/enterprise_%s/git.yaml.age" .enterprise.name | join .chezmoi.sourceDir | include | decrypt | fromYaml }}
+{{-   $scope = .enterprise.scope }}
+{{- end }}
+{{- $top := . }}
+{{- range $gitSecret.servers }}
+{{-   if eq $scope .scope }}
+{{-     if eq .type "github" }}
+{{ .prefix | upper }}GITHUB_TOKEN = {{ .token | quote }}
+{{ .prefix | upper }}GITHUB_HOST = {{ .https | quote }}
+{{-     end }}
+{{-     if eq .type "gitlab" }}
+{{ .prefix | upper }}GITLAB_TOKEN = {{ .token | quote }}
+{{ .prefix | upper }}GITLAB_HOST = {{ .https | quote }}
+{{-     end }}
+{{-   end }}
+{{- end }}
