@@ -59,7 +59,7 @@ binds {
     Mod+N { spawn "swaync-client" "-t" "-sw"; }
     Mod+X { spawn "walker" "-m" "clipboard"; }
     Mod+P { spawn "walker" "-m" "bitwarden"; }
-    Mod+L { spawn "hyprlock"; }
+    Mod+L { spawn "stasis" "trigger" "lockscreen"; }
     Mod+S { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
     Mod+Shift+S { spawn-sh "grim -g \"$(slurp)\" \"$HOME/Pictures/Screenshots/screenshot_$(date +%Y-%m-%d-%H%M%S).png\""; }
     Mod+Z { spawn "ndrop" "kitty" "--class" "btop" "-e" "btop"; }
