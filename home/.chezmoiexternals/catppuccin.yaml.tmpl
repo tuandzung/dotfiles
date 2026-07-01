@@ -23,10 +23,18 @@
   url: https://raw.githubusercontent.com/catppuccin/delta/refs/heads/main/catppuccin.gitconfig
   refreshPeriod: 168h
 
-{{- if ne .chezmoi.os "darwin" }}
+.config/yazi/theme.toml:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/yazi/refs/heads/main/themes/{{ $theme }}/catppuccin-{{ $theme }}-{{ $variant }}.toml
+
+.config/yazi/Catppuccin-{{ $theme }}.tmTheme:
+  type: file
+  url: https://raw.githubusercontent.com/catppuccin/bat/refs/heads/main/themes/Catppuccin%20{{ camelcase $theme }}.tmTheme
+
+{{- if eq .windowManager "HYPRLAND" }}
 .config/hypr/hyprland/color.conf:
   type: file
-  url: https://raw.githubusercontent.com/catppuccin/hyprland/refs/heads/main/themes/{{ $theme }}.conf
+  url: https://raw.githubusercontent.com/catppuccin/hyprland/refs/tags/v1.3/themes/{{ $theme }}.conf
   refreshPeriod: 168h
 {{- end }}
 

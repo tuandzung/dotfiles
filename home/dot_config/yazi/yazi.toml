@@ -1,0 +1,22 @@
+# A TOML linter such as https://github.com/tombi-toml/tombi can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+
+#:schema https://yazi-rs.github.io/schemas/yazi.json
+
+[mgr]
+show_hidden = true
+show_symlink = true
+linemode = "size"
+
+[plugin]
+prepend_previewers = [{ url = "*/", run = 'piper -- eza --icons -la@ "$1"' }]
+prepend_fetchers = [
+  { url = "*", run = "git", group = "git" },
+  { url = "*/", run = "git", group = "git" },
+]
+
+[opener]
+edit = [{ run = '$EDITOR "$@"', block = true, for = "unix" }]
+extract = [
+  { run = 'ya pub extract --list "$@"', desc = "Extract here", for = "unix" },
+]

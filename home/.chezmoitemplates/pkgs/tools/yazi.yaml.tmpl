@@ -1,0 +1,29 @@
+name: yazi
+method: binary
+github:
+  repo: sxyazi/yazi
+  {{- $os := "unknown-linux-gnu" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{-   $os = "apple-darwin" }}
+  {{- end }}
+  {{- $arch := "" }}
+  {{- if eq .chezmoi.arch "amd64" }}
+  {{-   $arch = "x86_64" }}
+  {{- else if eq .chezmoi.arch "arm64" }}
+  {{-   $arch = "aarch64" }}
+  {{- end }}
+  release_asset: yazi-{{ $arch }}-{{ $os }}.zip
+archive:
+  - path: yazi-{{ $arch }}-{{ $os }}/yazi
+    strip: 1
+  - path: yazi-{{ $arch }}-{{ $os }}/ya
+    strip: 1
+  - path: yazi-{{ $arch }}-{{ $os }}/completions/yazi.fish
+    strip: 2
+    location: {{ .chezmoi.homeDir }}/.config/fish/completions
+  - path: yazi-{{ $arch }}-{{ $os }}/completions/ya.fish
+    strip: 2
+    location: {{ .chezmoi.homeDir }}/.config/fish/completions
+hook:
+  after: |-
+    ya pkg add yazi-rs/plugins:piper yazi-rs/plugins:git || :
