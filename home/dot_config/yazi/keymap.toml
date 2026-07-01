@@ -1,0 +1,23 @@
+# A TOML linter such as https://github.com/tombi-toml/tombi can use this schema to validate your config.
+# If you encounter any problems, please make an issue at https://github.com/yazi-rs/schemas.
+
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+#
+[mgr]
+prepend_keymap = [
+  { on = "H", run = "plugin duckdb -1", desc = "Scroll one column to the left" },
+  { on = "L", run = "plugin duckdb +1", desc = "Scroll one column to the right" },
+  { on = [
+    "g",
+    "o",
+  ], run = "plugin duckdb -open", desc = "open with duckdb" },
+  { on = [
+    "g",
+    "u",
+  ], run = "plugin duckdb -ui", desc = "open with duckdb ui" },
+  { on = [
+    "c",
+    "m",
+  ], run = "plugin chmod", desc = "Chmod selected file" },
+  { on = "l", run = "plugin smart-enter", desc = "Enter the child directory, or open the file" },
+]

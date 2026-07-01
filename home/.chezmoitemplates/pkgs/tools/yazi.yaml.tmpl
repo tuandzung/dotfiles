@@ -26,4 +26,9 @@ archive:
     location: {{ .chezmoi.homeDir }}/.config/fish/completions
 hook:
   after: |-
-    ya pkg add yazi-rs/plugins:piper yazi-rs/plugins:git yazi-rs/plugins:full-border || :
+    ya pkg add yazi-rs/plugins:piper \
+      yazi-rs/plugins:git \
+      yazi-rs/plugins:full-border \
+      yazi-rs/plugins:chmod \
+      yazi-rs/plugins:smart-enter \
+      wylie102/duckdb || :

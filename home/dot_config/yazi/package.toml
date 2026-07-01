@@ -13,5 +13,20 @@ use = "yazi-rs/plugins:full-border"
 rev = "39aaf6d"
 hash = "7b625412411be411153886894d9acaf"
 
+[[plugin.deps]]
+use = "wylie102/duckdb"
+rev = "3f8c863"
+hash = "87b9233a74325e95011670ed20bbd0d4"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+rev = "39aaf6d"
+hash = "f0c8c378184d5f8abd1b095a443d336d"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-enter"
+rev = "39aaf6d"
+hash = "187cc58ba7ac3befd49c342129e6f1b6"
+
 [flavor]
 deps = []

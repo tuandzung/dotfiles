@@ -7,9 +7,26 @@
 show_hidden = true
 show_symlink = true
 linemode = "size"
+ratio = [1, 2, 5]
 
 [plugin]
-prepend_previewers = [{ url = "*/", run = 'piper -- eza --icons -la@ "$1"' }]
+prepend_previewers = [
+  { url = "*/", run = 'piper -- eza --icons -la@ "$1"' },
+  { url = "*.csv", run = "duckdb" },
+  { url = "*.tsv", run = "duckdb" },
+  { url = "*.parquet", run = "duckdb" },
+  { url = "*.txt", run = "duckdb" },
+  { url = "*.xlsx", run = "duckdb" },
+  { url = "*.db", run = "duckdb" },
+  { url = "*.duckdb", run = "duckdb" },
+]
+prepend_preloaders = [
+  { url = "*.csv", run = "duckdb", multi = false },
+  { url = "*.tsv", run = "duckdb", multi = false },
+  { url = "*.parquet", run = "duckdb", multi = false },
+  { url = "*.txt", run = "duckdb", multi = false },
+  { url = "*.xlsx", run = "duckdb", multi = false },
+]
 prepend_fetchers = [
   { url = "*", run = "git", group = "git" },
   { url = "*/", run = "git", group = "git" },
