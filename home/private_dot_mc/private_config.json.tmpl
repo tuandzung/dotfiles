@@ -1,0 +1,2 @@
+{{- $top := merge . (dict "personal" true) }}
+{{- includeTemplate "mc/config.json.tmpl" $top }}

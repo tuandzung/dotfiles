@@ -1,0 +1,10 @@
+{{- if has "TCV" .decryptEnterprise }}
+{{-   $top := merge . (dict
+        "enterprise" (dict
+          "name" "TCV"
+          "scope" "TCV"
+        )
+      )
+}}
+{{- includeTemplate "mc/config.json.tmpl" $top }}
+{{- end -}}

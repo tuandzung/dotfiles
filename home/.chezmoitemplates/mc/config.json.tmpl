@@ -1,0 +1,16 @@
+{{- $mcSecret := dict }}
+{{- $scope := "global" }}
+{{- if index . "personal" }}
+{{-   $mcSecret = join .chezmoi.sourceDir "../secrets/data/personal/mc.yaml.age" | include | decrypt | fromYaml }}
+{{- else if index . "enterprise" }}
+{{-   $mcSecret = printf "../secrets/data/enterprise_%s/mc.yaml.age" .enterprise.name | join .chezmoi.sourceDir | include | decrypt | fromYaml }}
+{{-   $scope = .enterprise.scope }}
+{{- end }}
+{{- $data := dict "version" "10" "aliases" dict }}
+{{- range $mcSecret.aliases }}
+{{-   if eq .scope $scope }}
+{{-     $_ := unset .config "scope" }}
+{{-     $_ := set $data.aliases .name (merge .config dict) }}
+{{-   end }}
+{{- end }}
+{{- $data | toPrettyJson }}
