@@ -1,0 +1,12 @@
+127.0.0.1                               {{ .hostname }} localhost localhost4
+127.0.1.1                               {{ .hostname }}
+
+::1                                     {{ .hostname }} localhost localhost6
+fe00::0                                 localnet6
+ff00::0                                 mcastprefix6
+ff02::1                                 allnodes6
+ff02::2                                 allrouters6
+{{ range .decryptEnterprise }}
+{{-   $hostsSecret := printf "../secrets/data/enterprise_%s/hosts.yaml.age" . | join $.chezmoi.sourceDir | include | decrypt | fromYaml }}
+{{    get $hostsSecret "hosts" }}
+{{- end }}
