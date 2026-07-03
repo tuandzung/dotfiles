@@ -1,7 +1,9 @@
-{{- if eq .chezmoi.osRelease.id "gentoo" -}}
+{{- if eq .osid "linux-gentoo" -}}
 GRUB_DISTRIBUTOR="Gentoo"
-{{- else if eq .chezmoi.osRelease.id "arch" -}}
+{{- else if eq .osid "linux-arch" -}}
 GRUB_DISTRIBUTOR="Arch"
+{{- else if eq .osid "linux-ubuntu" -}}
+GRUB_DISTRIBUTOR="Ubuntu"
 {{- end }}
 
 # Disable os_prober
