@@ -1,0 +1,52 @@
+[submodule "scripts/lib/dybatpho"]
+	path = scripts/lib/dybatpho
+	url = https://github.com/dynamotn/dybatpho.git
+{{- $github := "git@github.com:" }}
+{{- if not .preferGitSSH }}
+{{-   $github = "https://github.com/" }}
+{{- end }}
+[submodule "nvim"]
+	path = home/dot_config/nvim
+	url = {{ $github }}tuandzung/vim-config.git
+{{- if not .isHeadless }}
+[submodule "icons"]
+	path = modules/icons
+	url = {{ $github }}tuandzung/icons.git
+[submodule "wallpapers"]
+	path = home/Wallpapers
+	url = {{ $github }}tuandzung/wallpapers.git
+[submodule "fx-autoconfig"]
+	path = home/.chezmoitemplates/firefox/chrome/fx-autoconfig
+	url = {{ $github }}MrOtherGuy/fx-autoconfig.git
+[submodule "thunderbird-personal"]
+	path = home/dot_config/thunderbird/profiles/personal
+	url = {{ $github }}tuandzung/Thunderbird.git
+[submodule "thunderbird-work"]
+	path = home/dot_config/thunderbird/profiles/work
+	url = {{ $github }}tuandzung/Thunderbird.git
+  branch = work
+[submodule "mpv"]
+	path = home/dot_config/mpv
+	url = {{ $github }}tuandzung/mpv.git
+{{-   if eq .browser "FIREFOX" }}
+[submodule "firefox-personal"]
+	path = home/dot_config/firefox/profiles/personal
+	url = {{ $github }}tuandzung/FirefoxPersonal.git
+[submodule "lepton"]
+	path = home/.chezmoitemplates/firefox/chrome/lepton
+	url = {{ $github }}black7375/Firefox-UI-Fix.git
+[submodule "firefox-work"]
+	path = home/dot_config/firefox/profiles/work
+	url = {{ $github }}tuandzung/FirefoxPersonal.git
+	branch = work
+{{-   else }}
+[submodule "zen-personal"]
+	path = home/dot_config/zen/profiles/personal
+	url = {{ $github }}tuandzung/FirefoxPersonal.git
+  branch = zen-personal
+[submodule "zen-work"]
+	path = home/dot_config/zen/profiles/work
+	url = {{ $github }}tuandzung/FirefoxPersonal.git
+  branch = zen-work
+{{-   end }}
+{{- end }}

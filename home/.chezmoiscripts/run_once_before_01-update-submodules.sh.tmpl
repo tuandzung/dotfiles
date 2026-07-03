@@ -1,23 +1,26 @@
-#!{{ lookPath "bash" }}
-set -Eeou pipefail
-source {{ .chezmoi.workingTree }}/scripts/logger.sh
-trap "_error \"Can't update submodules\"" ERR
+#!{{ .bash }}
+. {{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh
+dybatpho::register_common_handlers
 
-_notice "Update submodules"
-# modules hash: {{ joinPath .chezmoi.workingTree ".gitmodules" | include | sha256sum }}
-cd {{ .chezmoi.workingTree }}
-git submodule update --init --remote --recursive \
+dybatpho::header "Update submodules"
+# modules hash: {{ joinPath .chezmoi.sourceDir "../.gitmodules" | include | sha256sum }}
+repo_root="$(dybatpho::git_root "{{ .chezmoi.sourceDir }}/..")"
+git -C "${repo_root}" add .gitmodules
+git -C "${repo_root}" submodule sync --recursive
+git -C "${repo_root}" submodule update --init \
   {{- if not .isHeadless }}
-  {{- if eq .browser "ZEN" }}
+  {{-   if eq .browser "ZEN" }}
   home/dot_config/zen/profiles \
-  {{- else }}
+  {{-   else }}
   home/dot_config/firefox/profiles \
   home/.chezmoitemplates/firefox/chrome/lepton \
-  {{- end }}
+  {{-   end }}
   home/.chezmoitemplates/firefox/chrome/fx-autoconfig \
   home/dot_config/thunderbird/profiles \
   home/dot_config/mpv \
   home/Wallpapers \
   {{- end }}
   home/dot_config/nvim
-_success "Updated submodules"
+git -C "${repo_root}" restore --staged .gitmodules
+git -C "${repo_root}" update-index --assume-unchanged .gitmodules
+dybatpho::success "Updated submodules"

@@ -61,6 +61,23 @@ _main() {
 
   ${chezmoi} init -S "$SETUP_DIR"
 
+  dybatpho::header "Setup Git modules"
+  if [ -n "${DOTFILES_DEBUG-}" ]; then
+    ${chezmoi} apply --debug \
+      --verbose \
+      --dry-run \
+      "$SETUP_DIR/.gitmodules" \
+      --destination "$SETUP_DIR" \
+      --source "$SETUP_DIR/cascadeur" \
+      --mode file
+  else
+    ${chezmoi} apply \
+      "$SETUP_DIR/.gitmodules" \
+      --destination "$SETUP_DIR" \
+      --source "$SETUP_DIR/cascadeur" \
+      --mode file
+  fi
+
   dybatpho::header "Apply ssh"
   if [ -n "${DOTFILES_DEBUG-}" ]; then
     ${chezmoi} apply --debug --verbose --dry-run "$HOME/.ssh"
