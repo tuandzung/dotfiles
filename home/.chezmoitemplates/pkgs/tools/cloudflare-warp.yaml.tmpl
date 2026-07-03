@@ -1,0 +1,28 @@
+{{- if eq .kind "pc" "laptop" }}
+name: cloudflare-warp
+method: os
+is_essential: true
+gentoo:
+  packages:
+    - name: net-vpn/cloudflare-warp
+      accept_keywords: |-
+        net-vpn/cloudflare-warp ~amd64
+arch:
+  packages:
+    - name: cloudflare-warp-bin
+  hook:
+    after: |-
+      sudo systemctl enable --now warp-svc
+{{-   if eq .osid "linux-ubuntu" "linux-linuxmint" }}
+ubuntu:
+  packages:
+    - name: cloudflare-warp
+      repo_name: cloudflare-warp
+      repo_url: https://pkg.cloudflareclient.com/
+      repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
+      key: https://pkg.cloudflareclient.com/pubkey.gpg
+  hook:
+    after: |-
+      sudo systemctl enable --now warp-svc
+{{-   end }}
+{{- end }}
