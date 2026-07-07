@@ -1,0 +1,15 @@
+name: k6
+method: binary
+github:
+  repo: grafana/k6
+  {{- $os := .chezmoi.os }}
+  {{- $extension := "tar.gz" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{-   $os = "macos" }}
+  {{-   $extension = "zip" }}
+  {{- end }}
+  release_asset: k6-%1s-{{ $os }}-{{ .chezmoi.arch }}.{{ $extension }}
+  sha256: k6-%1s-checksums.txt
+archive:
+  - path: k6-%1s-{{ $os }}-{{ .chezmoi.arch }}/k6
+    strip: 1
