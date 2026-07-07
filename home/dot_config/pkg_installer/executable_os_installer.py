@@ -14,7 +14,6 @@ from typing import NotRequired, TypedDict
 from logger import logger
 from utils import get_os_info, load_all_tools, run_hook
 
-
 class HookConfig(TypedDict, total=False):
     """Configuration for hooks to run before or after package installation."""
 
@@ -341,6 +340,11 @@ def _ensure_flatpak_ubuntu() -> None:
 
     subprocess.run(
         ["sudo", "flatpak", "remote-add", "--if-not-exists", FLATHUB_REMOTE_NAME, FLATHUB_REMOTE_URL],
+        check=True,
+    )
+
+    subprocess.run(
+        ["sudo", "flatpak", "install", "-y", "com.github.tchx84.Flatseal", FLATHUB_REMOTE_NAME],
         check=True,
     )
 
