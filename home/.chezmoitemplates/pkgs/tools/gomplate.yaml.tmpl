@@ -1,0 +1,10 @@
+name: gomplate
+method: binary
+github:
+  repo: hairyhenderson/gomplate
+  {{- $os := .chezmoi.os }}
+  {{- if eq .chezmoi.os "android" }}
+  {{-   $os = "linux" }}
+  {{- end }}
+  release_asset: gomplate_{{ $os }}-{{ .chezmoi.arch }}
+  sha256: checksums-%1s_sha256.txt
