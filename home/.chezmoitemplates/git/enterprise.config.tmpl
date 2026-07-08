@@ -2,7 +2,7 @@
         {{- $gitSecret := printf "../secrets/data/enterprise_%s/git.yaml.age" .enterprise | join .chezmoi.sourceDir | include | decrypt | fromYaml }}
         email = {{ $gitSecret.email }}
         # Signing SSH key
-        signingkey = ~/.ssh/keys/enterprise-{{ .enterprise }}_ed25519.pub
+        signingkey = ~/.ssh/keys/enterprise_{{ .enterprise }}_ed25519.pub
 [core]
         # Custom global ignore file
         excludesfile = ~/Working/Enterprise/{{ .enterprise }}/.gitignore
