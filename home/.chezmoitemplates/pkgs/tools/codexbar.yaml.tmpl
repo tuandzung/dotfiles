@@ -1,0 +1,25 @@
+name: codexbar
+{{- if eq .chezmoi.os "linux" }}
+method: binary
+github:
+  repo: steipete/CodexBar
+  version: latest
+  {{- $arch := "" }}
+  {{- if eq .chezmoi.arch "arm64" }}
+  {{-   $arch = "arm64" }}
+  {{- else if eq .chezmoi.arch "amd64" }}
+  {{-   $arch = "x86_64" }}
+  {{- end }}
+  release_asset: CodexBarCLI-%1s-linux-{{ $arch }}.tar.gz
+  sha256: CodexBarCLI-%1s-linux-{{ $arch }}.tar.gz.sha256
+archive:
+  - path: CodexBarCLI
+hook:
+  after: |-
+    mv ~/.local/bin/CodexBarCLI ~/.local/bin/codexbar
+{{- else }}
+method: os
+macos:
+  packages:
+    - name: steipete/tap/codexbar
+{{- end }}
