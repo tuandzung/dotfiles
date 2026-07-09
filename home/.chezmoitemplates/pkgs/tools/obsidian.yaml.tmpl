@@ -1,3 +1,4 @@
+{{- if eq .kind "pc" "laptop" }}
 name: obsidian
 method: os
 # https://repology.org/project/obsidian/versions
@@ -13,3 +14,4 @@ macos:
   packages:
     - name: obsidian
       cask: true
+{{- end }}

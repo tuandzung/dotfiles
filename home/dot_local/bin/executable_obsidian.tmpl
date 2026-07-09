@@ -8,8 +8,8 @@ if [[ -f "${OBSIDIAN_USER_FLAGS_FILE}" ]]; then
 fi
 
 # Launch
-{{- if eq .chezmoi.osRelease.id "gentoo" }}
+{{- if eq .osid "linux-gentoo" "linux-ubuntu" }}
 /opt/Obsidian/obsidian $OBSIDIAN_USER_FLAGS
-{{- else if eq .chezmoi.osRelease.id "arch" }}
+{{- else if eq .osid "linux-arch" }}
 exec electron /usr/lib/obsidian/app.asar $OBSIDIAN_USER_FLAGS
 {{- end }}
