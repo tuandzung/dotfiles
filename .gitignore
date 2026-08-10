@@ -1,3 +1,4 @@
 home/.chezmoi.*.tmpl
 **/__pycache__
 .DS_Store
+data/
