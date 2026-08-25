@@ -1,0 +1,34 @@
+ui:
+  history_limit: 50
+  notification_preview: true # set false to omit message text from desktop notifications
+  theme: catppuccin-macchiato
+
+  # Themes. Leaving this out gives the built-in tele-dark and tele-light,
+  # switched by the terminal background. Name one theme to use it whatever the
+  # background is, or fill the slots one at a time. Eight ported palettes ship
+  # inside the binary and resolve by name with nothing installed: catppuccin-
+  # macchiato, dracula, gruvbox-dark, nord, tokyonight-night, tokyonight-moon,
+  # tokyonight-day, seoul256-light. Your own live in
+  # ~/.config/tele/themes/<name>.yml — see docs/themes.md.
+  #
+  # theme: gruvbox-dark
+  #
+  # theme:
+  #   dark: gruvbox-dark
+  #   light: solarized-light
+
+photos:
+  mode: kitty
+  eager_full_quality: true # download full resolution in background on chat open
+
+avatars:
+  disk_cache_size: 16777216 # 16 MB; people's pictures, budgeted apart from chat media
+
+keybindings:
+  chatlist:
+    open: enter
+    search: /
+  chat:
+    reply: r
+    edit: e
+    delete: d
