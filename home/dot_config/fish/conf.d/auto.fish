@@ -4,7 +4,7 @@ function __auto_ls --on-variable PWD --description 'Automatically ls when the $P
 end
 
 function __auto_prek_install --on-variable PWD --description 'Install the prek pre-commit Git shim when entering a repository.'
-    command -sq prek; or printf 'Skipping prek install: command not found\n' 1>&2; return
+    command -sq prek; or printf 'Skipping prek install: command not found\n' 1>&2; or return
 
     set -l repo_root (git rev-parse --show-toplevel 2>/dev/null); or return
     test -f "$repo_root/.pre-commit-config.yaml"; or test -f "$repo_root/prek.toml"; or return
