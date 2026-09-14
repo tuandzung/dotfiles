@@ -1,0 +1,43 @@
+{{- $index := 0 }}
+{{- $group := "English" }}
+{{- $order := printf "%d=%s" $index $group -}}
+[Groups/{{ $index }}]
+# Group Name
+Name={{ $group }}
+# Layout
+Default Layout=us-colemak
+# Default Input Method
+DefaultIM=keyboard-us
+
+[Groups/{{ $index }}/Items/0]
+# Name
+Name=keyboard-us-colemak
+# Layout
+Layout=
+
+[Groups/{{ $index }}/Items/1]
+# Name
+Name=keyboard-us
+# Layout
+Layout=
+
+{{- $index = add1 $index }}
+{{- $group := "Vietnamese" }}
+{{- $order = printf "%s\n%d=%s" $order $index $group }}
+
+[Groups/{{ $index }}]
+# Group Name
+Name={{ $group }}
+# Layout
+Default Layout=us-colemak
+# Default Input Method
+DefaultIM=lotus
+
+[Groups/{{ $index }}/Items/0]
+# Name
+Name=lotus
+# Layout
+Layout=
+
+[GroupOrder]
+{{ $order }}
