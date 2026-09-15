@@ -1,5 +1,5 @@
 [Hotkey]
-# Enumerate when press trigger key repeatedly
+# Enumerate when holding modifier of Toggle key
 EnumerateWithTriggerKeys=True
 # Enumerate Input Method Forward
 EnumerateForwardKeys=
@@ -11,9 +11,13 @@ EnumerateSkipFirst=False
 ModifierOnlyKeyTimeout=250
 
 [Hotkey/TriggerKeys]
-0=Control+Shift+Shift_L
-1=Zenkaku_Hankaku
-2=Hangul
+0=Control+Shift+space
+
+[Hotkey/ActivateKeys]
+0=Hangul_Hanja
+
+[Hotkey/DeactivateKeys]
+0=Hangul_Romaja
 
 [Hotkey/AltTriggerKeys]
 0=Shift_L
@@ -23,12 +27,6 @@ ModifierOnlyKeyTimeout=250
 
 [Hotkey/EnumerateGroupBackwardKeys]
 0=Shift+Super+space
-
-[Hotkey/ActivateKeys]
-0=Hangul_Hanja
-
-[Hotkey/DeactivateKeys]
-0=Hangul_Romaja
 
 [Hotkey/PrevPage]
 0=Up
@@ -47,7 +45,7 @@ ModifierOnlyKeyTimeout=250
 
 [Behavior]
 # Active By Default
-ActiveByDefault=False
+ActiveByDefault=True
 # Reset state on Focus In
 resetStateWhenFocusIn=No
 # Share Input State
@@ -63,15 +61,13 @@ CompactInputMethodInformation=True
 # Show first input method information
 ShowFirstInputMethodInformation=True
 # Default page size
-DefaultPageSize=5
-# Override Xkb Option
+DefaultPageSize=9
+# Override XKB Option
 OverrideXkbOption=False
-# Custom Xkb Option
+# Custom XKB Option
 CustomXkbOption=
 # Force Enabled Addons
 EnabledAddons=
-# Force Disabled Addons
-DisabledAddons=
 # Preload input method to be used by default
 PreloadInputMethod=True
 # Allow input method in the password field
@@ -81,3 +77,7 @@ ShowPreeditForPassword=False
 # Interval of saving user data in minutes
 AutoSavePeriod=30
 
+[Behavior/DisabledAddons]
+0=fcitx4frontend
+1=ibusfrontend
+2=kimpanel
