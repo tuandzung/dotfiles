@@ -1,6 +1,4 @@
 binds {
-    Mod+Space { spawn "walker"; }
-    Ctrl+Alt+Delete { spawn "~/.scripts/powermenu.sh"; }
     Mod+Escape { toggle-keyboard-shortcuts-inhibit; }
 
     Mod+1 { focus-workspace "term"; }
@@ -56,12 +54,6 @@ binds {
     {{-   $emailClient = "/opt/betterbird/betterbird" }}
     {{- end }}
     Mod+M { spawn "{{ $emailClient }}" "-P"; }
-    Mod+N { spawn "swaync-client" "-t" "-sw"; }
-    Mod+X { spawn "walker" "-m" "clipboard"; }
-    Mod+P { spawn "walker" "-m" "bitwarden"; }
-    Mod+L { spawn "stasis" "trigger" "lockscreen"; }
-    Mod+S { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
-    Mod+Shift+S { spawn-sh "grim -g \"$(slurp)\" \"$HOME/Pictures/Screenshots/screenshot_$(date +%Y-%m-%d-%H%M%S).png\""; }
     Mod+Z { spawn "ndrop" "kitty" "--class" "btop" "-e" "btop"; }
     Mod+T { spawn "ndrop" "thunar"; }
 
@@ -75,16 +67,27 @@ binds {
     Mod+E { spawn "{{ $browser }}" "-P"; }
     {{- end }}
 
-    {{- $osd := "swayosd-client --monitor \\\"$(niri msg -j focused-output | jq -r .name)\\\"" }}
+    // Core Noctalia binds
+    Ctrl+Alt+Delete { spawn-sh "noctalia msg panel-toggle session"; }
+    Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+L { spawn-sh "noctalia msg session lock"; }
+    Mod+C { spawn-sh "noctalia msg panel-toggle control-center"; }
+    Mod+X { spawn-sh "noctalia msg panel-toggle clipboard"; }
+    Mod+S { spawn-sh "noctalia msg screenshot-region"; }
+    Mod+Shift+S { spawn-sh "noctalia msg screenshot-annotate"; }
+    Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
+    Alt+Tab { spawn-sh "noctalia msg window-switcher hold"; }
+    // Niri has a built-in window switcher you might want to try it to see which one you prefer.
 
-    Caps_Lock allow-when-locked=true { spawn-sh "{{ $osd }} --caps-lock"; }
-
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "{{ $osd }} --output-volume raise"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "{{ $osd }} --output-volume lower"; }
-    XF86AudioMute allow-when-locked=true { spawn-sh "{{ $osd }} --output-volume mute-toggle"; }
-    XF86AudioMicMute allow-when-locked=true { spawn-sh "{{ $osd }} --input-volume mute-toggle"; }
-    XF86AudioPlay allow-when-locked=true { spawn-sh "{{ $osd }} --playerctl play-pause"; }
-    XF86AudioPause allow-when-locked=true { spawn-sh "{{ $osd }} --playerctl pause"; }
-    XF86AudioNext allow-when-locked=true { spawn-sh "{{ $osd }} --playerctl next"; }
-    XF86AudioPrev allow-when-locked=true { spawn-sh "{{ $osd }} --playerctl previous"; }
+    // Audio & Brightness
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg volume-up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "noctalia msg volume-down"; }
+    XF86AudioMute allow-when-locked=true { spawn-sh "noctalia msg volume-mute"; }
+    XF86AudioMicMute allow-when-locked=true { spawn-sh "noctalia msg mic-mute"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "noctalia msg brightness-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "noctalia msg brightness-down"; }
+    XF86AudioPlay allow-when-locked=true { spawn-sh "noctalia msg media play"; }
+    XF86AudioPause allow-when-locked=true { spawn-sh "noctalia msg media pause"; }
+    XF86AudioNext allow-when-locked=true { spawn-sh "noctalia msg media next"; }
+    XF86AudioPrev allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
 }

@@ -31,39 +31,20 @@ spawn-sh-at-startup "~/.scripts/gtk.sh"
 spawn-at-startup "walker" "--gapplication-service"
 spawn-sh-at-startup "{{ if eq .place "OFFICE" }}RBW_PROFILE=enterprise_{{ .company }}{{- end }} elephant"
 
-// Wallpaper
-spawn-at-startup "hyprlax" "{{ .chezmoi.homeDir }}/Wallpapers/4ll819g8qto91.png"
-
-// Notification center
-spawn-at-startup "swaync"
-
-// OSD
-spawn-at-startup "swayosd-server"
+// Shell
+spawn-at-startup "noctalia"
 
 // Screen shader and changes detection
 {{- if ne .chezmoi.osRelease.id "gentoo" }}
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "NIRI_SOCKET"
-spawn-at-startup "sunsetr"
-{{- else }}
-spawn-at-startup "sunsetr"
 {{- end }}
 
 // Monitor
 spawn-at-startup "shikane"
 
-// Idle
-{{- if ne .place "HOME" }}
-spawn-at-startup "stasis"
-spawn-at-startup "stasis" "tray"
-{{- end }}
-
 // Clipboard
 spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
-
-// Network & Bluetooth
-spawn-at-startup "nm-applet" "--indicator"
-spawn-at-startup "blueman-applet"
 
 // IM
 spawn-at-startup "fcitx5" "-d" "--replace"
