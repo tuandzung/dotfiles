@@ -39,7 +39,7 @@ GRUB_TERMINAL_INPUT=console
 # Resolution used on graphical terminal.
 # The list of valid modes may be obtained using the 'vbeinfo' (PC BIOS) or
 # 'videoinfo' (EFI) command from a GRUB boot prompt.
-#GRUB_GFXMODE=640x480
+GRUB_GFXMODE=1920x1080,auto
 
 # Set to 'text' to force the Linux kernel to boot in normal text
 # mode, 'keep' to preserve the graphics mode set using
@@ -64,7 +64,7 @@ GRUB_THEME="/usr/share/grub/themes/catppuccin/theme.txt"
 GRUB_DISABLE_LINUX_PARTUUID=false
 
 # Uncomment to disable generation of recovery mode menu entries
-GRUB_DISABLE_RECOVERY=true
+#GRUB_DISABLE_RECOVERY=true
 
 # Preload both GPT and MBR modules so that they are not missed
 GRUB_PRELOAD_MODULES="part_gpt part_msdos"

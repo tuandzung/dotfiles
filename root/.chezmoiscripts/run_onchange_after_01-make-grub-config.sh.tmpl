@@ -1,8 +1,10 @@
-#!{{ lookPath "bash" }}
-set -Eeou pipefail
-source {{ .chezmoi.workingTree }}/scripts/logger.sh
+#!/usr/bin/env bash
+. {{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh
+dybatpho::register_common_handlers
 
-_notice "Making grub config"
-# config hash: {{ joinPath .chezmoi.sourceDir "etc/default/grub.tmpl" | include | sha256sum }}
+{{- if eq .chezmoi.os "linux" }}
+dybatpho::header "Setup GRUB"
+# modules hash: {{ joinPath .chezmoi.sourceDir "etc/default/grub.tmpl" | include | sha256sum }}
 sudo grub-mkconfig -o /boot/grub/grub.cfg
-_notice "Done making grub config"
+dybatpho::success "Setup GRUB done"
+{{- end }}
