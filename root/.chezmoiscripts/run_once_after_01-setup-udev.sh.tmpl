@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+. {{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh
+dybatpho::register_common_handlers
+
+{{- if eq .chezmoi.os "linux" }}
+dybatpho::header "Setup udev rules"
+{{-   range (joinPath .chezmoi.sourceDir "etc/udev/rules.d/*" | glob) }}
+# {{ . }} hash: {{ . | include | sha256sum }}
+{{-   end }}
+sudo udevadm control -R
+sudo udevadm trigger
+dybatpho::success "Setup udev rules done"
+{{- end }}
