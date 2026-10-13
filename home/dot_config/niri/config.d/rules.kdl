@@ -1,3 +1,11 @@
+/* Apps: blur them all without xray so it looks more realistic. */
+window-rule {
+  background-effect {
+    blur true
+    xray false
+  }
+}
+
 // Window rules -> workspace routing (app-id is Wayland app_id or XWayland class).
 window-rule {
     match app-id="^(kitty)$"
