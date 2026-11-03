@@ -1,0 +1,15 @@
+name: zj-herdr
+method: binary
+github:
+  repo: dynamotn/zj-herdr
+  {{- $os := "unknown-linux-musl" }}
+  {{- if eq .chezmoi.os "darwin" }}
+  {{-   $os = "apple-darwin" }}
+  {{- end }}
+  {{- $arch := "x86_64" }}
+  {{- if eq .chezmoi.arch "arm64" }}
+  {{-   $arch = "aarch64" }}
+  {{- end }}
+  release_asset: zj-herdr-{{ $arch }}-{{ $os }}.tar.gz
+archive:
+  - path: zj-herdr
