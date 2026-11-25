@@ -234,9 +234,12 @@ def _install_archive_entry(
     location = _resolve_archive_location(entry.get("location"), version, install_dir)
     make_executable = location.resolve(strict=False) == install_dir.resolve(strict=False)
 
+    # Directories are expanded to every file beneath them, keeping their relative layout.
     matched_files = sorted(
-        path for path in temp_dir.glob(path_pattern)
-        if path.is_file() and path.resolve(strict=False).is_relative_to(temp_dir.resolve(strict=False))
+        file
+        for path in temp_dir.glob(path_pattern)
+        for file in ([path] if path.is_file() else path.rglob("*"))
+        if file.is_file() and file.resolve(strict=False).is_relative_to(temp_dir.resolve(strict=False))
     )
     if not matched_files:
         raise RuntimeError(f"No archive files matched {path_pattern}")
