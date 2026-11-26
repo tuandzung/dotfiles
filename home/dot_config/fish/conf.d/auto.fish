@@ -12,6 +12,14 @@ function __auto_prek_install --on-variable PWD --description 'Install the prek p
     prek install --hook-type pre-commit --overwrite --quiet 2>/dev/null
 end
 
+function __auto_json_tidy --on-variable fish_key_bindings --description 'Automatically tidy JSON in the clipboard when pressing .'
+    command -sq jq; or printf 'Skipping jq: command not found\n' 1>&2; or return
+    # Inspired by https://chris48s.github.io/blogmarks/posts/2021/jsontidy/
+    if set -l formatted "$(paste | jq '.')"
+        copy $formatted
+    end
+end
+
 function __auto_expand --on-variable fish_key_bindings
     set -l modes
     if test "$fish_key_bindings" = fish_default_key_bindings
