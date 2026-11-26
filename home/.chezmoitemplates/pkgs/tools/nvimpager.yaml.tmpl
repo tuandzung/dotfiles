@@ -1,0 +1,37 @@
+name: nvimpager
+is_essential: true
+dependencies:
+  - neovim
+{{- /* The source build makes the man page with scdoc */}}
+{{- if not (eq .osid "linux-arch" "darwin" "linux-gentoo") }}
+  - scdoc
+{{- end }}
+{{- if eq .osid "linux-arch" "darwin" "linux-gentoo" }}
+method: os
+arch:
+  packages:
+    - name: nvimpager
+      version: HEAD
+macos:
+  packages:
+    - name: nvimpager
+gentoo:
+  packages:
+    - name: sys-apps/nvimpager
+{{- else if eq .osid "linux-gentoo" }}
+# Comes with app-editors/neovim through the `nvimpager` USE flag, set in
+# root/etc/portage/package.use/app-editors/create_neovim.
+enabled: false
+method: os
+{{- else }}
+# Ubuntu, Alpine and Termux package it nowhere, and upstream ships no binary:
+# nvimpager is a shell script plus Lua runtime files that its Makefile puts
+# in place.
+method: shell
+content: |-
+  dybatpho::is command git || dybatpho::die "nvimpager is built from source here, and git is missing"
+  dybatpho::is command make || dybatpho::die "nvimpager is built from source here, and make is missing"
+  dybatpho::create_temp_dir nvimpager_src "nvimpager"
+  git clone --depth 1 https://github.com/lucc/nvimpager.git "${nvimpager_src}"
+  make -C "${nvimpager_src}" PREFIX="$(dybatpho::path_join "$HOME" ".local")" install
+{{- end }}
