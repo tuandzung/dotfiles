@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import shlex
 import subprocess
 import sys
 from collections.abc import Iterable, Iterator
@@ -9,7 +10,7 @@ from pathlib import Path
 from typing import NotRequired, TypedDict
 
 from logger import logger
-from utils import load_all_tools
+from utils import get_os_info, load_all_tools
 
 class ShellTool(TypedDict, total=False):
     """Shell tool definition."""
@@ -23,9 +24,14 @@ class ShellTool(TypedDict, total=False):
     description: NotRequired[str]
 
 def run_shell_command(command: str) -> None:
+    """Run command in bash with dybatpho sourced, so `content` can call dybatpho::*."""
     logger.info(f"Running command: {command}")
+    dybatpho_init = get_os_info().get("dybatphoInit")
+    if not dybatpho_init or not Path(dybatpho_init).is_file():
+        raise RuntimeError(f"dybatpho init.sh not found: {dybatpho_init!r}")
+    script = f". {shlex.quote(dybatpho_init)}\n{command}"
     try:
-        subprocess.run(command, shell=True, check=True)
+        subprocess.run(["bash", "-c", script], check=True)
     except subprocess.CalledProcessError as exc:
         raise RuntimeError(f"Failed to run command: {exc}") from exc
 
