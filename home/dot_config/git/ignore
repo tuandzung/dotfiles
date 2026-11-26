@@ -63,3 +63,8 @@ tmp/
 *.bak
 
 **/.claude/settings.local.json
+**/.claude/.cc-writes/
+
+# claude-mem writes per-directory activity notes; keep them out of the repo.
+**/CLAUDE.md
+!/CLAUDE.md
