@@ -214,7 +214,7 @@ __add_folder_to_manpath $HOME/.local/man
 
 set -g fish_greeting
 function fish_greeting
-  cat --style=plain $CONFIG_PATH/art
+  /usr/bin/cat $CONFIG_PATH/art
   fastfetch -l none
 end
 
