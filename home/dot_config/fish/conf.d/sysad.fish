@@ -1,6 +1,8 @@
+status is-interactive; or exit
+
 # Rsync
-alias syncdy 'rsync --delete -avhz'
+abbr -a syncdy 'rsync --delete -avhz'
 
 # Netstat
-alias open_ports 'netstat -tuplan'
-alias listen_ports 'netstat -tuplen'
+abbr -a open_ports 'netstat -tuplan'
+abbr -a listen_ports 'netstat -tuplen'
