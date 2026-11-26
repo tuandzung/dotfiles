@@ -1,0 +1,5 @@
+name: dyshellint
+method: shell
+dependencies:
+  - go
+content: go install gitlab.com/dynamo-tools/dyshellint/cmd/dyshellint@latest
