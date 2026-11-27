@@ -1,0 +1,43 @@
+#!{{ .bash }}
+# @file commit_message.sh
+# @brief Reject a commit message that breaks the commit conventions
+# @description Run by the global `commit-msg` hook (`hook.commit-message` in the
+# git config), after `strip_agent_credit.sh` has dropped any agent credit.
+# Reject an empty message and a subject over 72 characters, and warn when the
+# subject goes over the 50 character mark.
+{{ template "git/hooks/modern_bash.sh.tmpl" . }}
+. "{{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh"
+dybatpho::register_common_handlers
+
+#######################################
+# @description Check the subject of the message git is about to commit
+# @arg $1 string Path of the message file git hands the hook
+#######################################
+function _main {
+  local file
+  dybatpho::expect_args file -- "$@"
+  # The hook sees the file before git cleans it up: drop the scissors section
+  # (commit.cleanup = scissors) and the comment lines, in core.commentChar.
+  # ponytail: a subject that itself starts with the comment char is skipped too.
+  local subject
+  subject="$(sed -e '/^. -\{24\} >8 -\{24\}$/,$d' -- "${file}" \
+    | git stripspace --strip-comments | sed -n '1p')"
+  [[ -n "${subject}" ]] || dybatpho::die "Commit message is empty"
+  # Count UTF-8 characters, not bytes, whatever locale git runs the hook in:
+  # drop the continuation bytes, then count what is left.
+  local length
+  length="$(printf '%s' "${subject}" | LC_ALL=C tr -d '\200-\277' | wc -c)"
+  length=$((length))
+  if ((length > 72)); then
+    local message="Subject is ${length} characters, over the 72 character limit: ${subject}"
+    # git commit --fixup/--squash prefixes a subject that already passed, and
+    # autosquash needs that text verbatim: the commit is squashed away anyway.
+    [[ "${subject}" =~ ^(fixup|squash|amend)!\  ]] || dybatpho::die "${message}"
+    dybatpho::warn "${message}"
+    return 0
+  fi
+  ((length <= 50)) \
+    || dybatpho::warn "Subject is ${length} characters, aim for 50 or fewer: ${subject}"
+}
+
+_main "$@"

@@ -203,6 +203,15 @@
         # Remove a clean worktree once a merge brought its branch in, keep the branch
         event = post-merge
         command = ~/.config/git/scripts/worktree_cleanup.sh
+{{- /* Hooks for one event run in the order listed: strip before the check. */}}
+[hook "strip-agent-credit"]
+        # Drop the lines where an AI agent credits itself in the message
+        event = commit-msg
+        command = ~/.config/git/scripts/strip_agent_credit.sh
+[hook "commit-message"]
+        # Reject an empty message or a subject over 72 characters
+        event = commit-msg
+        command = ~/.config/git/scripts/commit_message.sh
 
 [alias]
         # Get main branch

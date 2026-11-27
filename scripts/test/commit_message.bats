@@ -1,0 +1,153 @@
+#!/usr/bin/env bats
+# @file commit_message.bats
+# @brief Tests for home/dot_config/git/scripts/executable_commit_message.sh.tmpl
+# @description
+#   Runs the rendered hook by hand on a message file, the way git's `commit-msg`
+#   event calls it, and checks what it lets through. The last tests commit for
+#   real through the `hook.*` entries of the rendered git config.tmpl, after
+#   strip_agent_credit.sh, to pin down the order the two hooks run in.
+
+setup_file() {
+  unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE
+  command -v chezmoi > /dev/null || skip "chezmoi is not installed"
+  local root
+  root="$(realpath "${BATS_TEST_DIRNAME}/../..")"
+  HOOK="${BATS_FILE_TMPDIR}/commit_message.sh"
+  chezmoi execute-template --source "${root}" \
+    --file "${root}/home/dot_config/git/scripts/executable_commit_message.sh.tmpl" > "${HOOK}"
+  STRIP="${BATS_FILE_TMPDIR}/strip_agent_credit.sh"
+  chezmoi execute-template --source "${root}" \
+    --file "${root}/home/dot_config/git/scripts/executable_strip_agent_credit.sh.tmpl" > "${STRIP}"
+  # Only the hook entries leave the rendered config: the test never prints it.
+  HOOKS="${BATS_FILE_TMPDIR}/hooks"
+  chezmoi execute-template --source "${root}" \
+    --file "${root}/home/dot_config/git/config.tmpl" > "${BATS_FILE_TMPDIR}/config"
+  git config --file "${BATS_FILE_TMPDIR}/config" --get-regexp '^hook\.' > "${HOOKS}" || true
+  export HOOK STRIP HOOKS
+}
+
+# @description Commit for real in a throwaway repository, with only the hook
+# entries of the rendered git config and their scripts under a throwaway HOME.
+setup_repo() {
+  local version
+  version="$(git version | cut -d' ' -f3)"
+  [[ "$(printf '%s\n' 2.54 "${version}" | sort -V | head -n1)" == 2.54 ]] \
+    || skip "git ${version} predates hooks from config"
+  export HOME="${BATS_TEST_TMPDIR}/home"
+  export GIT_CONFIG_GLOBAL="${HOME}/.gitconfig" GIT_CONFIG_NOSYSTEM=1
+  export GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@t
+  mkdir -p "${HOME}/.config/git/scripts"
+  install -m 755 "${HOOK}" "${HOME}/.config/git/scripts/commit_message.sh"
+  install -m 755 "${STRIP}" "${HOME}/.config/git/scripts/strip_agent_credit.sh"
+  local key value
+  while read -r key value; do
+    git config --global --add "${key}" "${value}"
+  done < "${HOOKS}"
+  REPO="${BATS_TEST_TMPDIR}/repo"
+  git init -q -b main "${REPO}"
+  git -C "${REPO}" commit -q --allow-empty --no-verify -m init
+}
+
+setup() {
+  MSG="${BATS_TEST_TMPDIR}/COMMIT_EDITMSG"
+}
+
+@test "an empty message is rejected" {
+  printf '\n\n' > "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -ne 0 ]
+  [[ "${output}" == *"empty"* ]]
+}
+
+@test "a subject of 73 characters is rejected" {
+  # 73 characters: the 72 character limit plus one.
+  printf 'feat(git): %s\n' "$(printf 'x%.0s' {1..62})" > "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -ne 0 ]
+  [[ "${output}" == *"72"* ]]
+}
+
+@test "a subject of exactly 72 characters is accepted" {
+  printf 'feat(git): %s\n' "$(printf 'x%.0s' {1..61})" > "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+}
+
+@test "a subject of 51 characters is accepted with a warning" {
+  printf 'feat(git): %s\n' "$(printf 'x%.0s' {1..40})" > "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+  [[ "${output}" == *"50"* ]]
+}
+
+@test "a subject of exactly 50 characters is accepted silently" {
+  printf 'feat(git): %s\n' "$(printf 'x%.0s' {1..39})" > "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+  [ -z "${output}" ]
+}
+
+@test "comment lines and everything below the scissors line are ignored" {
+  local long
+  long="$(printf 'x%.0s' {1..80})"
+  cat > "${MSG}" << MSG
+# ${long}
+
+fix(git): short subject
+
+# ------------------------ >8 ------------------------
+# Do not modify or remove the line above.
+${long}
+MSG
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+  [ -z "${output}" ]
+}
+
+@test "a message of only comments and a scissors section is rejected as empty" {
+  cat > "${MSG}" << 'MSG'
+
+# Please enter the commit message for your changes.
+# ------------------------ >8 ------------------------
+diff --git a/file b/file
+MSG
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -ne 0 ]
+  [[ "${output}" == *"empty"* ]]
+}
+
+@test "length is counted in characters, not bytes, whatever the locale" {
+  # 50 characters, but 95 bytes in UTF-8.
+  printf 'docs: %s\n' "$(printf 'ơ%.0s' {1..44})" > "${MSG}"
+  LC_ALL=C run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+  [ -z "${output}" ]
+}
+
+@test "a fixup! subject over 72 characters is accepted with a warning" {
+  # git commit --fixup prefixes a subject that was already up to 72 characters.
+  printf 'fixup! feat(git): %s\n' "$(printf 'x%.0s' {1..61})" > "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+  [[ "${output}" == *"72"* ]]
+}
+
+@test "a real commit lands without its agent credit" {
+  setup_repo
+  run git -C "${REPO}" commit -q --allow-empty -m "feat: add a thing" \
+    -m "Co-Authored-By: Claude <noreply@anthropic.com>"
+  [ "${status}" -eq 0 ]
+  run git -C "${REPO}" log -1 --format=%B
+  [ "${output}" = "feat: add a thing" ]
+}
+
+@test "a real commit of nothing but agent credit is rejected as empty" {
+  setup_repo
+  # Checked before the credit is stripped, this 46 character subject would pass.
+  run git -C "${REPO}" commit -q --allow-empty --allow-empty-message \
+    -m "Co-Authored-By: Claude <noreply@anthropic.com>"
+  [ "${status}" -ne 0 ]
+  [[ "${output}" == *"empty"* ]]
+  run git -C "${REPO}" log -1 --format=%s
+  [ "${output}" = "init" ]
+}
