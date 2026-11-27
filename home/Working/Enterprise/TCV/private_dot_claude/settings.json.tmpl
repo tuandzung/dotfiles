@@ -267,16 +267,21 @@
   and runs outside the sandbox, the root ones under `scz` too: a session
   working in the checkout must not change them unasked. The last three are
   plain sources that `mode: symlink` links into the home, where fish,
-  opencode and Copilot run them with no apply in between. git's own config
-  and hooks close the list: git runs outside the sandbox, and would run a
-  hook planted there.
+  opencode and Copilot run them with no apply in between; the global git
+  config includes from home/dot_config/git, where a filter or textconv would
+  run with git outside the sandbox. git's own config and hooks close the
+  list: git runs outside the sandbox, and would run a hook planted there.
+  .git/config includes `.gitconfig`, which git resolves next to it, inside
+  .git/, where the built-in protection does not reach.
 */ -}}
 {{- $denyWrite := concat $static.sandbox.filesystem.denyWrite (list
       (joinPath $wt "scripts/lib")
       (joinPath $wt "scripts/*.sh")
       (joinPath $wt ".pre-commit-config.yaml")
       (joinPath $wt "home/dot_config/fish")
+      (joinPath $wt "home/dot_config/git")
       (joinPath $wt ".git/config")
+      (joinPath $wt ".git/.gitconfig")
       (joinPath $wt ".git/hooks")
       (joinPath $wt ".git/modules/**/config")
       (joinPath $wt ".git/modules/**/hooks")) -}}

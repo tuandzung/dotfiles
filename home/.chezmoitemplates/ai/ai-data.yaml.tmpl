@@ -27,7 +27,7 @@ marketplaces:
   claude-tools:
     source: { source: github, repo: rafaelkamimura/claude-tools, ref: 1.0.0 }
   caveman:
-    source: { source: github, repo: JuliusBrussee/caveman }
+    source: { source: github, repo: JuliusBrussee/caveman, ref: v4.2.0 }
 plugins:
   - i-have-adhd@i-have-adhd
   - claude-mem@thedotmack
@@ -117,8 +117,16 @@ policy:
   # PreToolUse hook rewrites some git commands to `rtk git ...` before they are
   # matched, so every git rule is listed in both spellings.
   permissions:
-    # No allow rule for `git wt`: nothing defines that alias, so a
-    # repository's own .git/config could, and git runs unsandboxed.
+    # Creating a worktree cannot run sandboxed: checkout writes the .age
+    # files, secrets/ and .gitmodules the sandbox fences off. Only `git wt`
+    # is allowed, the ~/.local/bin/git-wt script: it takes one valid branch
+    # name and always lands in .worktrees/, while a raw `git worktree add`
+    # rule would also pass `..` and extra flags such as -B. git runs an
+    # external git-wt before any alias, and the sandbox keeps every repo's
+    # .git/config and .git/hooks read-only.
+    allow:
+      - "Bash(git wt *)"
+      - "Bash(rtk git wt *)"
     ask:
       - "Bash(git push)"
       - "Bash(git push:*)"
@@ -159,6 +167,14 @@ policy:
       # A leading global flag (`chezmoi -v decrypt f`) dodges every rule above.
       - "Bash(chezmoi -*)"
       - "Bash(sudo *)"
+      # Each can run any command line outside the sandbox (mise is excluded
+      # from it, a container can mount the whole home), under more spellings
+      # than a prefix list can name: a bare `mise <task>` runs a task.
+      - "Bash(mise:*)"
+      - "Bash(docker:*)"
+      # The rtk hook rewrites docker, and only docker of the three.
+      - "Bash(rtk docker:*)"
+      - "Bash(podman:*)"
       - "Bash(emerge *)"
       - "Bash(pacman *)"
       - "Bash(paru *)"
