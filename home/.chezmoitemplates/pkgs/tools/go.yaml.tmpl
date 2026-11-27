@@ -10,6 +10,9 @@ arch:
 macos:
   packages:
     - name: go
+termux:
+  packages:
+    - name: golang
 {{- if eq .osid "linux-ubuntu" "linux-linuxmint" }}
 ubuntu:
   packages:
