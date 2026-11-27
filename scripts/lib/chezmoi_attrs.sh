@@ -30,7 +30,7 @@ function chezmoi_attrs::validate {
   fields="$(dybatpho::split "${attributes}" ",")"
   mapfile -t attrs <<< "${fields}"
   local attr
-  for attr in "${attrs[@]}"; do
+  for attr in ${attrs[@]+"${attrs[@]}"}; do
     if [[ -n "${attr}" ]] && ! dybatpho::array_contains CHEZMOI_ATTRS_ORDER "${attr}"; then
       dybatpho::error "Unknown chezmoi attribute '${attr}', expected one of: ${CHEZMOI_ATTRS_ORDER[*]}"
       return 1
@@ -72,7 +72,7 @@ function __chezmoi_attrs_prefix_into {
 # @exitcode 1 The target path is not absolute, or an attribute is unknown
 # @example
 #   local source_path
-#   chezmoi_attrs::source_path source_path "${HOME}/.config/foo" "create,encrypted"
+#   chezmoi_attrs::source_path source_path "${HOME}/.config/.foo" "create,encrypted"
 #   # home/private_dot_config/create_encrypted_private_dot_foo
 #######################################
 function chezmoi_attrs::source_path {
