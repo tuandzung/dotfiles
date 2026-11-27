@@ -1,0 +1,24 @@
+# Shell
+
+The interactive shell on this machine is fish; scripts are bash. They do not
+share syntax, so always be explicit about which one a command is written for.
+
+## Running commands
+
+- Write ad-hoc commands in POSIX or bash syntax. Do not rely on fish-only
+  constructs (`and`, `or`, `set -x`, `$status`, abbreviations) unless the
+  command is explicitly meant for fish.
+- The interactive fish config defines aliases, abbreviations, and wrapper
+  functions, so a bare command name may not be the binary it looks like. When
+  the exact program matters, call it as `command <tool>` or by absolute path.
+- Claude's rtk hook compacts the output of `git`, `cat`, `ls`, `grep`, `find`,
+  `diff`, `curl`, `gh` and test runners. Pipe into `| cat` when the exact
+  output matters, such as a patch to apply or a format to parse. Write
+  `sudo -- <cmd>`: it turns `sudo ls` into `sudo rtk ls`.
+- A `cd` does not carry over between separate commands. Use absolute paths, or
+  chain the `cd` into the same command.
+- Run a command inside the agent's sandbox, and turn the sandbox off only
+  after it failed there with a sandbox error. git, chezmoi, mise and
+  prek already run outside Claude's sandbox; turning it off for them, or
+  ahead of time for anything else, only adds a permission prompt. Put
+  scratch files under `$TMPDIR`: removing them there needs no approval.
