@@ -27,10 +27,16 @@ function _main {
     # "🤖 Generated with [Claude Code](…)", but not "Generated with protoc".
     -e '^[^[:alnum:]]*generated (with|by) .*(claude|copilot|codex|cursor|gemini|aider|devin)'
   )
-  local kept status=0
-  # grep exits 1 when every line was credit, 2 on a real error.
-  kept="$(grep -viE "${credit[@]}" -- "${file}")" || status=$?
-  ((status <= 1)) || dybatpho::die "Could not read ${file}"
+  # Byte by byte (C locale, -a): in a UTF-8 locale a latin1 line reads as
+  # binary, and grep would silently leave it out.
+  local status=0
+  LC_ALL=C grep -aqiE "${credit[@]}" -- "${file}" || status=$?
+  # Nothing to drop: leave the file exactly as git wrote it.
+  ((status != 1)) || return 0
+  ((status == 0)) || dybatpho::die "Could not read ${file}"
+  local kept
+  # Exits 1 when every line was credit, which leaves an empty message.
+  kept="$(LC_ALL=C grep -aviE "${credit[@]}" -- "${file}")" || true
   printf '%s\n' "${kept}" > "${file}"
 }
 

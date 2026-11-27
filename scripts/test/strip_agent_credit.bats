@@ -72,3 +72,21 @@ MSG
 Generated with protoc from the new schema."* ]]
   [[ "${output}" != *"laude"* ]]
 }
+
+@test "a message that is not UTF-8 is kept byte for byte" {
+  # i18n.commitEncoding = latin1: grep in a UTF-8 locale takes it for binary.
+  printf 'fix: caf\xe9 menu\n\nExplain the caf\xe9 change.\nSecond line.\n' > "${MSG}"
+  cp "${MSG}" "${MSG}.orig"
+  LC_ALL=C.UTF-8 run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+  cmp "${MSG}" "${MSG}.orig"
+}
+
+@test "a message file it cannot read is rejected, never rewritten" {
+  printf 'fix: x\n\nbody\n' > "${MSG}"
+  chmod 200 "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  chmod 600 "${MSG}"
+  [ "${status}" -ne 0 ]
+  [ "$(cat "${MSG}")" = $'fix: x\n\nbody' ]
+}
