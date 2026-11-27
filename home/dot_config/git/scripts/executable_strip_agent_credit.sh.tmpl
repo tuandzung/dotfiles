@@ -1,0 +1,37 @@
+#!{{ .bash }}
+# @file strip_agent_credit.sh
+# @brief Drop the lines where an AI agent credits itself in a commit message
+# @description Run by the global `commit-msg` hook (`hook.strip-agent-credit` in
+# the git config), before `commit_message.sh` checks what is left. The human
+# author is the only author: the git-conventions rule forbids an agent to add
+# these lines, and this hook removes them when one does anyway.
+{{ template "git/hooks/modern_bash.sh.tmpl" . }}
+. "{{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh"
+dybatpho::register_common_handlers
+
+#######################################
+# @description Rewrite the message file without its agent credit lines
+# @arg $1 string Path of the message file git hands the hook
+#######################################
+function _main {
+  local file
+  dybatpho::expect_args file -- "$@"
+  # Agents are told apart by their address, not their name: a human co-author
+  # may well be called Claude.
+  local agents='@(anthropic|openai|cursor)\.com|@aider\.chat'
+  agents+='|(copilot|devin-ai-integration|gemini-code-assist)(\[bot\])?@users\.noreply\.github\.com'
+  local -a credit=(
+    -e "^co-authored-by:.*<[^>]*(${agents})>"
+    -e '^(assisted-by|claude-session):'
+    -e '^https://claude\.ai/code/session_'
+    # "🤖 Generated with [Claude Code](…)", but not "Generated with protoc".
+    -e '^[^[:alnum:]]*generated (with|by) .*(claude|copilot|codex|cursor|gemini|aider|devin)'
+  )
+  local kept status=0
+  # grep exits 1 when every line was credit, 2 on a real error.
+  kept="$(grep -viE "${credit[@]}" -- "${file}")" || status=$?
+  ((status <= 1)) || dybatpho::die "Could not read ${file}"
+  printf '%s\n' "${kept}" > "${file}"
+}
+
+_main "$@"
