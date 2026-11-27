@@ -126,3 +126,15 @@ MSG
   [ "${status}" -ne 0 ]
   [ ! -e app.log ]
 }
+
+@test "without dybatpho the message is left as it is, with a warning" {
+  cd "${BATS_TEST_TMPDIR}" || return 1
+  sed 's|/scripts/lib/dybatpho/init.sh|/scripts/lib/gone/init.sh|' "${HOOK}" > nolib.sh
+  printf 'fix: x\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n' > "${MSG}"
+  cp "${MSG}" "${MSG}.orig"
+  run bash nolib.sh "${MSG}"
+  [ "${status}" -eq 0 ]
+  [[ "${output}" == *"dybatpho not found"*"skipped"* ]]
+  [[ "${output}" != *"command not found"* ]]
+  cmp "${MSG}" "${MSG}.orig"
+}

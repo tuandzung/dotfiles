@@ -186,3 +186,13 @@ MSG
   [[ "${output}" == *"50"* ]]
   [ ! -e app.log ]
 }
+
+@test "without dybatpho the commit goes through unchecked, with a warning" {
+  # A moved or broken checkout must not block every commit on the machine.
+  sed 's|/scripts/lib/dybatpho/init.sh|/scripts/lib/gone/init.sh|' "${HOOK}" > nolib.sh
+  printf 'feat(git): %s\n' "$(printf 'x%.0s' {1..62})" > "${MSG}"
+  run bash nolib.sh "${MSG}"
+  [ "${status}" -eq 0 ]
+  [[ "${output}" == *"dybatpho not found"*"skipped"* ]]
+  [[ "${output}" != *"command not found"* ]]
+}

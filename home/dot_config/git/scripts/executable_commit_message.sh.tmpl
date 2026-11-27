@@ -9,7 +9,14 @@
 # dybatpho falls back to these unprefixed names, which a project's own env sets
 # for itself (LOG_LEVEL=WARNING aborts it); DYBATPHO_LOG_* still applies.
 unset LOG_LEVEL LOG_FORMAT LOG_FILE LOG_FILE_LEVEL LOG_FILE_MAX_BYTES LOG_FILE_MAX_BACKUPS LOG_REQUEST_ID
-. "{{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh"
+dybatpho_init="{{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh"
+# Fail open: a moved or missing checkout must not block every commit.
+if [[ ! -r "${dybatpho_init}" ]]; then
+  echo "commit_message.sh: dybatpho not found at ${dybatpho_init}, check skipped" >&2
+  exit 0
+fi
+# shellcheck source=/dev/null
+. "${dybatpho_init}"
 dybatpho::register_common_handlers
 
 #######################################
