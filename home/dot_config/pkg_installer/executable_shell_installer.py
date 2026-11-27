@@ -45,15 +45,22 @@ def _find_dependencies(dependency_names: Iterable[str]) -> list[ShellTool]:
     all_tools = load_all_tools()
     return [tool for tool in all_tools if tool and tool.get("name") in wanted]
 
+# Several tools share a dependency (mise); install each once per run.
+_installed_dependencies: set[str] = set()
+
 def install_dependencies(dependencies: Iterable[str]) -> None:
-    deps = _find_dependencies(dependencies)
+    deps = _find_dependencies(name for name in dependencies if name not in _installed_dependencies)
     for dep in deps:
         dep_method = dep.get("method")
         dep_name = dep.get("name")
         if not dep_method or not dep_name:
             continue
         logger.info(f"Installing dependency: {dep_name}")
-        run_shell_command(f"tep_{dep_method} -t {dep_name}")
+        # The binary installer skips a tool already in place, as the binary
+        # phase of the same run may have put it there; tep_os and tep_shell
+        # ignore the variable.
+        run_shell_command(f"FLAG_INSTALL_NOT_EXISTS_ONLY=true tep_{dep_method} -t {dep_name}")
+        _installed_dependencies.add(dep_name)
 
 def shell_installer(packages: Iterable[ShellTool]) -> None:
     flag_install_is_essential_only = os.environ.get("FLAG_INSTALL_IS_ESSENTIAL_ONLY")
