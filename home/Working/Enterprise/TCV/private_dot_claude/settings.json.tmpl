@@ -1,0 +1,296 @@
+{{- /*
+  Claude Code settings. The plugin, marketplace and policy data is rendered
+  from the shared dyai partial so this file and ~/.config/dyai/config.yaml
+  never drift; the hooks and UI scalars below are Claude-specific literals.
+
+  The Bash sandbox is what makes the Read deny rules hold for shell commands
+  too (they merge into its denyRead), so `cat ~/.ssh/x` is blocked like the
+  Read tool is. Excluded commands run outside it: git (a worktree's git dir
+  sits outside the worktree, and push needs the ssh agent), and the tools
+  that write all over $HOME or the system. prek is one: it locks and logs in
+  ~/.cache/prek, which must stay read-only in the sandbox because it holds
+  the hook code `git commit` runs outside it. The rtk spelling of git is listed
+  because rtk rewrites git before the sandbox sees it; rtk as a whole is not,
+  since `cat` becomes `rtk read` and must stay sandboxed. rtk's own config
+  (private_dot_config/rtk/config.toml.tmpl) keeps it off the other commands
+  here, except `sudo`, which rtk strips first.
+
+  Sandboxed commands run without a prompt, so what they may write must never
+  hold something that later runs outside it: only package caches are
+  writable, never a directory on PATH, a tool's trust state, or plugin code.
+  The network allowlist holds download hosts only; anything that can take a
+  write (the GitHub API, gitlab.com) still prompts.
+*/ -}}
+{{- $d := fromYaml (includeTemplate "ai/ai-data.yaml.tmpl" .) -}}
+{{- $enabled := dict -}}
+{{- range $d.plugins }}{{ $_ := set $enabled . true }}{{ end -}}
+{{- /* Installed but off; a dyai preset turns one on per project. */ -}}
+{{- range $d.optional_plugins }}{{ $_ := set $enabled . false }}{{ end -}}
+{{- range $d.disabled_plugins }}{{ $_ := set $enabled . false }}{{ end -}}
+{{- $raw := `
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 20,
+  "env": {
+    "GIT_CONFIG_COUNT": "1",
+    "GIT_CONFIG_KEY_0": "core.fsmonitor",
+    "GIT_CONFIG_VALUE_0": "false"
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "allowUnsandboxedCommands": true,
+    "excludedCommands": [
+      "git *",
+      "rtk git *",
+      "docker *",
+      "podman *",
+      "chezmoi *",
+      "mise *",
+      "prek *",
+      "sudo *",
+      "emerge *",
+      "systemctl *"
+    ],
+    "filesystem": {
+      "allowWrite": [
+        "~/.cache/.bun/install/cache",
+        "~/.cache/go-build",
+        "~/.cache/pip",
+        "~/.cache/uv",
+        "~/.cargo/registry",
+        "~/.cache/rtk"
+      ],
+      "denyWrite": [
+        "~/.local/bin",
+        "~/.cache/.bun/bin",
+        "~/.local/share/mise",
+        "~/.local/state/mise",
+        "~/.local/share/nvim/mason",
+        "~/.claude/plugins",
+        "~/.krew/bin",
+        "~/.hunk/bin"
+      ]
+    },
+    "network": {
+      "allowedDomains": [
+        "codeload.github.com",
+        "objects.githubusercontent.com",
+        "raw.githubusercontent.com",
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "index.crates.io",
+        "static.crates.io"
+      ]
+    }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${CLAUDE_PROJECT_DIR:-$PWD}/AGENTS.md\"; if [ -f \"$f\" ] && ! [ -f \"${f%AGENTS.md}CLAUDE.md\" ]; then echo '=== AGENTS.md (project rules) ==='; cat \"$f\"; else true; fi",
+            "statusMessage": "Loading AGENTS.md..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "@notify-stop@",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_CONFIG_DIR/hooks/verify-on-stop.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "@notify-input@",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "@notify-permission@",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          },
+          {
+            "type": "command",
+            "command": "dcg"
+          }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_CONFIG_DIR/hooks/log-tool.sh\" skill",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_CONFIG_DIR/hooks/lint-shell.sh\"",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_CONFIG_DIR/hooks/worktree-create.sh\""
+          }
+        ]
+      }
+    ],
+    "WorktreeRemove": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_CONFIG_DIR/hooks/worktree-remove.sh\""
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$CLAUDE_CONFIG_DIR/statusline.sh\""
+  },
+  "tui": "fullscreen",
+  "preferredNotifChannel": "auto",
+  "remoteControlAtStartup": true,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
+}
+` -}}
+{{- /* The desktop notifications, shared with dyai's global.hooks. */ -}}
+{{- $notify := dict
+      "@notify-stop@" (dict "title" "Claude" "body" "Task finished!" "icon" "dialog-information" "sound" "complete")
+      "@notify-input@" (dict "title" "Claude" "body" "Prompt waiting for your input!" "icon" "dialog-information")
+      "@notify-permission@" (dict "title" "Claude" "body" "Permission requested" "icon" "dialog-question" "sound" "window-question") -}}
+{{- range $mark, $args := $notify }}
+{{-   $raw = replace (quote $mark) (includeTemplate "ai/notify-hook.sh.tmpl" $args | trim | toJson) $raw }}
+{{- end -}}
+{{- $static := $raw | fromJson -}}
+{{- /*
+  The sandbox turns every recursive (double-star) Read deny into one path
+  per matching file under the cwd. The .age rule alone matched ~1.7k files
+  here (browser profiles, worktrees): a 1.7MB bwrap command line that fails
+  with E2BIG and adds ~13s to startup. Claude gets the gitignore form
+  `*.age` instead, which the Read tool matches at any depth without
+  expansion, and the sandbox denies the directories that hold .age files.
+  shortcut: a .age file outside these directories is readable from Bash;
+  add its directory here when one appears.
+*/ -}}
+{{- $deny := list -}}
+{{- range $d.policy.permissions.deny }}{{ $deny = append $deny (eq . "Read(**/*.age)" | ternary "Read(*.age)" .) }}{{ end -}}
+{{- $perms := deepCopy $d.policy.permissions -}}
+{{- $_ := set $perms "deny" $deny -}}
+{{- /*
+  With the guard on and dcg installed, dcg (the PreToolUse hook above)
+  judges a recursive rm by its target, so the blanket ask rules go: an ask rule
+  outranks every hook and allow rule, so no temporary directory could ever
+  be spared the prompt. The sandbox still confines a sandboxed rm to the
+  working tree and $TMPDIR, and an unsandboxed one still prompts.
+*/ -}}
+{{- if and $d.policy.guard (lookPath "dcg") }}
+{{-   $ask := list -}}
+{{-   range $perms.ask }}{{ if not (has . (list "Bash(rm -rf *)" "Bash(rm -fr *)")) }}{{ $ask = append $ask . }}{{ end }}{{ end -}}
+{{-   $_ := set $perms "ask" $ask -}}
+{{- end -}}
+{{- /* The shared approval stance, in Claude's name for it. */ -}}
+{{- with get (dict "accept-edits" "acceptEdits") ($d.policy.approval | default "") }}{{ $_ := set $perms "defaultMode" . }}{{ end -}}
+{{- $wt := .chezmoi.workingTree -}}
+{{- /*
+  On Linux the sandbox skips a glob in its path lists ("Skipping glob write
+  pattern on Linux"), so each glob below is expanded here into the paths it
+  matches now; the pattern itself stays for the platforms that honour it.
+  shortcut: a submodule or worktree added later is covered from the next
+  apply on.
+*/ -}}
+{{- $expand := list (joinPath $wt ".worktrees/**/secrets") -}}
+{{- $denyRead := list
+      (joinPath $wt "secrets")
+      (joinPath $wt ".worktrees/**/secrets")
+      (joinPath $wt "home/private_dot_ssh/keys")
+      (joinPath $wt "home/dot_config/firefox/profiles")
+      (joinPath $wt "home/dot_config/thunderbird/profiles")
+      (joinPath $wt "home/dot_config/zen/profiles")
+-}}
+{{- range $expand }}{{ $denyRead = concat $denyRead (glob .) }}{{ end -}}
+{{- /*
+  Every hook, git hook and chezmoi script sources these from the checkout
+  and runs outside the sandbox, the root ones under `scz` too: a session
+  working in the checkout must not change them unasked. The last three are
+  plain sources that `mode: symlink` links into the home, where fish,
+  opencode and Copilot run them with no apply in between. git's own config
+  and hooks close the list: git runs outside the sandbox, and would run a
+  hook planted there.
+*/ -}}
+{{- $denyWrite := concat $static.sandbox.filesystem.denyWrite (list
+      (joinPath $wt "scripts/lib")
+      (joinPath $wt "scripts/*.sh")
+      (joinPath $wt ".pre-commit-config.yaml")
+      (joinPath $wt "home/dot_config/fish")
+      (joinPath $wt ".git/config")
+      (joinPath $wt ".git/hooks")
+      (joinPath $wt ".git/modules/**/config")
+      (joinPath $wt ".git/modules/**/hooks")) -}}
+{{- range list "scripts/*.sh" ".git/modules/**/config" ".git/modules/**/hooks" }}
+{{-   $denyWrite = concat $denyWrite (glob (joinPath $wt .)) }}
+{{- end -}}
+{{- $derived := dict
+      "permissions" $perms
+      "sandbox" (dict "filesystem" (dict "denyRead" $denyRead "denyWrite" $denyWrite))
+      "theme" $d.policy.theme
+      "effortLevel" $d.policy.effortLevel
+      "model" $d.policy.model
+      "advisorModel" $d.policy.advisorModel
+      "enabledPlugins" $enabled
+      "extraKnownMarketplaces" $d.marketplaces -}}
+{{- if eq (toString $d.policy.attribution) "false" }}{{ $_ := set $derived "attribution" (dict "commit" "" "pr" "") }}{{ end -}}
+{{ mergeOverwrite $static $derived | toPrettyJson }}

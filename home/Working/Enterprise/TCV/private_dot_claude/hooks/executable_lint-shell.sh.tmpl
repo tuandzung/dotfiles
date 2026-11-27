@@ -1,0 +1,90 @@
+#!{{ .bash }}
+# @file lint-shell.sh
+# @brief PostToolUse hook running dyshellint on a shell script Claude just wrote
+# @description Read the Edit/Write hook input on stdin and, when the file is a
+# bash script, lint it with dyshellint. Findings go to stderr with exit code 2,
+# which Claude Code feeds back to the model so it fixes them in the same turn.
+# In a file git already tracks, only the findings the committed version did
+# not have are reported, so an edit to legacy code is not pushed into
+# rewriting the rest of the file. Anything that is not a lintable shell
+# script, or a machine without dyshellint, passes silently: a hook must never
+# block an unrelated edit.
+# On a Bash too old for dybatpho the hook passes rather than fail every edit.
+. "{{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh" --modules json || exit 0
+dybatpho::register_common_handlers
+
+dybatpho::is command dyshellint || exit 0
+file="$(dybatpho::json_query - '.tool_input.file_path // ""' -r)"
+[[ -n "${file}" ]] && dybatpho::is file "${file}" || exit 0
+
+case "${file}" in
+  # Go templates are not valid shell until chezmoi renders them.
+  *.tmpl) exit 0 ;;
+  *.sh | *.bash | *.bats) ;;
+  *)
+    # An extensionless script is recognized by its shebang.
+    first=""
+    IFS= read -r first < "${file}" || true
+    [[ "${first}" =~ ^#!.*[/[:space:]](ba)?sh([[:space:]]|$) ]] || exit 0
+    ;;
+esac
+
+# One lint at a time across every agent session on the machine: a shellcheck
+# with external sources can take 700M, and dozens of parallel sessions each
+# linting at once drove this machine out of memory. A lint that cannot get
+# the lock in time is skipped, since a hook must never block the edit, but the
+# model is told so it does not read the silence as a clean lint.
+if dybatpho::is command flock; then
+  lock="${CLAUDE_LINT_SHELL_LOCK:-${XDG_RUNTIME_DIR:-/tmp}/claude-lint-shell.lock}"
+  # An unwritable lock path (no runtime dir in a container) must not fail the hook.
+  { exec 9>> "${lock}"; } 2> /dev/null || exit 0
+  if ! flock -w "${CLAUDE_LINT_SHELL_WAIT:-30}" 9; then
+    context="dyshellint skipped on ${file}: another session holds the lint lock;"
+    context+=" run dyshellint on it before reporting done"
+    output="$(dybatpho::json_object hookEventName PostToolUse additionalContext "${context}")"
+    dybatpho::json_object hookSpecificOutput:json "${output}"
+    exit 0
+  fi
+fi
+
+# Warnings count too: the machine rules say to fix whatever dyshellint reports.
+args=(-warnings-as-errors)
+name="$(dybatpho::path_basename "${file}")"
+# A chezmoi `executable_` source is stored without the bit; apply sets it.
+[[ "${name}" != executable_* ]] || args+=(-exclude-rules BSG037)
+
+if output="$(dyshellint "${args[@]}" "${file}" 2>&1)"; then
+  exit 0
+fi
+
+# The committed version is the baseline. A finding is keyed by its text after
+# `path:line:col: `, so a finding that only moved lines still matches, and
+# each key is numbered by occurrence, so a second copy of an old finding
+# counts as new.
+dir="$(dybatpho::path_dirname "${file}")"
+# The edited file may sit in a repository nobody vetted, whose own config
+# could name a program for git to run. Read only objects (no index, so no
+# fsmonitor), with the config hooks that execute turned off.
+git_safe=(git -c core.fsmonitor=false -c core.hooksPath=/dev/null -C "${dir}")
+baseline=""
+if prefix="$("${git_safe[@]}" rev-parse --show-prefix 2> /dev/null)" \
+  && blob="$("${git_safe[@]}" cat-file blob "HEAD:${prefix}${name}" 2> /dev/null)"; then
+  baseline="$(dyshellint "${args[@]}" --stdin-filename "${name}" - <<< "${blob}" 2>&1 || true)"
+  # Text on stdin has no mode, so the executable-bit rule never fires on the
+  # baseline. A file committed without the bit already had that finding.
+  mode="$("${git_safe[@]}" ls-tree HEAD -- "${name}" 2> /dev/null || true)"
+  if [[ "${mode}" != 100755* ]]; then
+    baseline+=$'\n'"$(dyshellint "${args[@]}" -rules BSG037 "${file}" 2>&1 || true)"
+  fi
+fi
+# shellcheck disable=SC2016 # an awk program, its $0 is awk's
+new="$(awk '
+  function key(line) { return sub(/^[^:]*:[0-9]+:[0-9]+: /, "", line) ? line : "" }
+  FNR == NR { k = key($0); if (k != "") base[k "\t" ++seen[k]] = 1; next }
+  { k = key($0); if (k != "" && !((k "\t" ++cur[k]) in base)) print }
+' <(printf '%s\n' "${baseline}") <(printf '%s\n' "${output}"))"
+[[ -n "${new}" ]] || exit 0
+
+printf 'dyshellint reported new findings in %s; fix them before reporting done:\n%s\n' \
+  "${file}" "${new}" >&2
+exit 2

@@ -1,0 +1,265 @@
+marketplaces:
+  # Pinned to a release tag: their plugin hooks run outside the sandbox. Claude
+  # clones a marketplace with --branch, so a ref is a tag or branch, never a
+  # commit; the three without a tag follow their default branch.
+  # Claude adds it on its own only in ~/.claude; a context's home needs it listed.
+  claude-plugins-official:
+    source: { source: github, repo: anthropics/claude-plugins-official }
+  i-have-adhd:
+    source: { source: github, repo: ayghri/i-have-adhd, ref: v0.4.1 }
+  superpowers-marketplace:
+    source: { source: github, repo: obra/superpowers-marketplace, ref: v1.0.12 }
+  obsidian-skills:
+    source: { source: github, repo: obsidianmd/obsidian-skills, ref: 1.2.0 }
+  secskills-marketplace:
+    source: { source: github, repo: trilwu/secskills }
+  trailofbits:
+    source: { source: github, repo: trailofbits/skills }
+  # 83 offensive bug-bounty skills; vetted at v2.1: no hooks, no MCP servers.
+  elementalsouls:
+    source: { source: github, repo: elementalsouls/Claude-BugHunter, ref: v2.1 }
+  thedotmack:
+    source: { source: github, repo: thedotmack/claude-mem, ref: v16.0.0 }
+  ponytail:
+    source: { source: github, repo: DietrichGebert/ponytail, ref: v5.3.3 }
+  understand-anything:
+    source: { source: github, repo: Egonex-AI/Understand-Anything, ref: v2.9.8 }
+  claude-tools:
+    source: { source: github, repo: rafaelkamimura/claude-tools, ref: 1.0.0 }
+  caveman:
+    source: { source: github, repo: JuliusBrussee/caveman }
+plugins:
+  - i-have-adhd@i-have-adhd
+  - claude-mem@thedotmack
+  - ponytail@ponytail
+  - superpowers@claude-plugins-official
+  - telegram@claude-plugins-official
+  - context7@claude-plugins-official
+  - github@claude-plugins-official
+  - gitlab@claude-plugins-official
+  - claude-md-management@claude-plugins-official
+  - hookify@claude-plugins-official
+  - security-guidance@claude-plugins-official
+  - claude-code-setup@claude-plugins-official
+  - obsidian@obsidian-skills
+  - code-simplifier@claude-plugins-official
+  - commit-commands@claude-plugins-official
+  - elements-of-style@superpowers-marketplace
+  - mattpocock-skills@claude-plugins-official
+  - pr-review-toolkit@claude-plugins-official
+  - second-opinion@trailofbits
+  - skill-creator@claude-plugins-official
+  - ralph-loop@claude-plugins-official
+  - pyright-lsp@claude-plugins-official
+  - lua-lsp@claude-plugins-official
+  - typescript-lsp@claude-plugins-official
+  - gopls-lsp@claude-plugins-official
+  - rust-analyzer-lsp@claude-plugins-official
+  - data-engineering@claude-plugins-official
+  - command-explain-pr-changes@agent-toolkit
+  - crafting-effective-readmes@agent-toolkit
+  - agent-md-refactor@agent-toolkit
+  - dependency-updater@agent-toolkit
+  - lesson-learned@agent-toolkit
+  - writing-clearly-and-concisely@agent-toolkit
+  - humanizer@agent-toolkit
+  - security-guidance@anthropic-plugin-directory
+  - claude-security@anthropic-plugin-directory
+# Installed but off globally: each one loads its skills into every session,
+# so these domain plugins are switched on per project by the registry preset
+# that lists them (`dyai use security`, `dyai use database`).
+optional_plugins:
+  - secskills-core@secskills-marketplace
+  - secskills-defense@secskills-marketplace
+  - secskills-offense@secskills-marketplace
+  - testing-handbook-skills@trailofbits
+  - agentic-actions-auditor@trailofbits
+  - redis-development@claude-plugins-official
+  - duckdb-skills@claude-plugins-official
+  - understand-anything@understand-anything
+  - claude-security@claude-plugins-official
+  - claude-bughunter@elementalsouls
+  - differential-review@trailofbits
+  - audit-context-building@trailofbits
+  - insecure-defaults@trailofbits
+  - sharp-edges@trailofbits
+  - static-analysis@trailofbits
+  - supply-chain-risk-auditor@trailofbits
+  - trailmark@trailofbits
+  - playwright@claude-plugins-official
+  - chrome-devtools-mcp@claude-plugins-official
+  - frontend-design@claude-plugins-official
+  - modern-python@trailofbits
+  - mcp-server-dev@claude-plugins-official
+  - agent-sdk-dev@claude-plugins-official
+
+# Plugins still installed on machines set up before dyai-lsp replaced them,
+# turned off explicitly (`enabledPlugins: false`) so Claude never runs them
+# next to dyai-lsp's servers for the same files. Not uninstalled.
+disabled_plugins:
+# Dropped for the context they injected every session and prompt: caveman
+# (overlapped ponytail on brevity), context-mode (routing block, MCP flaky),
+# episodic-memory (recall that claude-mem and auto-memory already cover).
+  - caveman@caveman
+  - context-mode@context-mode
+  - episodic-memory@superpowers-marketplace
+
+# Claude's own name for each abstract model tier: dyai's agents.claude.model_tiers
+# and the routing advice of the route-agent hook both render from it.
+model_tiers:
+  fast: haiku
+  standard: sonnet
+  strong: opus
+
+policy:
+  # Harness-enforced versions of the credentials and destructive-commands rules
+  # in ai/: a rule here holds even when the prose is lost from context. The rtk
+  # PreToolUse hook rewrites some git commands to `rtk git ...` before they are
+  # matched, so every git rule is listed in both spellings.
+  permissions:
+    # No allow rule for `git wt`: nothing defines that alias, so a
+    # repository's own .git/config could, and git runs unsandboxed.
+    ask:
+      - "Bash(git push)"
+      - "Bash(git push:*)"
+      - "Bash(rtk git push)"
+      - "Bash(rtk git push *)"
+      - "Bash(git reset --hard:*)"
+      - "Bash(rtk git reset --hard:*)"
+      - "Bash(git clean *)"
+      - "Bash(rtk git clean *)"
+      - "Bash(git branch -D *)"
+      - "Bash(rtk git branch -D *)"
+      - "Bash(git tag -d *)"
+      - "Bash(rtk git tag -d *)"
+      - "Bash(git stash drop:*)"
+      - "Bash(rtk git stash drop:*)"
+      - "Bash(git stash clear:*)"
+      - "Bash(rtk git stash clear:*)"
+      # They run any command line, past every rule matched on its prefix; a
+      # leading global flag (`rtk -v run ...`) would dodge the named ones.
+      - "Bash(rtk run *)"
+      - "Bash(rtk proxy *)"
+      - "Bash(rtk err *)"
+      - "Bash(rtk test *)"
+      - "Bash(rtk summary *)"
+      - "Bash(rtk -*)"
+      # Trusting a repository's filters lets it shape what the agent reads.
+      - "Bash(rtk trust:*)"
+      - "Bash(rm -rf *)"
+      - "Bash(rm -fr *)"
+      - "Bash(shred *)"
+      # The deny rules below match `age -d` only as a prefix, and
+      # `age -i KEY -d FILE` decrypts all the same.
+      - "Bash(age *)"
+      # The same for sops: `sops decrypt f` and `sops --output-type json -d f`.
+      - "Bash(sops *)"
+      # Prints the decrypted content of an encrypted_ target.
+      - "Bash(chezmoi cat *)"
+      # A leading global flag (`chezmoi -v decrypt f`) dodges every rule above.
+      - "Bash(chezmoi -*)"
+      - "Bash(sudo *)"
+      - "Bash(emerge *)"
+      - "Bash(pacman *)"
+      - "Bash(paru *)"
+      - "Bash(apt *)"
+      - "Bash(apt-get *)"
+      - "Bash(brew install *)"
+      - "Bash(brew uninstall *)"
+      - "Bash(brew upgrade *)"
+      - "Bash(systemctl enable *)"
+      - "Bash(systemctl disable *)"
+      - "Bash(systemctl start *)"
+      - "Bash(systemctl stop *)"
+      - "Bash(systemctl restart *)"
+      - "Bash(chezmoi apply:*)"
+      - "Bash(chezmoi destroy:*)"
+      - "Bash(chezmoi forget:*)"
+    deny:
+      - "Read(**/secrets/data/**)"
+      - "Edit(**/secrets/data/**)"
+      - "Read(**/*.age)"
+      - "Edit(**/*.age)"
+      - "Read(**/.env)"
+      - "Edit(**/.env)"
+      - "Read(**/.env.*)"
+      - "Edit(**/.env.local)"
+      - "Edit(**/.env.*.local)"
+      - "Read(**/.envrc)"
+      - "Edit(**/.envrc)"
+      - "Read(~/.ssh/**)"
+      - "Edit(~/.ssh/**)"
+      - "Read(~/.gnupg/**)"
+      - "Edit(~/.gnupg/**)"
+      - "Read(~/.aws/**)"
+      - "Edit(~/.aws/**)"
+      - "Read(~/.kube/**)"
+      - "Edit(~/.kube/**)"
+      # Claude's own login, and the tokens other CLIs keep in plain files.
+      - "Read(~/.claude/.credentials.json)"
+      - "Read(~/Working/Enterprise/TCV/.claude/.credentials.json)"
+      - "Read(~/.config/gh/hosts.yml)"
+      - "Read(~/.git-credentials)"
+      - "Read(~/.npmrc)"
+      - "Read(~/.pypirc)"
+      - "Read(~/.cargo/credentials.toml)"
+      # sops' age identities, the same as chezmoi's below.
+      - "Read(~/.config/sops/age/**)"
+      - "Read(~/.docker/config.json)"
+      - "Read(~/.netrc)"
+      - "Read(~/.password-store/**)"
+      - "Read(~/.local/share/keyrings/**)"
+      # chezmoi's age identities: reading one decrypts every .age file.
+      - "Read(~/.config/chezmoi/*.key)"
+      - "Edit(~/.config/chezmoi/*.key)"
+      # Rendered logins outside the stores above. The mise files that export
+      # tokens are not here: mise reads them for every shim in the sandbox.
+      - "Read(~/.config/rclone/**)"
+      - "Read(~/Working/Enterprise/**/.docker*/**)"
+      - "Read(~/Working/Enterprise/**/.kube/**)"
+      # The decrypting diff drivers load only through these; git runs unsandboxed.
+      - "Bash(git sdiff*)"
+      - "Bash(rtk git sdiff*)"
+      - "Bash(git -c include.path*)"
+      - "Bash(rtk git -c include.path*)"
+      # What `git sdiff` runs, and the driver itself: each asks on the
+      # terminal before it decrypts, which an agent owning a pty can answer.
+      - "Bash(chezmoi-dycrypt*)"
+      - "Bash(chezmoi decrypt*)"
+      - "Bash(chezmoi age decrypt*)"
+      - "Bash(age -d *)"
+      - "Bash(age --decrypt *)"
+      - "Bash(sops -d *)"
+      - "Bash(sops --decrypt *)"
+      - "Bash(sops decrypt *)"
+      - "Bash(gpg -d *)"
+      - "Bash(gpg --decrypt *)"
+      - "Bash(pass show *)"
+      - "Bash(vault read *)"
+      - "Bash(op read *)"
+      - "Bash(aws configure get *)"
+      # Commits are signed; an agent whose signing fails in the sandbox
+      # otherwise turns it off. The post-commit hook flags the other spellings.
+      - "Bash(git commit --no-gpg-sign*)"
+      - "Bash(rtk git commit --no-gpg-sign*)"
+      - "Bash(git -c commit.gpgsign=false *)"
+      - "Bash(rtk git -c commit.gpgsign=false *)"
+    # --dangerously-skip-permissions would skip every ask rule above; auto
+    # mode and the sandbox cover the same need without that hole.
+    disableBypassPermissionsMode: disable
+  # dcg judges a removal by its target in Claude's PreToolUse hook, which lets
+  # Claude drop its blanket `rm -rf` ask rules above; settings.json.tmpl keeps
+  # them on a machine without dcg, where that hook would fail open.
+  guard: true
+  theme: auto
+  effortLevel: medium
+  # Claude's main model, and the stronger one it consults at decision points
+  # (Claude Code's advisor tool). /fast on a Sonnet session switches it to Opus.
+  model: sonnet
+  advisorModel: opus
+  # Shared approval stance, translated per agent where an edits-only preset
+  # exists (Claude's permissions.defaultMode: acceptEdits, in settings.json.tmpl).
+  approval: accept-edits
+  # No agent credits itself in a commit (Copilot, Codex); settings.json.tmpl
+  # turns it into Claude's empty attribution block.
+  attribution: false
