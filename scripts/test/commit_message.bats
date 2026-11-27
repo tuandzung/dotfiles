@@ -167,15 +167,18 @@ MSG
   [ "${output}" = "init" ]
 }
 
-@test "with commit.cleanup = scissors, a # line is the subject git commits" {
-  git config --global commit.cleanup scissors
-  printf '#42 fix login\n' > "${MSG}"
-  run bash "${HOOK}" "${MSG}"
-  [ "${status}" -eq 0 ]
-  printf '# %s\n\nfix: short\n' "$(printf 'x%.0s' {1..80})" > "${MSG}"
-  run bash "${HOOK}" "${MSG}"
-  [ "${status}" -ne 0 ]
-  [[ "${output}" == *"82 characters"* ]]
+@test "when commit.cleanup keeps # lines, a # line is the subject git commits" {
+  local mode
+  for mode in scissors whitespace verbatim; do
+    git config --global commit.cleanup "${mode}"
+    printf '#42 fix login\n' > "${MSG}"
+    run bash "${HOOK}" "${MSG}"
+    [ "${status}" -eq 0 ]
+    printf '# %s\n\nfix: short\n' "$(printf 'x%.0s' {1..80})" > "${MSG}"
+    run bash "${HOOK}" "${MSG}"
+    [ "${status}" -ne 0 ]
+    [[ "${output}" == *"82 characters"* ]]
+  done
 }
 
 @test "a project's own LOG_LEVEL and LOG_FILE never reach the hook" {
