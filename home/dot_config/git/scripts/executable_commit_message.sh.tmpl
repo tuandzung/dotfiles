@@ -6,6 +6,9 @@
 # Reject an empty message and a subject over 72 characters, and warn when the
 # subject goes over the 50 character mark.
 {{ template "git/hooks/modern_bash.sh.tmpl" . }}
+# dybatpho falls back to these unprefixed names, which a project's own env sets
+# for itself (LOG_LEVEL=WARNING aborts it); DYBATPHO_LOG_* still applies.
+unset LOG_LEVEL LOG_FORMAT LOG_FILE LOG_FILE_LEVEL LOG_FILE_MAX_BYTES LOG_FILE_MAX_BACKUPS LOG_REQUEST_ID
 . "{{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh"
 dybatpho::register_common_handlers
 

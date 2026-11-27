@@ -177,3 +177,12 @@ MSG
   [ "${status}" -ne 0 ]
   [[ "${output}" == *"82 characters"* ]]
 }
+
+@test "a project's own LOG_LEVEL and LOG_FILE never reach the hook" {
+  # Python-style values from a project's .env, picked up by direnv.
+  printf 'feat(git): %s\n' "$(printf 'x%.0s' {1..40})" > "${MSG}"
+  LOG_LEVEL=WARNING LOG_FILE=app.log run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+  [[ "${output}" == *"50"* ]]
+  [ ! -e app.log ]
+}

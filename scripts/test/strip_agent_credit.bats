@@ -116,3 +116,13 @@ MSG
   [ "${status}" -eq 0 ]
   cmp "${MSG}" "${MSG}.orig"
 }
+
+@test "a project's own LOG_FILE never gets the hook's log lines" {
+  cd "${BATS_TEST_TMPDIR}" || return 1
+  printf 'fix: x\n' > "${MSG}"
+  chmod 200 "${MSG}"
+  LOG_FILE=app.log run bash "${HOOK}" "${MSG}"
+  chmod 600 "${MSG}"
+  [ "${status}" -ne 0 ]
+  [ ! -e app.log ]
+}
