@@ -16,6 +16,7 @@ cover what is specific to it; the machine-wide agent rules in
 | `cascadeur/`              | chezmoi source rendering this repo's `.gitmodules`   |
 | `modules/`                | symlinks and large submodules, for quick navigation  |
 | `scripts/lib/`            | bash libraries                                       |
+| `scripts/test/`           | bats tests, run through `scripts/test.sh`            |
 | `secrets/`                | age-encrypted secrets                                |
 | `install.sh`, `prerequisites.sh` | fresh-machine bootstrap (chezmoi, Homebrew); never run them to test |
 
@@ -81,9 +82,19 @@ cover what is specific to it; the machine-wide agent rules in
 ```bash
 dyshellint <changed scripts>   # shellcheck + shfmt + its own rules
 prek run --all-files           # incl. betterleaks and detect-private-key
+scripts/test.sh --all          # every bats file; --pkgs for the tool list only
 ```
 
-There is no test suite yet (`scripts/test.sh` is empty). Say which checks ran.
+- The pkgs tests render `home/dot_config/pkg_installer/tools.yaml.tmpl` for
+  the current OS, so an entry for another OS is checked only on that OS. A
+  shell tool's `dependencies` must name another entry: the installer skips an
+  unknown one without a word.
+- The runner uses the bats bundled with dybatpho, else one on `PATH`. When
+  both are missing, fetch it with
+  `git -C scripts/lib/dybatpho submodule update --init --recursive`.
+- `--secrets` points at a `secrets_schema.bats` that does not exist yet.
+
+Say which checks ran.
 
 ## Repository-specific rules
 
