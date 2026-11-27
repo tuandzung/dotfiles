@@ -18,6 +18,9 @@ fi
 # shellcheck source-path=SCRIPTDIR
 # shellcheck source=lib/dybatpho/init.sh
 . "${SCRIPT_DIR}/lib/dybatpho/init.sh" --modules cli parallel
+# shellcheck source-path=SCRIPTDIR
+# shellcheck source=lib/test_select.sh
+. "${SCRIPT_DIR}/lib/test_select.sh"
 BATS_CMD="${DYBATPHO_DIR}/test/lib/core/bin/bats"
 dybatpho::register_common_handlers
 
@@ -29,6 +32,8 @@ dybatpho::register_common_handlers
 function _spec_main {
   dybatpho::opts::setup "Test the dotfiles setup" MAIN_ARGS action:"_main"
   dybatpho::opts::flag "Run all tests" ALL --all -a on:true off:false init:="false"
+  dybatpho::opts::flag "Run only the tests covering what changed since main" \
+    CHANGED --changed -c on:true off:false init:="false"
   dybatpho::opts::flag "Run only the pkgs YAML schema validation tests" \
     PKGS --pkgs -p on:true off:false init:="false"
   dybatpho::opts::flag "Run only the secrets YAML schema validation tests" \
@@ -77,6 +82,53 @@ function _run_bats_files {
 }
 
 #######################################
+# @description Print the paths that differ from the main branch: the commits
+# of the current branch, and what the working tree holds on top of them
+# @noargs
+# @stdout One path per line, relative to the repository root
+#######################################
+function _changed_paths {
+  local base
+  # quotepath off: a path is printed as it is, not quoted and escaped.
+  local -a git=(git -C "${SCRIPT_DIR}/.." -c core.quotepath=off)
+  if ! base="$("${git[@]}" merge-base HEAD main 2> /dev/null)"; then
+    dybatpho::warn "No main branch to compare with: only the working tree counts as changed."
+    base="HEAD"
+  fi
+  "${git[@]}" diff --name-only "${base}" HEAD
+  # `status`, not `diff`: it lists untracked files too. A submodule counts
+  # when its commit moved, not for a change left inside it.
+  "${git[@]}" status --porcelain --no-renames --untracked-files=all \
+    --ignore-submodules=dirty | cut -c4-
+}
+
+#######################################
+# @description Run the tests covering what changed since the main branch
+# @noargs
+#######################################
+function _run_changed {
+  local paths selected
+  paths="$(_changed_paths)"
+  if [[ -z "${paths}" ]]; then
+    dybatpho::info "Nothing changed since main, no test to run."
+    return 0
+  fi
+  local -a changed=() files=()
+  mapfile -t changed <<< "${paths}"
+  selected="$(test_select::files "${SCRIPT_DIR}/.." ${changed[@]+"${changed[@]}"})"
+  if [[ "${selected}" == "--all" ]]; then
+    dybatpho::info "A changed file reaches every test, or is named by none: running the whole suite."
+    mapfile -t files < <(printf '%s\n' "${SCRIPT_DIR}"/test/*.bats)
+  elif [[ -z "${selected}" ]]; then
+    dybatpho::info "Only documentation or deleted files changed, no test to run."
+    return 0
+  else
+    mapfile -t files <<< "${selected}"
+  fi
+  _run_bats_files ${files[@]+"${files[@]}"}
+}
+
+#######################################
 # @description Main function
 # @noargs
 #######################################
@@ -108,11 +160,15 @@ function _main {
     _run_bats_files "${SCRIPT_DIR}"/test/*.bats
     return 0
   fi
+  if [[ "${CHANGED}" == "true" ]]; then
+    _run_changed
+    return 0
+  fi
   if ((${#MAIN_ARGS[@]} > 0)); then
     exec "${BATS_CMD}" --print-output-on-failure --verbose-run "${MAIN_ARGS[@]}"
   fi
 
-  dybatpho::die "No test specified. Use --all, --pkgs, --secrets, or specify a test file."
+  dybatpho::die "No test specified. Use --all, --changed, --pkgs, --secrets, or specify a test file."
 }
 
 dybatpho::generate_from_spec _spec_main "$@"
