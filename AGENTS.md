@@ -82,9 +82,17 @@ cover what is specific to it; the machine-wide agent rules in
 ```bash
 dyshellint <changed scripts>   # shellcheck + shfmt + its own rules
 prek run --all-files           # incl. betterleaks and detect-private-key
-scripts/test.sh --all          # every bats file; --pkgs for the tool list only
+scripts/test.sh --changed      # bats files covering what changed since main
+scripts/test.sh --all          # every bats file, once before a merge
 ```
 
+- Use `--changed` while working. `scripts/lib/test_select.sh` picks the bats
+  file named after each changed file, plus any bats file that mentions its
+  name. A change to the runner or the selector itself, or to a non-prose file
+  no test names, runs the whole suite instead. `--pkgs` runs only the
+  tool-list tests.
+- A new library `scripts/lib/<area>.sh` needs `scripts/test/<area>.bats`:
+  `dyshellint` fails it with `BSG060` until the test file exists.
 - The pkgs tests render `home/dot_config/pkg_installer/tools.yaml.tmpl` for
   the current OS, so an entry for another OS is checked only on that OS. A
   shell tool's `dependencies` must name another entry: the installer skips an
