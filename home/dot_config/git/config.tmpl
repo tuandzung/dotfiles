@@ -193,6 +193,17 @@
 [init]
         defaultBranch = main
 
+{{- /* Hooks from config (git 2.54+) run in every repository, before its own
+       hooks; an older git ignores them. */}}
+[hook "worktree-submodules"]
+        # Check out a new linked worktree's submodules, minus worktreeInit = false
+        event = post-checkout
+        command = ~/.config/git/scripts/worktree_submodules.sh
+[hook "worktree-cleanup"]
+        # Remove a clean worktree once a merge brought its branch in, keep the branch
+        event = post-merge
+        command = ~/.config/git/scripts/worktree_cleanup.sh
+
 [alias]
         # Get main branch
         main = "!_() { git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'; }; _"

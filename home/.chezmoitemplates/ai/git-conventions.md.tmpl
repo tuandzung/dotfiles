@@ -6,15 +6,15 @@ These rules apply whenever an AI agent works with git in any repository.
 
 - Create worktrees inside `.worktrees/` at the root of the repository, never
   as a sibling directory next to it and never nested inside another worktree.
-- Prefer the `git wt <branch>` alias, which picks the right location on its
-  own. Otherwise use `git worktree add .worktrees/<name>` from the main
-  checkout.
+- Prefer `git wt <branch>` (the `~/.local/bin/git-wt` script), which picks
+  the right location on its own. Otherwise use
+  `git worktree add .worktrees/<name> -b <branch>` from the main checkout.
 - Run `git wt <branch>` on its own, never chained after `cd` or `mkdir`:
   alone it is pre-approved and runs outside the sandbox, while a chained one
   runs inside it and fails on the secret files it cannot write.
 - A new worktree checks out on its own every submodule the main checkout
-  has, borrowing its objects (a global post-checkout hook), except one marked
-  `worktreeInit = false` in `.gitmodules`. Do not init submodules by hand in
+  has, borrowing its objects (a global post-checkout hook, git 2.54 or newer),
+  except one marked `worktreeInit = false` in `.gitmodules`. Do not init submodules by hand in
   a worktree; when one is still empty, check it out in the main checkout.
 - `.worktrees/` is already in the global git ignore, so it never needs a
   per-repository `.gitignore` entry.
@@ -30,10 +30,10 @@ These rules apply whenever an AI agent works with git in any repository.
   with `git rebase --abort` and report it rather than guessing.
 - Rebasing a branch that is already pushed rewrites shared history; ask first,
   as the destructive-command rules require.
-- After the merge, a global post-merge hook removes the merged worktree and
-  keeps its branch, unless the worktree still holds a change or an untracked
-  or ignored file. Never ask the user to remove it; when the hook kept one,
-  say what is left in it.
+- After the merge, a global post-merge hook (git 2.54 or newer) removes the
+  merged worktree and keeps its branch, unless the worktree still holds a
+  change or an untracked or ignored file. Never ask the user to remove it;
+  when the hook kept one, say what is left in it.
 
 ## Commit messages
 
