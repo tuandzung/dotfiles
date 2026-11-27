@@ -1,6 +1,13 @@
+{{- $ferdium := "flatpak run --socket=wayland org.ferdium.Ferdium" }}
+{{- if eq .osid "linux-gentoo" "linux-arch" }}
+{{-   $ferdium := "/usr/bin/ferdium" }}
+{{-   if eq .osid "linux-gentoo" }}
+{{-     $ferdium = "/usr/bin/ferdium-bin" }}
+{{-   end }}
+{{- end }}
 [Desktop Entry]
-Name=Ferdium
-Exec=/usr/bin/{{- if ne .chezmoi.osRelease.id "arch" }}ferdium-bin{{- else }}ferdium{{- end }} --enable-webrtc-pipewire-capturer --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime --ozone-platform-hint=auto --wayland-text-input-version=3 %U
+Name=Ferdium (Wayland)
+Exec={{ $ferdium }} --enable-webrtc-pipewire-capturer --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime --wayland-text-input-version=3 %U
 Terminal=false
 Type=Application
 Icon=ferdium
