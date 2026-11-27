@@ -83,14 +83,17 @@ cover what is specific to it; the machine-wide agent rules in
 dyshellint <changed scripts>   # shellcheck + shfmt + its own rules
 prek run --all-files           # incl. betterleaks and detect-private-key
 scripts/test.sh --changed      # bats files covering what changed since main
+scripts/test.sh --pkgs         # the tool-list schema, on its own
+scripts/test.sh --secrets      # the secrets schema, on its own
 scripts/test.sh --all          # every bats file, once before a merge
 ```
 
 - Use `--changed` while working. `scripts/lib/test_select.sh` picks the bats
   file named after each changed file, plus any bats file that mentions its
   name. A change to the runner or the selector itself, or to a non-prose file
-  no test names, runs the whole suite instead. `--pkgs` runs only the
-  tool-list tests.
+  no test names, runs the whole suite instead.
+- Run `--pkgs` and `--secrets` as separate checks every time, whatever
+  `--changed` picked, and report each result on its own.
 - A new library `scripts/lib/<area>.sh` needs `scripts/test/<area>.bats`:
   `dyshellint` fails it with `BSG060` until the test file exists.
 - The pkgs tests render `home/dot_config/pkg_installer/tools.yaml.tmpl` for
@@ -100,7 +103,8 @@ scripts/test.sh --all          # every bats file, once before a merge
 - The runner uses the bats bundled with dybatpho, else one on `PATH`. When
   both are missing, fetch it with
   `git -C scripts/lib/dybatpho submodule update --init --recursive`.
-- `--secrets` points at a `secrets_schema.bats` that does not exist yet.
+- `--secrets` points at a `secrets_schema.bats` that does not exist yet, so it
+  fails until that file is written; report the failure, do not skip it.
 
 Say which checks ran.
 
