@@ -190,12 +190,18 @@ MSG
   [ ! -e app.log ]
 }
 
-@test "without dybatpho the commit goes through unchecked, with a warning" {
-  # A moved or broken checkout must not block every commit on the machine.
-  sed 's|/scripts/lib/dybatpho/init.sh|/scripts/lib/gone/init.sh|' "${HOOK}" > nolib.sh
+@test "without a working dybatpho the commit goes through unchecked, with a warning" {
+  # A moved, half checked out or broken library must not block every commit.
+  mkdir -p lib/bare lib/empty
+  cp "${BATS_TEST_DIRNAME}/../lib/dybatpho/init.sh" lib/bare/init.sh
+  touch lib/empty/init.sh
   printf 'feat(git): %s\n' "$(printf 'x%.0s' {1..62})" > "${MSG}"
-  run bash nolib.sh "${MSG}"
-  [ "${status}" -eq 0 ]
-  [[ "${output}" == *"dybatpho not found"*"skipped"* ]]
-  [[ "${output}" != *"command not found"* ]]
+  local lib
+  for lib in gone bare empty; do
+    sed "s|\"[^\"]*/scripts/lib/dybatpho/init.sh\"|\"${PWD}/lib/${lib}/init.sh\"|" "${HOOK}" > nolib.sh
+    run bash nolib.sh "${MSG}"
+    [ "${status}" -eq 0 ]
+    [[ "${output}" == *"could not load dybatpho"*"skipped"* ]]
+    [[ "${output}" != *"command not found"* ]]
+  done
 }

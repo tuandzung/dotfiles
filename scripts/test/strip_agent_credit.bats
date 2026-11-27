@@ -146,14 +146,21 @@ MSG
   [ ! -e app.log ]
 }
 
-@test "without dybatpho the message is left as it is, with a warning" {
+@test "without a working dybatpho the message is left as it is, with a warning" {
+  # A moved, half checked out or broken library must not block every commit.
   cd "${BATS_TEST_TMPDIR}" || return 1
-  sed 's|/scripts/lib/dybatpho/init.sh|/scripts/lib/gone/init.sh|' "${HOOK}" > nolib.sh
+  mkdir -p lib/bare lib/empty
+  cp "${BATS_TEST_DIRNAME}/../lib/dybatpho/init.sh" lib/bare/init.sh
+  touch lib/empty/init.sh
   printf 'fix: x\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n' > "${MSG}"
   cp "${MSG}" "${MSG}.orig"
-  run bash nolib.sh "${MSG}"
-  [ "${status}" -eq 0 ]
-  [[ "${output}" == *"dybatpho not found"*"skipped"* ]]
-  [[ "${output}" != *"command not found"* ]]
-  cmp "${MSG}" "${MSG}.orig"
+  local lib
+  for lib in gone bare empty; do
+    sed "s|\"[^\"]*/scripts/lib/dybatpho/init.sh\"|\"${PWD}/lib/${lib}/init.sh\"|" "${HOOK}" > nolib.sh
+    run bash nolib.sh "${MSG}"
+    [ "${status}" -eq 0 ]
+    [[ "${output}" == *"could not load dybatpho"*"skipped"* ]]
+    [[ "${output}" != *"command not found"* ]]
+    cmp "${MSG}" "${MSG}.orig"
+  done
 }

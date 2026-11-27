@@ -10,13 +10,16 @@
 # for itself (LOG_LEVEL=WARNING aborts it); DYBATPHO_LOG_* still applies.
 unset LOG_LEVEL LOG_FORMAT LOG_FILE LOG_FILE_LEVEL LOG_FILE_MAX_BYTES LOG_FILE_MAX_BACKUPS LOG_REQUEST_ID
 dybatpho_init="{{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh"
-# Fail open: a moved or missing checkout must not block every commit.
-if [[ ! -r "${dybatpho_init}" ]]; then
-  echo "strip_agent_credit.sh: dybatpho not found at ${dybatpho_init}, credit check skipped" >&2
+# Fail open: a moved, half checked out or broken library must not block every
+# commit. Try it in a throwaway subshell, where its own exit cannot reach us.
+# shellcheck source=/dev/null
+if ! (. "${dybatpho_init}" && declare -F dybatpho::register_common_handlers \
+  dybatpho::expect_args dybatpho::die) &> /dev/null; then
+  echo "strip_agent_credit.sh: could not load dybatpho from ${dybatpho_init}, credit check skipped" >&2
   exit 0
 fi
 # shellcheck source=/dev/null
-. "${dybatpho_init}"
+. "${dybatpho_init}" || exit 0
 dybatpho::register_common_handlers
 
 #######################################
