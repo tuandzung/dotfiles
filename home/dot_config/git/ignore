@@ -68,3 +68,4 @@ tmp/
 # claude-mem writes per-directory activity notes; keep them out of the repo.
 **/CLAUDE.md
 !/CLAUDE.md
+**/CLAUDE.local.md
