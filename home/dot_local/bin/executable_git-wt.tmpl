@@ -1,0 +1,49 @@
+#!{{ .bash }}
+# @file git-wt
+# @brief Create a worktree for a new branch under `.worktrees/` of the main checkout
+# @description `git wt <branch>`, from the main checkout or any of its
+# worktrees; the branch starts at the current HEAD. A command rather than an
+# alias: git runs an external `git-wt` before it looks up aliases, so the
+# `alias.wt` of a repository cannot take over the `git wt *` rule the agents
+# may run unasked. For the same rule it refuses a repository whose git dir is
+# not a real `.git` directory: a `.git` file or a worktree's `commondir` could
+# point at a directory a sandboxed agent wrote, config and hooks included,
+# while the sandbox keeps every real `.git/config` and `.git/hooks` read-only.
+# @arg $1 string Name of the new branch
+. "{{ .chezmoi.sourceDir }}/../scripts/lib/dybatpho/init.sh"
+dybatpho::register_common_handlers
+
+#######################################
+# @description Create the worktree
+# @arg $1 string Name of the new branch
+#######################################
+# dyshellint disable=BSG159 a one-argument git subcommand; git owns --help and --version
+function _main {
+  # expect_args would drop the rest: `git wt a --detach` must not half-work.
+  (($# == 1)) || dybatpho::die "Usage: git wt <branch>"
+  local branch
+  dybatpho::expect_args branch -- "$@"
+  # A name git would refuse, or one like `..` that leaves `.worktrees/`.
+  git check-ref-format --branch "${branch}" > /dev/null \
+    || dybatpho::die "Not a valid branch name: ${branch}"
+  unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_COMMON_DIR
+
+  local common_dir repo start
+  common_dir="$(git rev-parse --path-format=absolute --git-common-dir)"
+  start="$(git rev-parse --verify HEAD)"
+  # Inside `.git` there is no top level to ask for; the checkout is its parent.
+  repo="$(git -C "${common_dir}" rev-parse --path-format=absolute --show-toplevel 2> /dev/null)" \
+    || repo="$(dybatpho::path_dirname "${common_dir}")"
+  if [[ -L "${repo}/.git" || ! -d "${repo}/.git" ]] \
+    || [[ "$(realpath -- "${common_dir}")" != "$(realpath -- "${repo}/.git")" ]]; then
+    dybatpho::die "Refusing ${repo}: its git dir is not ${repo}/.git"
+  fi
+  # Then .git/config.worktree is read too, which the sandbox leaves writable.
+  if [[ "$(git -C "${repo}" config --bool extensions.worktreeConfig || true)" == "true" ]]; then
+    dybatpho::die "Refusing ${repo}: extensions.worktreeConfig is on"
+  fi
+  mkdir -p "${repo}/.worktrees"
+  git -C "${repo}" worktree add -b "${branch}" "${repo}/.worktrees/${branch//\//-}" "${start}"
+}
+
+_main "$@"
