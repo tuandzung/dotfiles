@@ -36,21 +36,25 @@ cover what is specific to it; the machine-wide agent rules in
 
 - Never run `chezmoi apply` to "test" a change. Show `chezmoi diff` instead
   and let the user apply.
-- chezmoi ignores `.gitignore`: an untracked file under `home/` (such as a
-  `CLAUDE.md` that claude-mem writes) is applied to `$HOME` unless
-  `home/.chezmoiignore.tmpl` lists it. It is a template; add OS-specific
+- chezmoi ignores `.gitignore`: an untracked file under `home/` is applied
+  to `$HOME` unless `home/.chezmoiignore.tmpl` lists it. claude-mem's
+  per-directory notes are `CLAUDE.local.md` (set by
+  `CLAUDE_MEM_FOLDER_USE_LOCAL_MD`) and listed there; a stray `CLAUDE.md`
+  next to a `CLAUDE.md.tmpl` would give chezmoi two sources for one target. It is a template; add OS-specific
   entries inside the matching `{{ if }}` block.
 - Factor text shared between several files into `home/.chezmoitemplates/` and
   include it with `{{ template "dir/name.md.tmpl" . }}`, rather than copying
   it. Claude's instruction files are thin wrappers around the partials in
   `home/.chezmoitemplates/ai/`: the absolute rules in `CLAUDE.md.tmpl`, one
-  partial per file in `rules/`. Both Claude config dirs carry identical
-  copies (`home/private_dot_claude/` and
-  `home/Working/Enterprise/TCV/private_dot_claude/`). A new partial goes into
-  `ai/all.md.tmpl` and a matching rule file in both `rules/` dirs, except the
-  absolute rules (`credentials`, `destructive-commands`), which live in
-  `CLAUDE.md.tmpl`. Nothing checks this yet: the `claude_rules.bats` that
-  `all.md.tmpl` mentions does not exist.
+  partial per file in `rules/`. Both Claude config dirs
+  (`home/private_dot_claude/` and
+  `home/Working/Enterprise/TCV/private_dot_claude/`) carry identical
+  `CLAUDE.md.tmpl` and `rules/`; only the TCV one has `settings.json`, hooks
+  and the status line (see `GLOSSARY.md` for *context* and *config dir*). A
+  new partial goes into `ai/all.md.tmpl` and a matching rule file in both
+  `rules/` dirs, except the absolute rules (`credentials`,
+  `destructive-commands`), which live in `CLAUDE.md.tmpl`;
+  `scripts/test/claude_rules.bats` fails until it does.
 
 ## Shell code
 
