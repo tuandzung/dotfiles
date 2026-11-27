@@ -124,12 +124,24 @@ MSG
   [ -z "${output}" ]
 }
 
-@test "a fixup! subject over 72 characters is accepted with a warning" {
-  # git commit --fixup prefixes a subject that was already up to 72 characters.
-  printf 'fixup! feat(git): %s\n' "$(printf 'x%.0s' {1..61})" > "${MSG}"
+@test "a subject git wrote itself over 72 characters is accepted with a warning" {
+  # git commit --fixup/--squash prefixes a subject that was already up to 72
+  # characters, and git merge or pull names a branch or a URL of any length.
+  local subject long
+  long="$(printf 'x%.0s' {1..61})"
+  for subject in "fixup! feat(git): ${long}" "squash! feat(git): ${long}" \
+    "amend! feat(git): ${long}" "Merge branch 'feature/${long}' of https://example.com/r"; do
+    printf '%s\n' "${subject}" > "${MSG}"
+    run bash "${HOOK}" "${MSG}"
+    [ "${status}" -eq 0 ]
+    [[ "${output}" == *"72"* ]]
+  done
+}
+
+@test "a subject that only starts like one git writes is still rejected" {
+  printf 'Merged feat(git): %s\n' "$(printf 'x%.0s' {1..61})" > "${MSG}"
   run bash "${HOOK}" "${MSG}"
-  [ "${status}" -eq 0 ]
-  [[ "${output}" == *"72"* ]]
+  [ "${status}" -ne 0 ]
 }
 
 @test "a real commit lands without its agent credit" {

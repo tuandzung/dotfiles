@@ -30,9 +30,10 @@ function _main {
   length=$((length))
   if ((length > 72)); then
     local message="Subject is ${length} characters, over the 72 character limit: ${subject}"
-    # git commit --fixup/--squash prefixes a subject that already passed, and
-    # autosquash needs that text verbatim: the commit is squashed away anyway.
-    [[ "${subject}" =~ ^(fixup|squash|amend)!\  ]] || dybatpho::die "${message}"
+    # Subjects git writes itself only warn: --fixup/--squash prefix one that
+    # already passed (autosquash needs it verbatim, and it is squashed away),
+    # and a merge or pull names a branch or a URL of any length.
+    [[ "${subject}" =~ ^((fixup|squash|amend)!|Merge)\  ]] || dybatpho::die "${message}"
     dybatpho::warn "${message}"
     return 0
   fi
