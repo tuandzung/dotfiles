@@ -9,6 +9,8 @@
 #   Each check prints the names of the offending entries, `[]` when none.
 
 setup_file() {
+  # Run from a git hook, these would point git at the repository committed to.
+  unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE
   REPO_ROOT="$(realpath "${BATS_TEST_DIRNAME}/../..")"
   export REPO_ROOT
   command -v chezmoi > /dev/null || skip "chezmoi is not installed"
@@ -24,15 +26,21 @@ setup_file() {
 #   renders nothing for it leaves a null in the list, which `main.py` skips.
 # @arg $1 string Query reading the list of non-null entries as `.`
 # @stdout The query's result, as one line of JSON
+# yq binds `and`/`or` looser than `|`: wrap them in parentheses after a pipe.
 check() {
   yq -o json -I0 "[.[] | select(. != null)] | $1" "${TOOLS}"
 }
 
 @test "every tracked file under pkgs/ is YAML or a YAML template" {
-  run bash -c "git -C '${REPO_ROOT}' ls-files home/.chezmoitemplates/pkgs \
-    | grep -Ev '\.yaml(\.tmpl)?$' || true"
+  run git -C "${REPO_ROOT}" ls-files home/.chezmoitemplates/pkgs
   [ "${status}" -eq 0 ]
-  [ "${output}" = "" ]
+  local file
+  for file in ${lines[@]+"${lines[@]}"}; do
+    [[ "${file}" =~ \.yaml(\.tmpl)?$ ]] || {
+      echo "not YAML: ${file}"
+      return 1
+    }
+  done
 }
 
 @test "the rendered list is a YAML sequence" {
@@ -75,17 +83,28 @@ check() {
   [ "${output}" = "[]" ]
 }
 
-@test "a binary entry names its repo as owner/name" {
+@test "a binary entry names its repo as owner/name, gitlab with subgroups" {
   run check '[.[] | select(.method == "binary")
-    | select(((.github // .gitlab).repo // "") | test("^[^/ ]+/[^ ]+$") | not)
+    | select((has("github")
+        and ((.github.repo // "") | test("^[^/ ]+/[^/ ]+$") | not))
+      or (has("gitlab")
+        and ((.gitlab.repo // "") | test("^[^/ ]+(/[^/ ]+)+$") | not)))
     | .name]'
   [ "${status}" -eq 0 ]
   [ "${output}" = "[]" ]
 }
 
-@test "every archive item of a binary entry has a path" {
+@test "a binary archive lists items with a path, or maps paths" {
+  # binary_installer.py reads a list of `{path, strip, location}` items, or
+  # the older `{paths: [...]}` mapping.
   run check '[.[] | select(.method == "binary" and has("archive"))
-    | select(.archive[] | (.path // "") == "") | .name] | unique'
+    | select(
+        ((.archive | tag) == "!!seq"
+          and ([.archive[] | (.path // "") == ""] | any))
+        or ((.archive | tag) == "!!map"
+          and ((.archive.paths | tag) != "!!seq" or (.archive.paths | length) == 0))
+        or ((.archive | tag) != "!!seq" and (.archive | tag) != "!!map"))
+    | .name]'
   [ "${status}" -eq 0 ]
   [ "${output}" = "[]" ]
 }
@@ -117,10 +136,18 @@ check() {
   [ "${output}" = "[]" ]
 }
 
+@test "an os block's packages is a list" {
+  run check '[.[] | select(.method == "os")
+    | select([.gentoo, .arch, .ubuntu, .macos, .termux][] | select(. != null)
+      | (has("packages") and (.packages | tag) != "!!seq")) | .name] | unique'
+  [ "${status}" -eq 0 ]
+  [ "${output}" = "[]" ]
+}
+
 @test "every package of an os entry has a name" {
   run check '[.[] | select(.method == "os")
     | select([.gentoo, .arch, .ubuntu, .macos, .termux][] | select(. != null)
-      | .packages[]? | (.name // "") == "") | .name] | unique'
+      | .packages[]? | ((.name | tag) != "!!str" or .name == "")) | .name] | unique'
   [ "${status}" -eq 0 ]
   [ "${output}" = "[]" ]
 }
