@@ -1,6 +1,6 @@
 {{- $ferdium := "flatpak run --socket=wayland org.ferdium.Ferdium" }}
 {{- if eq .osid "linux-gentoo" "linux-arch" }}
-{{-   $ferdium := "/usr/bin/ferdium" }}
+{{-   $ferdium = "/usr/bin/ferdium" }}
 {{-   if eq .osid "linux-gentoo" }}
 {{-     $ferdium = "/usr/bin/ferdium-bin" }}
 {{-   end }}
