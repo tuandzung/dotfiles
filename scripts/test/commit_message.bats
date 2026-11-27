@@ -49,6 +49,9 @@ setup_repo() {
 }
 
 setup() {
+  # The hook reads commit.cleanup: keep the user's own config out of it.
+  export GIT_CONFIG_GLOBAL="${BATS_TEST_TMPDIR}/gitconfig" GIT_CONFIG_NOSYSTEM=1
+  cd "${BATS_TEST_TMPDIR}" || return 1
   MSG="${BATS_TEST_TMPDIR}/COMMIT_EDITMSG"
 }
 
@@ -162,4 +165,15 @@ MSG
   [[ "${output}" == *"empty"* ]]
   run git -C "${REPO}" log -1 --format=%s
   [ "${output}" = "init" ]
+}
+
+@test "with commit.cleanup = scissors, a # line is the subject git commits" {
+  git config --global commit.cleanup scissors
+  printf '#42 fix login\n' > "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -eq 0 ]
+  printf '# %s\n\nfix: short\n' "$(printf 'x%.0s' {1..80})" > "${MSG}"
+  run bash "${HOOK}" "${MSG}"
+  [ "${status}" -ne 0 ]
+  [[ "${output}" == *"82 characters"* ]]
 }

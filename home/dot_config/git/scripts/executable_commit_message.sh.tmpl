@@ -16,12 +16,19 @@ dybatpho::register_common_handlers
 function _main {
   local file
   dybatpho::expect_args file -- "$@"
-  # The hook sees the file before git cleans it up: drop the scissors section
-  # (commit.cleanup = scissors) and the comment lines, in core.commentChar.
-  # ponytail: a subject that itself starts with the comment char is skipped too.
+  # The hook sees the file before git cleans it up, so clean it the same way:
+  # drop the scissors section, and the comment lines (in core.commentChar)
+  # only in the modes that strip them; scissors keeps those above the cut.
+  # ponytail: git's --cleanup flag never reaches a hook, and the default mode
+  # keeps comments with -m: there a "#42 fix" subject is taken for a comment.
+  local cleanup strip=--strip-comments
+  cleanup="$(git config --get commit.cleanup)" || true
+  case "${cleanup}" in
+    scissors | whitespace | verbatim) strip="" ;;
+  esac
   local subject
   subject="$(sed -e '/^. -\{24\} >8 -\{24\}$/,$d' -- "${file}" \
-    | git stripspace --strip-comments | sed -n '1p')"
+    | git stripspace ${strip:+"${strip}"} | sed -n '1p')"
   [[ -n "${subject}" ]] || dybatpho::die "Commit message is empty"
   # Count UTF-8 characters, not bytes, whatever locale git runs the hook in:
   # drop the continuation bytes, then count what is left.
