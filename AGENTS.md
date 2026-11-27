@@ -34,8 +34,9 @@ cover what is specific to it; the machine-wide agent rules in
   chezmoi execute-template --source . --file home/path/to/file.tmpl
   ```
 
-- Never run `chezmoi apply` to "test" a change. Show `chezmoi diff` instead
-  and let the user apply.
+- Never run `chezmoi apply` to "test" a change. Show
+  `chezmoi diff --exclude encrypted,templates` instead and let the user
+  apply: without the flag it prints secrets.
 - chezmoi ignores `.gitignore`: an untracked file under `home/` is applied
   to `$HOME` unless `home/.chezmoiignore.tmpl` lists it. claude-mem's
   per-directory notes are `CLAUDE.local.md` (set by

@@ -21,7 +21,8 @@ a destructive one can cost the whole machine.
   enable/disable/start/stop, writing under `/etc`, and changing ownership or
   permissions outside the repository.
 - `chezmoi apply`, `chezmoi destroy`, and `chezmoi forget` — they write over
-  the real `$HOME`. Show `chezmoi diff` and wait for a yes.
+  the real `$HOME`. Show `chezmoi diff --exclude encrypted,templates` and
+  wait for a yes.
 - Container commands that prune, remove volumes, or rebuild an image the user
   depends on.
 

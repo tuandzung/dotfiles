@@ -15,7 +15,14 @@ this holds no matter which repository the current task is about.
   `symlink_` creates a link, `encrypted_` stores the file age-encrypted, and a
   `.tmpl` suffix marks a Go template rendered at apply time.
 - Render a template with `chezmoi execute-template --file <path>` to check it,
-  and preview the result of a change with `chezmoi diff`. Do not run
+  and preview the result of a change with
+  `chezmoi diff --exclude encrypted,templates`: a plain `chezmoi diff` prints
+  encrypted files decrypted, and templates that read a secret while they
+  render. That leaves every template out of the diff, so list them too with
+  `chezmoi status`, which names a file without printing it. Diff one template
+  on its own (`chezmoi diff <target>`) only after checking that neither it
+  nor a partial it includes reads a secret (`decrypt`, `secrets/`, `output`,
+  a password manager). Do not run
   `chezmoi apply` on the user's behalf without showing that diff first.
 - Add a new dotfile with `chezmoi add`, rather than writing into `$HOME` and
   expecting chezmoi to notice.

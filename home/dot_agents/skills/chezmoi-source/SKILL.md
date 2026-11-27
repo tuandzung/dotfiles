@@ -68,7 +68,7 @@ chezmoi execute-template --source ~/Dotfiles --file home/path/to/file.tmpl
 ## Preview, never apply
 
 ```bash
-chezmoi diff            # show what apply would change
+chezmoi diff --exclude encrypted,templates   # what apply would change, secrets left out
 ```
 
 Show the diff and stop. `chezmoi apply`, `chezmoi destroy`, and
