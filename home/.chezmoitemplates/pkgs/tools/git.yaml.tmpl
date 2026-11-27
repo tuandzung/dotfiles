@@ -7,9 +7,16 @@ gentoo:
 arch:
   packages:
     - name: git
+{{- if eq .osid "linux-ubuntu" "linux-linuxmint" }}
 ubuntu:
   packages:
+    # Upstream's stable releases: the hooks in the git config need git 2.54+.
     - name: git
+      repo_name: git-core
+      repo_url: https://ppa.launchpadcontent.net/git-core/ppa/ubuntu
+      repo_version: {{ .chezmoi.osRelease.ubuntuCodename }} main
+      key: F911AB184317630C59970973E363C90F8F1B6217 # betterleaks:allow public PPA signing-key fingerprint
+{{- end }}
 macos:
   packages:
     - name: git
