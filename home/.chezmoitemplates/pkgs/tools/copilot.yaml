@@ -1,5 +1,5 @@
 name: copilot
 method: shell
 dependencies:
-  - node
-content: npm install -g @github/copilot
+  - mise
+content: mise exec node -- npm install -g @github/copilot

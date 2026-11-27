@@ -1,0 +1,10 @@
+name: scdoc
+method: os
+# Only where nvimpager is built from source, which makes its man page with it.
+is_essential: true
+ubuntu:
+  packages:
+    - name: scdoc
+termux:
+  packages:
+    - name: scdoc

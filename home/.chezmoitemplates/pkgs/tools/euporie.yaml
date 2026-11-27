@@ -1,5 +1,5 @@
 name: euporie
 method: shell
 dependencies:
-  - uv
-content: uv tool install euporie
+  - mise
+content: mise exec uv -- uv tool install euporie

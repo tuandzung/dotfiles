@@ -1,5 +1,5 @@
 name: gemini
 method: shell
 dependencies:
-  - node
-content: npm install -g @google/gemini-cli
+  - mise
+content: mise exec node -- npm install -g @google/gemini-cli
